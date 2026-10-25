@@ -81,3 +81,23 @@ L'interazione è progettata per mouse, touch e tastiera. Sui dispositivi che blo
 - Entrambi i link usano il numero `393472343616` e aprono WhatsApp con il rispettivo messaggio pronto, senza inviarlo automaticamente.
 - I testi dei messaggi sono personalizzabili separatamente in `config.js`: `messaggioConferma` e `messaggioDeclina`.
 - Location Google Maps, countdown, musica e tutte le altre scene restano invariati.
+
+### Revisione 6 - bottiglia in primo piano
+
+- Nella prima scena, la bottiglia presenta un piccolo alone luminoso pulsante e un'etichetta **Tocca la bottiglia per iniziare la storia** in posizione vicina all'oggetto. L'intera area della bottiglia e l'etichetta sono cliccabili. L'effetto e' piu evidente su smartphone, ma discreto e coerente con l'immagine del mare.
+- Il link secondario in alto a destra ora dice **Salta la storia** per distinguerlo dall'azione principale.
+- La battuta **Segreti mai mantenuti…** e' stata modificata in **Segreti mantenuti…**.
+- L'animazione tiene conto della preferenza del sistema operativo per la riduzione del movimento.
+
+### Revisione 7 — hitbox bottiglia precisa
+
+- L'area che avvia la storia ora segue la sagoma reale della bottiglia con coordinate diverse per fotografie orizzontali e verticali, ed è ricalcolata dopo il ritaglio `object-fit: cover` e durante il lieve movimento dello sfondo. Non si attiva più toccando porzioni lontane di mare o spiaggia.
+- Il glow segue la stessa sagoma; l'etichetta 'Tocca la bottiglia' è anch'essa un pulsante accessibile e cliccabile.
+- In caso di sostituzione delle immagini del mare con fotografie in cui la bottiglia è posizionata altrove, aggiornare i punti in `bottleShapes` all'interno di `script.js`.
+
+### Revisione 8 — hitbox ovale e glow V6
+
+- L'area cliccabile della bottiglia e' **sempre un'ellisse inclinata**, approssimata al corpo della bottiglia (clip-path CSS), anziche' il poligono della V7.
+- L'ellisse si riposiziona automaticamente con l'immagine desktop/mobile, il crop e il lentissimo movimento dello sfondo.
+- Ripristinati l'**alone dorato pulsante** e tre **stelline scintillanti** ispirati alla V6, senza ampliare l'area interattiva sul mare circostante.
+- Il pulsante testuale 'Tocca la bottiglia' continua a funzionare anche da tastiera.

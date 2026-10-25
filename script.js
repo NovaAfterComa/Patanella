@@ -7,7 +7,7 @@
   const text = Object.assign({
     scena1: 'Ogni storia ha un inizio…', macchina1: 'La protagonista di questa storia?',
     macchina2: 'Una certa ragazza che non ha nessuna intenzione di crescere davvero…',
-    complici: ['Anni di amicizia…', 'Segreti mai mantenuti…', 'Serate finite troppo tardi…', 'E prove che sarebbe meglio distruggere.'],
+    complici: ['Anni di amicizia…', 'Segreti mantenuti…', 'Serate finite troppo tardi…', 'E prove che sarebbe meglio distruggere.'],
     epico1: 'Trent’anni di sogni, risate e persone speciali.', epico2: 'E non è ancora diventata una persona seria.',
     citazione: 'Le cose belle non si contano negli anni, ma nei momenti che ci fanno brillare gli occhi.',
     finale: 'La storia continua… e stavolta voglio viverla con voi!'
@@ -78,6 +78,53 @@
   }
   setPhotographicFraming();
   addEventListener('resize', setPhotographicFraming);
+
+  /* La hitbox resta ovale (clip-path: ellipse) e segue la bottiglia reale,
+     anche col ritaglio object-fit: cover e il movimento fotografico. */
+  const bottleFrame = $('bottle-frame');
+  const bottleGuide = $('bottle-guide');
+  const bottleShapes = {
+    landscape: { bounds: [545, 575, 1015, 810] },
+    portrait: { bounds: [290, 830, 770, 1080] }
+  };
+  function positionBottleHitbox() {
+    const image = $('shore');
+    if (!image.naturalWidth || !image.naturalHeight) return;
+    const imageRect = image.getBoundingClientRect();
+    const stageRect = stage.getBoundingClientRect();
+    const fittedScale = Math.max(imageRect.width / image.naturalWidth, imageRect.height / image.naturalHeight);
+    // object-position: 51% 50% nella regola .backdrop.
+    const cropLeft = (imageRect.width - image.naturalWidth * fittedScale) * .51;
+    const cropTop = (imageRect.height - image.naturalHeight * fittedScale) * .5;
+    const portrait = matchMedia('(max-aspect-ratio: 3/4)').matches && Boolean(backgrounds.messaggioMobile);
+    const shape = portrait ? bottleShapes.portrait : bottleShapes.landscape;
+    const [x1, y1, x2, y2] = shape.bounds;
+    const x = imageRect.left - stageRect.left + cropLeft + x1 * fittedScale;
+    const y = imageRect.top - stageRect.top + cropTop + y1 * fittedScale;
+    const w = (x2 - x1) * fittedScale;
+    const h = (y2 - y1) * fittedScale;
+    bottleFrame.style.left = x.toFixed(2) + 'px';
+    bottleFrame.style.top = y.toFixed(2) + 'px';
+    bottleFrame.style.width = w.toFixed(2) + 'px';
+    bottleFrame.style.height = h.toFixed(2) + 'px';
+    bottleGuide.style.left = (x + w * .51).toFixed(2) + 'px';
+    bottleGuide.style.top = (y - 17).toFixed(2) + 'px';
+  }
+  let bottleTrackingFrame = 0, lastBottleSync = -Infinity;
+  function trackBottle(now) {
+    bottleTrackingFrame = 0;
+    if (started || activeScene !== 'welcome') return;
+    // Lo sfondo si muove lentissimamente: ~15 aggiornamenti al secondo
+    // sono sufficienti e riducono il lavoro su smartphone.
+    if (now - lastBottleSync >= 65) {
+      positionBottleHitbox();
+      lastBottleSync = now;
+    }
+    bottleTrackingFrame = requestAnimationFrame(trackBottle);
+  }
+  $('shore').addEventListener('load', positionBottleHitbox);
+  addEventListener('resize', positionBottleHitbox);
+  bottleTrackingFrame = requestAnimationFrame(trackBottle);
   $('night').src=backgrounds.notte;
   $('shore-open').onerror=()=>{$('shore-open').style.display='none';};
   $('night').onerror=()=>{stage.classList.add('night-missing');};
@@ -227,7 +274,7 @@
     for(const v of Object.values(videos)){try{v.currentTime=0;}catch{}}
     render();syncMedia();resumeClock();
   }
-  $('bottle').addEventListener('click',start);$('b-replay').addEventListener('click',start);
+  $('bottle').addEventListener('click',start);$('bottle-guide').addEventListener('click',start);$('b-replay').addEventListener('click',start);
   $('b-skip').addEventListener('click',()=>{
     pauseClock();started=true;paused=false;elapsed=total;finished=true;stage.classList.remove('is-paused');
     render();syncMedia();$('f-name').focus({preventScroll:true});

@@ -415,3 +415,293 @@
   .final-actions .button.map-cta { min-height: 50px; padding: 9px 18px; }
   .replay { margin-top: 10px; }
 }
+
+
+/* Revisione 6: il messaggio in bottiglia e' la vera azione iniziale.
+   Un alone caldo e una callout vicina alla fotografia invitano al tocco.
+   Tutti gli effetti sono CSS: nessun video o audio aggiuntivo. */
+.welcome .bottle-hit {
+  overflow: visible;
+  -webkit-tap-highlight-color: transparent;
+  isolation: isolate;
+}
+.welcome .bottle-hit::before {
+  content: "";
+  position: absolute;
+  inset: 5% 2% 9% 2%;
+  border: 1px solid rgba(255, 234, 177, .50);
+  border-radius: 48% 56% 48% 52% / 51% 43% 57% 48%;
+  background: radial-gradient(ellipse at 47% 51%, transparent 29%, rgba(255,225,144,.055) 62%, rgba(255,210,125,.13) 94%, transparent 100%);
+  box-shadow: 0 0 9px rgba(255, 223, 149, .36), 0 0 30px rgba(255, 211, 131, .22), inset 0 0 14px rgba(255, 236, 183, .10);
+  animation: bottle-beacon 2.9s ease-in-out infinite;
+  pointer-events: none;
+}
+.welcome .bottle-hit::after {
+  content: "✦";
+  position: absolute;
+  top: 2%;
+  right: 9%;
+  color: #fff0bd;
+  font-size: 29px;
+  line-height: 1;
+  text-shadow: 0 0 8px #fff1ca, 0 0 21px #ffd18f, 0 0 38px rgba(255,204,120,.6);
+  animation: bottle-twinkle 2.9s ease-in-out infinite;
+  pointer-events: none;
+}
+.welcome .bottle-hit:hover::before,
+.welcome .bottle-hit:focus-visible::before {
+  border-color: rgba(255,246,211,.9);
+  box-shadow: 0 0 17px rgba(255,227,172,.56), 0 0 47px rgba(255,218,139,.35), inset 0 0 15px rgba(255,236,183,.14);
+}
+.bottle-guide {
+  position: absolute;
+  bottom: calc(100% + 21px);
+  left: 50%;
+  transform: translateX(-50%) rotate(12deg);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 234px;
+  padding: 12px 21px 11px;
+  border-radius: 100px;
+  border: 1px solid rgba(250,226,175,.75);
+  background: rgba(9, 29, 39, .83);
+  box-shadow: 0 5px 22px rgba(0, 12, 20, .50), 0 0 19px rgba(244,199,128,.12), inset 0 0 19px rgba(255,235,191,.035);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  text-align: center;
+  white-space: nowrap;
+  font-family: var(--sans);
+  animation: bottle-label 2.9s ease-in-out infinite;
+}
+.bottle-guide::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: calc(50% - 1px);
+  height: 19px;
+  width: 1px;
+  background: linear-gradient(#e9d7af, transparent);
+}
+.bottle-guide-lead {
+  color: #fff1d1;
+  font-size: 13px;
+  font-weight: 750;
+  letter-spacing: .035em;
+  line-height: 1.2;
+}
+.bottle-guide-star {color: #f5c879; font-size: 10px; padding: 0 2px;}
+.bottle-guide-sub {color: rgba(255,247,226,.88); font-size: 10px; font-weight: 500; line-height: 1.25; letter-spacing: .025em;}
+.bottle-guide-arrow {font-size: 15px; margin-left: 2px; vertical-align: -1px; color: #f6cf88;}
+.welcome .welcome-action .touch-hint {opacity: .89;}
+@keyframes bottle-beacon {
+  0%, 100% {opacity:.35; transform:scale(.97)}
+  48% {opacity:.92; transform:scale(1.045)}
+}
+@keyframes bottle-twinkle {
+  0%, 100% {opacity:.4; transform:scale(.8) rotate(-5deg)}
+  45% {opacity:1; transform:scale(1.2) rotate(12deg)}
+}
+@keyframes bottle-label {
+  0%, 100% {opacity:.88; translate:0 0}
+  50% {opacity:1; translate:0 -4px}
+}
+@media (max-width:600px) {
+  .bottle-guide {
+    bottom: calc(100% + 20px);
+    transform: translateX(-50%) rotate(17deg);
+    min-width: 229px;
+    padding: 11px 17px 10px;
+  }
+  .bottle-guide-lead {font-size: 13px;}
+  .bottle-guide-sub {font-size: 10px;}
+  .welcome .bottle-hit::after {right: 14%; top: 3%; font-size: 25px;}
+  .welcome .welcome-action .handwritten {font-size: 18px;}
+}
+@media (max-width:350px), (max-height:650px) {
+  .bottle-guide {bottom: calc(100% + 13px); padding: 9px 13px 8px; min-width: 205px;}
+  .bottle-guide-lead {font-size: 11px;}
+  .bottle-guide-sub {font-size: 9px;}
+}
+@media (prefers-reduced-motion:reduce) {
+  .welcome .bottle-hit::before, .welcome .bottle-hit::after, .bottle-guide {animation:none!important; opacity:1;}
+}
+/* Piccole regolazioni del punto di richiamo dopo le prove su schermi reali. */
+@media (min-width:1024px) and (min-height:650px) {
+  .welcome-copy { top:14%; }
+}
+@media (max-width:600px) {
+  .bottle-guide {left:calc(50% + 30px);}
+}
+@media (max-width:600px) {
+  .bottle-guide {bottom:calc(100% + 2px);}
+}
+@media (min-width:1024px) and (min-height:650px) {
+  .welcome-copy { top:13%; }
+}
+
+
+/* V7 — La zona cliccabile coincide con la sagoma fotografica, non con
+   un rettangolo in percentuale. Coordinate e crop calcolati da script.js. */
+.welcome .bottle-frame {
+  position: absolute;
+  left: 0; top: 0;
+  width: 0; height: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+.welcome .bottle-frame .bottle-hit {
+  position: absolute;
+  inset: 0;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  padding: 0; margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  transform: none;
+  z-index: 2;
+  pointer-events: auto;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(255,234,188,.18);
+}
+.welcome .bottle-frame .bottle-hit:hover { background: rgba(255,231,164,.04); }
+.welcome .bottle-frame .bottle-hit:active { background: rgba(255,231,164,.13); }
+.welcome .bottle-frame .bottle-hit:focus-visible {
+  outline: 2px solid #ffe7af;
+  outline-offset: 1px;
+}
+.welcome .bottle-frame .bottle-hit::before,
+.welcome .bottle-frame .bottle-hit::after { content: none; animation: none; }
+.welcome .bottle-glow {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: visible;
+  animation: bottle-outline-pulse 3s ease-in-out infinite;
+}
+.welcome .bottle-glow polygon {
+  fill: rgba(255, 233, 185, .025);
+  stroke: rgba(251, 228, 176, .66);
+  stroke-width: 1.15px;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 5px rgba(250, 210, 135, .70)) drop-shadow(0 0 12px rgba(250, 210, 135, .35));
+}
+@keyframes bottle-outline-pulse {
+  0%, 100% { opacity: .30; }
+  48% { opacity: .82; }
+}
+.welcome .bottle-guide {
+  position: absolute;
+  z-index: 5;
+  left: 0; top: 0;
+  bottom: auto;
+  display: flex;
+  width: max-content;
+  min-width: 232px;
+  height: auto;
+  transform: translate(-50%, -100%);
+  margin: 0;
+  cursor: pointer;
+  pointer-events: auto;
+  color: #fff1d1;
+  animation: bottle-label 2.9s ease-in-out infinite;
+}
+.welcome .bottle-guide::after { height: 13px; }
+.welcome .bottle-guide:hover,
+.welcome .bottle-guide:focus-visible { background: rgba(16, 48, 59, .98); border-color: #fff1bd; }
+@media (max-width:600px) {
+  .welcome .bottle-guide { min-width: 228px; transform:translate(-50%, -100%); }
+}
+@media (max-width:350px), (max-height:650px) {
+  .welcome .bottle-guide { min-width: 205px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .welcome .bottle-glow, .welcome .bottle-guide { animation: none !important; }
+}
+/* Il richiamo resta fermo e facile da premere; a brillare e' la bottiglia. */
+.welcome .bottle-guide { animation: none; }
+.welcome .bottle-guide-star { display:inline-block; animation: bottle-twinkle 3s ease-in-out infinite; }
+@media (prefers-reduced-motion:reduce) { .welcome .bottle-guide-star {animation:none!important;} }
+
+
+/* V8 — Hitbox sempre OVALE, inclinata come la bottiglia.
+   Le dimensioni sono ancorate dal JS alla fotografia reale, non al viewport.
+   L'alone e le stelline recuperano l'effetto caldo e pulsante della V6. */
+.welcome .bottle-frame .bottle-hit {
+  top: 50%;
+  left: 50%;
+  width: 96%;
+  height: 46%;
+  margin: 0;
+  padding: 0;
+  transform: translate(-50%, -50%) rotate(-20deg);
+  border-radius: 50%;
+  -webkit-clip-path: ellipse(50% 50% at 50% 50%);
+  clip-path: ellipse(50% 50% at 50% 50%);
+  background: transparent;
+  box-shadow: none;
+  isolation: auto;
+  z-index: 2;
+  pointer-events: auto;
+}
+.welcome .bottle-frame .bottle-hit:hover {background: rgba(255, 231, 164, .08);}
+.welcome .bottle-frame .bottle-hit:active {background: rgba(255, 231, 164, .18);}
+.welcome .bottle-frame .bottle-hit:focus-visible {outline: 0;}
+.welcome .bottle-aura {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 96%;
+  height: 46%;
+  transform: translate(-50%, -50%) rotate(-20deg);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: visible;
+}
+.welcome .bottle-aura::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 234, 177, .58);
+  background: radial-gradient(ellipse at 49% 48%, transparent 31%, rgba(255, 225, 144, .065) 61%, rgba(255, 210, 125, .14) 94%, transparent 100%);
+  box-shadow: 0 0 9px rgba(255, 223, 149, .38), 0 0 30px rgba(255, 211, 131, .26), inset 0 0 14px rgba(255, 236, 183, .12);
+  animation: bottle-beacon 2.9s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+.welcome .bottle-frame:focus-within .bottle-aura::before,
+.welcome .bottle-frame:hover .bottle-aura::before {
+  border-color: rgba(255,246,211,.9);
+  box-shadow: 0 0 16px rgba(255,227,172,.57), 0 0 44px rgba(255,218,139,.38), inset 0 0 17px rgba(255,236,183,.16);
+}
+.welcome .bottle-spark {
+  position: absolute;
+  display: block;
+  color: #fff0bd;
+  line-height: 1;
+  font-family: Georgia, serif;
+  text-shadow: 0 0 8px #fff1ca, 0 0 21px #ffd18f, 0 0 38px rgba(255,204,120,.6);
+  animation: bottle-twinkle 2.9s ease-in-out infinite;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+.welcome .bottle-spark-one {font-size: 31px; right: 10%; top: -34%; animation-delay: 0s;}
+.welcome .bottle-spark-two {font-size: 24px; left: 15%; top: -26%; animation-delay: 1.08s;}
+.welcome .bottle-spark-three {font-size: 19px; left: 57%; bottom: -45%; animation-delay: 1.7s;}
+@media (max-width: 600px) {
+  .welcome .bottle-spark-one {font-size: 24px; top: -37%;}
+  .welcome .bottle-spark-two {font-size: 19px;}
+  .welcome .bottle-spark-three {font-size: 16px; bottom: -48%;}
+}
+@media (prefers-reduced-motion: reduce) {
+  .welcome .bottle-aura::before,
+  .welcome .bottle-spark { animation: none !important; opacity: .8; }
+}

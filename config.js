@@ -58,7 +58,7 @@ window.INVITO_CONFIG = {
     scena1: "Ogni storia ha un inizio…",
     macchina1: "La protagonista di questa storia?",
     macchina2: "Una certa ragazza che non ha nessuna intenzione di crescere davvero…",
-    complici: ["Anni di amicizia…", "Segreti mai mantenuti…", "Serate finite troppo tardi…", "E prove che sarebbe meglio distruggere."],
+    complici: ["Anni di amicizia…", "Segreti mantenuti…", "Serate finite troppo tardi…", "E prove che sarebbe meglio distruggere."],
     epico1: "Trent’anni di sogni, risate e persone speciali.",
     epico2: "E non è ancora diventata una persona seria.",
     citazione: "Le cose belle non si contano negli anni, ma nei momenti che ci fanno brillare gli occhi.",

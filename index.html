@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="style.css?v=8">
 </head>
 <body>
 <main id="stage" class="stage" data-scene="welcome">
@@ -30,7 +30,7 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9z"/><path class="sound-on" d="M16 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/><path class="sound-off" d="m16 9 6 6m0-6-6 6"/></svg>
       </button>
       <button id="b-pause" class="control" type="button" hidden aria-label="Metti in pausa" aria-pressed="false"><span class="pause-symbol" aria-hidden="true">Ⅱ</span><span class="play-symbol" aria-hidden="true">▷</span></button>
-      <button id="b-skip" class="skip" type="button">Vai all’invito <span aria-hidden="true">↗</span></button>
+      <button id="b-skip" class="skip" type="button" aria-label="Salta la storia e vai subito all’invito">Salta la storia <span aria-hidden="true">↗</span></button>
     </div>
   </header>
 
@@ -40,10 +40,22 @@
       <h1 id="welcome-title">Ci sono storie<br>che nascono<br><em>dal mare…</em></h1>
       <div class="fine-line" aria-hidden="true"></div>
     </div>
-    <button id="bottle" class="bottle-hit" type="button" aria-label="Tocca la bottiglia per aprire il messaggio"></button>
+    <!-- Hitbox ovale sincronizzata alla posizione reale della bottiglia. -->
+    <div id="bottle-frame" class="bottle-frame">
+      <div class="bottle-aura" aria-hidden="true">
+        <span class="bottle-spark bottle-spark-one">✦</span>
+        <span class="bottle-spark bottle-spark-two">✧</span>
+        <span class="bottle-spark bottle-spark-three">✦</span>
+      </div>
+      <button id="bottle" class="bottle-hit" type="button" aria-label="Tocca la bottiglia per iniziare la storia e ascoltare la musica"></button>
+    </div>
+    <button id="bottle-guide" class="bottle-guide" type="button" aria-label="Tocca qui o la bottiglia per iniziare la storia">
+      <span class="bottle-guide-lead"><span class="bottle-guide-star">✦</span> Tocca la bottiglia <span class="bottle-guide-star">✦</span></span>
+      <span class="bottle-guide-sub">per iniziare la storia <span class="bottle-guide-arrow">↓</span></span>
+    </button>
     <div class="welcome-action">
       <p class="handwritten">C’è un messaggio per te.</p>
-      <p class="touch-hint">Tocca la bottiglia per scoprirlo <span aria-hidden="true">✧</span></p>
+      <p class="touch-hint">Il suo messaggio ti aspetta <span aria-hidden="true">✧</span></p>
       <p class="micro">Una piccola storia da guardare fino in fondo · con audio</p>
     </div>
   </section>
@@ -122,7 +134,8 @@
               <span class="cta-copy"><strong>Declina</strong><small>Non ci sono</small></span>
             </a>
           </div>
-           </div>
+          <p class="rsvp-note">Si aprir&#224; WhatsApp con il messaggio gi&#224; pronto da inviare.</p>
+        </div>
         <a id="b-map" class="button secondary map-cta" target="_blank" rel="noopener noreferrer" hidden>
           <svg class="action-icon map-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
             <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
@@ -143,7 +156,7 @@
   <p id="status" class="sr-only" role="status"></p>
   <noscript><div class="no-script">Per aprire l’invito, attiva JavaScript nel browser.</div></noscript>
 </main>
-<script src="config.js?v=5"></script>
-<script src="script.js?v=5"></script>
+<script src="config.js?v=8"></script>
+<script src="script.js?v=8"></script>
 </body>
 </html>
