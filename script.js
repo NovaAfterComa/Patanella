@@ -1,0 +1,258 @@
+(() => {
+  'use strict';
+  const C = window.INVITO_CONFIG || {};
+  const $ = id => document.getElementById(id);
+  const stage = $('stage');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const text = Object.assign({
+    scena1: 'Ogni storia ha un inizio…', macchina1: 'La protagonista di questa storia?',
+    macchina2: 'Una certa ragazza che non ha nessuna intenzione di crescere davvero…',
+    complici: ['Anni di amicizia…', 'Segreti mai mantenuti…', 'Serate finite troppo tardi…', 'E prove che sarebbe meglio distruggere.'],
+    epico1: 'Trent’anni di sogni, risate e persone speciali.', epico2: 'E non è ancora diventata una persona seria.',
+    citazione: 'Le cose belle non si contano negli anni, ma nei momenti che ci fanno brillare gli occhi.',
+    finale: 'La storia continua… e stavolta voglio viverla con voi!'
+  }, C.testi);
+  const defaults = {messaggio:6, segreto:13, prove:9, complici:10, epico:9, citazione:6};
+  const labels = ['Il messaggio', 'Il segreto', 'Le prove', 'I complici', 'Il prossimo capitolo', 'I momenti che contano'];
+  let total = 0;
+  const timeline = Object.keys(defaults).map((name, i) => {
+    const requested = Number((C.durate || {})[name]);
+    const duration = Number.isFinite(requested) && requested > 0 ? requested : defaults[name];
+    const scene = {name, duration, start:total, label:labels[i]}; total += duration; return scene;
+  });
+  let elapsed = 0, lastTime = null, started = false, paused = false, muted = false, finished = false;
+  let activeScene = 'welcome', activeIndex = -1, lastPercent = -1, frameId = 0;
+  const panels = [...document.querySelectorAll('.panel')];
+  const clamp = n => Math.max(0, Math.min(1, n));
+  const normalize = f => typeof f === 'string' ? {src:f} : (f || {});
+  const fill = s => String(s || '').replace(/\{(\w+)\}/g, (_, key) => C[key] || '');
+  const setContent = (id, value) => {const e=$(id); e.textContent=value || ''; e.hidden=!value;};
+
+  setContent('intro-text', text.scena1);
+  setContent('quote-text', text.citazione);
+  setContent('signature', C.firmaPergamena || C.nome || 'Con affetto');
+  setContent('f-name', C.nome || 'Ti aspetto');
+  setContent('f-age', C.eta ? C.eta + ' anni' : '');
+  setContent('f-title', text.finale);
+  setContent('f-data', C.data);
+  setContent('f-ora', C.orario ? 'ore ' + String(C.orario).replace(/^ore\s*/i, '') : '');
+  setContent('f-locale', C.locale);
+  setContent('f-addr', C.indirizzo);
+  document.querySelector('.date-divider').hidden = !(C.data && C.orario);
+  if (C.nome && !C.nome.includes('[')) {
+    $('brand-name').textContent = C.nome + (C.eta ? ' / ' + C.eta : ' / La mia storia');
+    document.title = C.nome + ' — Una bottiglia, una storia, una festa';
+  }
+  const map = String(C.mappa || '').trim();
+  if (/^https?:\/\//i.test(map)) {$('b-map').href=map; $('b-map').hidden=false;}
+  const number = String(C.whatsapp || '').replace(/\D/g, '');
+  if (number) {
+    $('b-wa').href = 'https://wa.me/' + number + '?text=' + encodeURIComponent(fill(C.messaggioConferma));
+    $('b-wa').hidden=false;
+  }
+  document.querySelector('.final-actions').hidden = $('b-map').hidden && $('b-wa').hidden;
+  for (const id of ['brand-monogram', 'mono']) {
+    const image = $(id);
+    if (C.monogramma) { image.onload=()=>{image.hidden=false;}; image.onerror=()=>{image.hidden=true;}; image.src=C.monogramma; }
+    else image.hidden=true;
+  }
+  if(text.introduzione && text.introduzione !== 'Ci sono storie che nascono dal mare…') $('welcome-title').textContent=text.introduzione;
+  const backgrounds = Object.assign({messaggioMobile:'assets/scenes/bottiglia-mobile.jpg',aperturaMobile:'assets/scenes/bottiglia-aperta-mobile.jpg',messaggio:'assets/scenes/bottiglia.jpg', apertura:'assets/scenes/bottiglia-aperta.jpg', notte:'assets/scenes/mare-notte.jpg', carta:'assets/scenes/carta.jpg'}, C.sfondi);
+  function setPhotographicFraming() {
+    const portrait = matchMedia('(max-aspect-ratio: 3/4)').matches;
+    const shore = portrait && backgrounds.messaggioMobile ? backgrounds.messaggioMobile : backgrounds.messaggio;
+    const open = portrait && backgrounds.aperturaMobile ? backgrounds.aperturaMobile : (backgrounds.apertura || backgrounds.messaggio);
+    if($('shore').getAttribute('src') !== shore) $('shore').src=shore;
+    if($('shore-open').getAttribute('src') !== open) $('shore-open').src=open;
+  }
+  setPhotographicFraming();
+  addEventListener('resize', setPhotographicFraming);
+  $('night').src=backgrounds.notte;
+  $('shore-open').onerror=()=>{$('shore-open').style.display='none';};
+  $('night').onerror=()=>{stage.classList.add('night-missing');};
+  if (backgrounds.carta) stage.style.setProperty('--paper', 'url(' + JSON.stringify(backgrounds.carta) + ')');
+
+  const kidFallbacks = [1,2,3].map((n)=>({src:'assets/photos/bambina-0'+n+'.jpg',didascalia:'Un ricordo da conservare.'}));
+  const friendFallbacks = [
+    {src:'assets/photos/amiche.jpg',didascalia:'Le mie persone.'},
+    {src:'assets/photos/cagnolona.jpg',didascalia:'L’ospite d’onore.'},
+    {src:'assets/photos/festa.jpg',didascalia:'Un altro brindisi.'}
+  ];
+  const kidData = (C.fotoBambina?.length ? C.fotoBambina : kidFallbacks).slice(0,3).map(normalize);
+  const friendData = (C.fotoComplici?.length ? C.fotoComplici : friendFallbacks).slice(0,10).map(normalize);
+  function makePhoto(data, index, container, stamp, fallback) {
+    const figure=document.createElement('figure'); figure.className='pol';
+    const image=new Image(); image.alt=data.etichetta || data.didascalia || 'Un ricordo'; image.decoding='async';
+    image.src=data.src || fallback; image.style.objectPosition=data.posizione || '50% 50%';
+    image.onerror=()=>{image.onerror=null; if(image.getAttribute('src')!==fallback) image.src=fallback;};
+    figure.append(image);
+    const caption=document.createElement('figcaption'); caption.textContent=data.didascalia || '\u00a0'; figure.append(caption);
+    if(stamp) {const mark=document.createElement('span');mark.className='stamp';mark.textContent=stamp;figure.append(mark);}
+    figure.dataset.index=index;
+    container.append(figure); return figure;
+  }
+  const kids=kidData.map((f,i)=>makePhoto(f,i,$('kids'),(C.timbri || [])[i],kidFallbacks[i].src));
+  const friends=friendData.map((f,i)=>{
+    const fig=makePhoto(f,i,$('friends'),i===friendData.length-1?C.timbroFinale:'',friendFallbacks[i%3].src);
+    const sign=i%2 ? 1 : -1;
+    fig.style.setProperty('--r', (sign*(4+(i%3)*2))+'deg');
+    fig.style.setProperty('--dx', (sign*(74+(i%3)*8))+'%');
+    fig.style.setProperty('--dy', ((i%3)*20-10)+'px');
+    return fig;
+  });
+  const bars=timeline.map(()=>{
+    const track=document.createElement('span'), bar=document.createElement('i');track.append(bar);$('progress').append(track);return bar;
+  });
+
+  /* Optional real footage: each clip replaces just its photographic background. */
+  const videos={};
+  for (const [name, src] of Object.entries(C.video || {})) {
+    if(!src) continue;
+    const v=document.createElement('video');v.muted=true;v.loop=true;v.playsInline=true;v.preload='metadata';
+    v.setAttribute('playsinline','');v.setAttribute('aria-hidden','true');v.src=src;
+    v.onerror=()=>{v.classList.remove('on');v.remove();delete videos[name];};
+    $('videos').append(v);videos[name]=v;
+  }
+  const safePlay = media => {if(!media)return;const p=media.play();if(p?.catch)p.catch(()=>{});};
+  const audios=[];
+  for (const [key,volume] of [['musica',.6],['onde',.4]]) {
+    if(!C[key])continue;
+    const audio=new Audio(C[key]);audio.loop=true;audio.preload='none';audio.volume=volume;
+    audio.addEventListener('error',()=>{});audios.push({audio,key});
+  }
+  $('b-sound').hidden=audios.length===0;
+  function syncMedia() {
+    const running=started && !paused && !document.hidden;
+    for(const {audio} of audios) {audio.muted=muted;if(running && !muted)safePlay(audio);else audio.pause();}
+    for(const [name,v] of Object.entries(videos)) {
+      const key=activeScene==='citazione' && !videos.citazione ? 'finale' : activeScene;
+      const active=name===key;v.classList.toggle('on',active);
+      if(running && active)safePlay(v);else v.pause();
+    }
+  }
+  function setScene(name,index) {
+    if(name===activeScene)return;
+    const previous=panels.find(p=>p.id===activeScene);
+    const focusedInside=previous?.contains(document.activeElement);
+    activeScene=name;activeIndex=index;stage.dataset.scene=name;
+    for(const panel of panels) {const active=panel.id===name;panel.classList.toggle('active',active);panel.inert=!active;}
+    const isFinal=name==='finale';
+    $('b-skip').hidden=isFinal;$('b-pause').hidden=isFinal;
+    $('story-footer').hidden=isFinal;
+    if(!isFinal) $('chapter').textContent=timeline[index].label;
+    if(isFinal){$('status').textContent='La storia continua: ecco il tuo invito.';if(focusedInside)$('f-name').focus({preventScroll:true});}
+    else if(focusedInside)$('b-pause').focus({preventScroll:true});
+    syncMedia();
+  }
+  function updateScene(local, scene) {
+    const p=clamp(local/scene.duration);
+    if(scene.name==='messaggio')stage.classList.toggle('bottle-open',p>.52);
+    if(scene.name==='segreto') {
+      const a=String(text.macchina1 || ''),b=String(text.macchina2 || '');
+      const p1=reduced?1:clamp((p-.10)/.19),p2=reduced?1:clamp((p-.37)/.39);
+      $('ty1').textContent=a.slice(0,Math.ceil(a.length*p1));$('ty2').textContent=b.slice(0,Math.ceil(b.length*p2));
+      $('ty1').classList.toggle('typing',p1>0&&p1<1);$('ty2').classList.toggle('typing',p2>0&&p2<1);
+    }
+    if(scene.name==='prove') {
+      kids.forEach((photo,i)=>{
+        const shown=p>=(i*.28), stamped=p>=(i*.28+.16);
+        photo.classList.toggle('visible',shown);photo.classList.toggle('stamped',stamped);
+        photo.classList.toggle('past',p>=(i+1)*.28);
+      });
+    }
+    if(scene.name==='complici') {
+      const current=Math.min(friends.length-1,Math.floor(p*friends.length));
+      friends.forEach((photo,i)=>{
+        photo.classList.toggle('visible',i<=current);photo.classList.toggle('active-photo',i===current);
+        photo.classList.toggle('previous-photo',i<current);photo.classList.toggle('stamped',i===friends.length-1&&p>.88);
+      });
+      const lines=Array.isArray(text.complici)?text.complici:[];
+      const line=lines[Math.min(lines.length-1,Math.floor(p*lines.length))] || '';
+      if($('flash').textContent!==line)$('flash').textContent=line;
+    }
+    if(scene.name==='epico') {
+      const punch=p>.65;
+      $('epic-text').textContent=punch?text.epico2:text.epico1;
+      $('epic-text').classList.toggle('punchline',punch);
+      $('epic-text').style.opacity= reduced ? '1' : String(p<.65?clamp((.64-p)*18):clamp((p-.65)*18));
+      // A short, intentional musical silence before the joke.
+      const music=audios.find(a=>a.key==='musica')?.audio;
+      if(music){if(p>.58&&p<.73)music.pause();else if(!paused&&!muted&&!document.hidden&&music.paused)safePlay(music);}
+    }
+  }
+  function render() {
+    if(!started)return;
+    const i=timeline.findIndex(s=>elapsed<s.start+s.duration);
+    bars.forEach((bar,n)=>bar.style.setProperty('--p',clamp((elapsed-timeline[n].start)/timeline[n].duration)));
+    const percent=Math.round(clamp(elapsed/total)*100);
+    if(percent!==lastPercent){$('progress').setAttribute('aria-valuenow',percent);lastPercent=percent;}
+    if(i<0){finished=true;setScene('finale',6);return;}
+    const s=timeline[i];setScene(s.name,i);updateScene(elapsed-s.start,s);
+  }
+  function tick(now) {
+    frameId=0;
+    if(lastTime!==null&&!paused&&!document.hidden&&!finished)elapsed=Math.min(total,elapsed+(now-lastTime)/1000);
+    lastTime=now;
+    if(!paused&&!document.hidden)render();
+    if(started&&!finished&&!paused&&!document.hidden)frameId=requestAnimationFrame(tick);
+  }
+  function resumeClock() {lastTime=null;if(!frameId&&!finished&&!paused&&!document.hidden)frameId=requestAnimationFrame(tick);}
+  function pauseClock(){if(frameId)cancelAnimationFrame(frameId);frameId=0;lastTime=null;}
+  function start() {
+    pauseClock();elapsed=0;started=true;finished=false;paused=false;
+    stage.classList.remove('is-paused','bottle-open');
+    $('b-pause').setAttribute('aria-pressed','false');$('b-pause').setAttribute('aria-label','Metti in pausa');
+    for(const p of [...kids,...friends])p.classList.remove('visible','stamped','active-photo','previous-photo','past');
+    $('ty1').textContent='';$('ty2').textContent='';
+    for(const {audio} of audios){try{audio.currentTime=0;}catch{}}
+    for(const v of Object.values(videos)){try{v.currentTime=0;}catch{}}
+    render();syncMedia();resumeClock();
+  }
+  $('bottle').addEventListener('click',start);$('b-replay').addEventListener('click',start);
+  $('b-skip').addEventListener('click',()=>{
+    pauseClock();started=true;paused=false;elapsed=total;finished=true;stage.classList.remove('is-paused');
+    render();syncMedia();$('f-name').focus({preventScroll:true});
+  });
+  $('b-pause').addEventListener('click',()=>{
+    paused=!paused;stage.classList.toggle('is-paused',paused);
+    $('b-pause').setAttribute('aria-pressed',String(paused));$('b-pause').setAttribute('aria-label',paused?'Riprendi la storia':'Metti in pausa');
+    $('status').textContent=paused?'Storia in pausa.':'La storia riprende.';
+    if(paused)pauseClock();else resumeClock();syncMedia();
+  });
+  $('b-sound').addEventListener('click',()=>{
+    muted=!muted;$('b-sound').setAttribute('aria-pressed',String(muted));$('b-sound').setAttribute('aria-label',muted?'Attiva l’audio':'Disattiva l’audio');syncMedia();
+  });
+  document.addEventListener('visibilitychange',()=>{
+    stage.classList.toggle('is-paused',paused||document.hidden);
+    if(document.hidden)pauseClock();else resumeClock();syncMedia();
+  });
+
+  /* Ora dell'evento: 28 dicembre 2026, 20:30 a Roma (UTC+01:00). */
+  const eventTime = Date.parse(C.dataEvento || '2026-12-28T20:30:00+01:00');
+  const countdownNode = $('countdown');
+  if (Number.isFinite(eventTime)) {
+    const format = n => String(n).padStart(2, '0');
+    function updateCountdown() {
+      const remaining = Math.max(0, eventTime - Date.now());
+      const seconds = Math.floor(remaining / 1000);
+      $('cd-days').textContent = format(Math.floor(seconds / 86400));
+      $('cd-hours').textContent = format(Math.floor(seconds % 86400 / 3600));
+      $('cd-minutes').textContent = format(Math.floor(seconds % 3600 / 60));
+      $('cd-seconds').textContent = format(seconds % 60);
+      $('countdown-message').textContent = remaining > 0
+        ? 'Il conto alla rovescia è iniziato…'
+        : 'È arrivato il momento di festeggiare!';
+      countdownNode.classList.toggle('countdown-finished', remaining === 0);
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  } else if (countdownNode) {
+    countdownNode.hidden = true;
+  }
+
+  /* Never leave the invitation blocked when a custom photo cannot be loaded. */
+  const preload=src=>new Promise(resolve=>{const im=new Image();im.onload=im.onerror=resolve;im.src=src;});
+  const sources=[...Object.values(backgrounds),...kidData.map(f=>f.src),...friendData.map(f=>f.src)].filter(Boolean);
+  // Precarica gli asset, ma la bottiglia è cliccabile fin da subito.
+  Promise.all(sources.map(preload)).catch(()=>{});
+})();

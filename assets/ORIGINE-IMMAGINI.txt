@@ -1,0 +1,70 @@
+ORIGINE DELLE IMMAGINI
+
+Il monogramma.jpg proviene dal progetto originale fornito dall’utente.
+Tutti i file in photos/ e scenes/ sono immagini sintetiche fotorealistiche
+create per questo invito con lo strumento integrato image_gen (non CLI/API).
+Le foto di persone sono segnaposto immaginari da sostituire con le proprie.
+I file finali sono JPEG ottimizzati per il sito; non richiedono servizi remoti.
+
+DIREZIONE VISIVA E PROMPT
+
+scenes/bottiglia.jpg
+Fotografia editoriale estremamente fotorealistica di una bottiglia di vetro
+trasparente con tappo di sughero e pergamena arrotolata, sulla battigia al
+crepuscolo. Gocce, sabbia aderente, rifrazione otticamente plausibile,
+ombra di contatto e schiuma. Bottiglia al centro nella parte bassa,
+spazio libero nel cielo per il testo. Nessun testo o elemento illustrato.
+
+scenes/bottiglia-aperta.jpg
+Modifica della stessa fotografia: preservare inquadratura, mare, sabbia,
+luce e bottiglia; tappo appoggiato vicino al collo e pergamena parzialmente
+estratta. Dimensioni e ombre coerenti. Nessuna scritta.
+
+scenes/bottiglia-mobile.jpg
+Adattamento verticale fotografico 2:3 della scena originale. Bottiglia
+intera nella fascia centrale, al 66% dell’altezza, larga circa metà immagine,
+per il ritaglio sugli schermi telefonici. Cielo libero sopra, sabbia sotto.
+
+scenes/bottiglia-aperta-mobile.jpg
+Modifica della versione verticale con sughero rimosso e carta parzialmente
+estratta, mantenendo lo stesso scenario, luce e inquadratura.
+
+scenes/mare-notte.jpg
+Fotografia notturna mediterranea realistica, piccola luna, riflesso argenteo,
+acqua blu scuro con increspature reali, sabbia umida e schiuma, poche stelle.
+Spazio scuro libero per il testo. Nessun elemento fantasy, nessuna scritta.
+
+scenes/carta.jpg
+Fotografia dall’alto di un foglio bianco avorio di carta di cotone,
+fibre, bordi irregolari, leggere pieghe, luce laterale morbida. Centro
+completamente libero per il testo HTML. Nessun oggetto decorativo.
+
+photos/bambina-01.jpg
+Fotografia di famiglia anni Novanta: bambina immaginaria con capelli
+castani che costruisce un castello di sabbia su una spiaggia italiana.
+Luce naturale, imperfezioni e grana di una scansione analogica.
+
+photos/bambina-02.jpg
+Fotografia di famiglia primi anni Duemila: bambina immaginaria con capelli
+castani che soffia sulle candeline in una cucina italiana. Illuminazione
+calda e leggero flash, aspetto spontaneo, senza cornici o scritte.
+
+photos/bambina-03.jpg
+Fotografia analogica di una bambina immaginaria che ride con un gelato
+sul lungomare. Capelli castani, maglietta a righe e salopette. Mare sullo
+sfondo, pelle naturale, colori di una scansione fotografica.
+
+photos/amiche.jpg
+Due amiche adulte immaginarie di circa trent’anni che ridono sul mare
+al tramonto. Capelli al vento, pelle naturale, abiti semplici, momento
+spontaneo con aspetto da pellicola 35 mm. Nessuna cornice o scritta.
+
+photos/cagnolona.jpg
+Golden retriever femmina adulta sulla sabbia bagnata, mare sullo sfondo.
+Pelo dorato umido, occhi morbidi, ripresa bassa, luce naturale pomeridiana,
+realismo di peli, baffi e sabbia.
+
+photos/festa.jpg
+Quattro amici adulti immaginari che brindano a cena su una terrazza
+mediterranea al crepuscolo. Piccole luci, piatti sul tavolo, sorriso
+spontaneo, fotografia analogica con flash e colori caldi.

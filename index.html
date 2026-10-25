@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#142b35">
+  <meta name="description" content="Una bottiglia, una storia, una festa. Un invito speciale, arrivato dal mare.">
+  <title>Una bottiglia, una storia, una festa</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main id="stage" class="stage" data-scene="welcome">
+  <div class="backdrops" aria-hidden="true">
+    <img id="shore" class="backdrop shore" src="assets/scenes/bottiglia.jpg" alt="" fetchpriority="high">
+    <img id="shore-open" class="backdrop shore shore-open" src="assets/scenes/bottiglia-aperta.jpg" alt="">
+    <img id="night" class="backdrop night" src="assets/scenes/mare-notte.jpg" alt="">
+    <div id="videos" class="videos"></div>
+    <div class="shade"></div>
+    <div class="vignette"></div>
+  </div>
+
+  <header class="topbar">
+    <div class="brand"><img id="brand-monogram" alt="" width="36" height="36"><span id="brand-name">Una storia da festeggiare</span></div>
+    <div class="controls">
+      <button id="b-sound" class="control" type="button" hidden aria-label="Disattiva l’audio" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9z"/><path class="sound-on" d="M16 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/><path class="sound-off" d="m16 9 6 6m0-6-6 6"/></svg>
+      </button>
+      <button id="b-pause" class="control" type="button" hidden aria-label="Metti in pausa" aria-pressed="false"><span class="pause-symbol" aria-hidden="true">Ⅱ</span><span class="play-symbol" aria-hidden="true">▷</span></button>
+      <button id="b-skip" class="skip" type="button">Vai all’invito <span aria-hidden="true">↗</span></button>
+    </div>
+  </header>
+
+  <section id="welcome" class="panel welcome active" aria-label="Il messaggio dal mare">
+    <div class="welcome-copy">
+      <p class="eyebrow">Una bottiglia. Una storia. Una festa.</p>
+      <h1 id="welcome-title">Ci sono storie<br>che nascono<br><em>dal mare…</em></h1>
+      <div class="fine-line" aria-hidden="true"></div>
+    </div>
+    <button id="bottle" class="bottle-hit" type="button" aria-label="Tocca la bottiglia per aprire il messaggio"></button>
+    <div class="welcome-action">
+      <p class="handwritten">C’è un messaggio per te.</p>
+      <p class="touch-hint">Tocca la bottiglia per scoprirlo <span aria-hidden="true">✧</span></p>
+      <p class="micro">Una piccola storia da guardare fino in fondo · con audio</p>
+    </div>
+  </section>
+
+  <section id="messaggio" class="panel opening" aria-label="L’inizio della storia" inert>
+    <div class="opening-copy"><p class="eyebrow">Il messaggio</p><h2 id="intro-text"></h2></div>
+  </section>
+
+  <section id="segreto" class="panel letter-panel" aria-label="Il contenuto segreto" inert>
+    <article class="letter">
+      <div class="letter-inner">
+        <p class="letter-label">Un messaggio per te</p>
+        <div class="letter-rule" aria-hidden="true"></div>
+        <p id="ty1" class="typed"></p>
+        <p id="ty2" class="typed typed-strong"></p>
+        <p class="signature" id="signature"></p>
+      </div>
+    </article>
+  </section>
+
+  <section id="prove" class="panel photos-panel" aria-label="Le prove: i ricordi d’infanzia" inert>
+    <div class="scene-heading"><p class="eyebrow">Le prove</p><h2>Era già tutto <em>scritto.</em></h2></div>
+    <div id="kids" class="photo-desk kids"></div>
+  </section>
+
+  <section id="complici" class="panel photos-panel friends-panel" aria-label="I complici della storia" inert>
+    <div class="scene-heading"><p class="eyebrow">I complici</p><h2 id="flash"></h2></div>
+    <div id="friends" class="photo-desk friends"></div>
+  </section>
+
+  <section id="epico" class="panel poetic" aria-label="Il prossimo capitolo" inert>
+    <div class="poetic-inner"><p class="eyebrow">Il bello deve ancora venire</p><h2 id="epic-text"></h2><div class="fine-line" aria-hidden="true"></div></div>
+  </section>
+
+  <section id="citazione" class="panel poetic quote-panel" aria-label="I momenti che contano" inert>
+    <div class="poetic-inner"><span class="quote-mark" aria-hidden="true">“</span><blockquote id="quote-text"></blockquote><div class="fine-line" aria-hidden="true"></div></div>
+  </section>
+
+  <section id="finale" class="panel final-panel" aria-label="L’invito alla festa" inert>
+    <div class="invitation">
+      <p class="eyebrow">Il prossimo capitolo, insieme</p>
+      <img id="mono" class="final-monogram" alt="" hidden>
+      <h2 id="f-name" tabindex="-1"></h2>
+      <p id="f-age" class="age"></p>
+      <p id="f-title" class="final-copy"></p>
+      <div class="event-details">
+        <div class="date-line"><p id="f-data"></p><span class="date-divider" aria-hidden="true"></span><p id="f-ora"></p></div>
+        <p id="f-locale" class="venue"></p>
+        <p id="f-addr" class="address"></p>
+      </div>
+      <section class="countdown" id="countdown" aria-label="Conto alla rovescia per la festa">
+        <p class="countdown-kicker" id="countdown-message">Manca sempre meno alla nostra festa</p>
+        <div class="countdown-units" role="timer" aria-live="off">
+          <div class="countdown-unit"><strong id="cd-days">00</strong><span>giorni</span></div>
+          <div class="countdown-unit"><strong id="cd-hours">00</strong><span>ore</span></div>
+          <div class="countdown-unit"><strong id="cd-minutes">00</strong><span>minuti</span></div>
+          <div class="countdown-unit"><strong id="cd-seconds">00</strong><span>secondi</span></div>
+        </div>
+      </section>
+      <div class="final-actions">
+        <a id="b-wa" class="button primary" target="_blank" rel="noopener noreferrer" hidden>Conferma su WhatsApp <span aria-hidden="true">↗</span></a>
+        <a id="b-map" class="button secondary" target="_blank" rel="noopener noreferrer" hidden>Scopri la location <span aria-hidden="true">↗</span></a>
+      </div>
+      <button id="b-replay" class="replay" type="button"><span aria-hidden="true">↻</span> Riguarda la storia</button>
+    </div>
+  </section>
+
+  <footer class="story-footer" id="story-footer" hidden>
+    <span id="chapter" class="chapter" aria-live="polite"></span>
+    <div id="progress" class="progress" role="progressbar" aria-label="Avanzamento della storia" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+  </footer>
+  <p id="status" class="sr-only" role="status"></p>
+  <noscript><div class="no-script">Per aprire l’invito, attiva JavaScript nel browser.</div></noscript>
+</main>
+<script src="config.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
