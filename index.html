@@ -6,7 +6,11 @@
   <meta name="theme-color" content="#142b35">
   <meta name="description" content="Una bottiglia, una storia, una festa. Un invito speciale, arrivato dal mare.">
   <title>Una bottiglia, una storia, una festa</title>
-  <link rel="stylesheet" href="style.css">
+  <!-- Calligrafia della pergamena; i font di sistema sono la riserva se offline. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
 <main id="stage" class="stage" data-scene="welcome">
@@ -100,8 +104,33 @@
         </div>
       </section>
       <div class="final-actions">
-        <a id="b-wa" class="button primary" target="_blank" rel="noopener noreferrer" hidden>Conferma su WhatsApp <span aria-hidden="true">↗</span></a>
-        <a id="b-map" class="button secondary" target="_blank" rel="noopener noreferrer" hidden>Scopri la location <span aria-hidden="true">↗</span></a>
+        <div id="rsvp" class="rsvp" hidden>
+          <p class="rsvp-intro">La tua risposta sarebbe gradita</p>
+          <div class="rsvp-choices" role="group" aria-label="Rispondi all'invito su WhatsApp">
+            <a id="b-wa-yes" class="button whatsapp-cta rsvp-option rsvp-yes" target="_blank" rel="noopener noreferrer" aria-label="Conferma: ci sono. Apri WhatsApp con il messaggio di conferma" hidden>
+              <svg class="action-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/>
+                <path d="m7.6 12.1 3.2 3.2 5.9-6.1" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="cta-copy"><strong>Conferma</strong><small>Ci sono!</small></span>
+            </a>
+            <a id="b-wa-no" class="button whatsapp-cta rsvp-option rsvp-no" target="_blank" rel="noopener noreferrer" aria-label="Declina: non ci sono. Apri WhatsApp con il messaggio di assenza" hidden>
+              <svg class="action-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/>
+                <path d="m9 9 6 6m0-6-6 6" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/>
+              </svg>
+              <span class="cta-copy"><strong>Declina</strong><small>Non ci sono</small></span>
+            </a>
+          </div>
+           </div>
+        <a id="b-map" class="button secondary map-cta" target="_blank" rel="noopener noreferrer" hidden>
+          <svg class="action-icon map-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            <circle cx="12" cy="10" r="2.7" stroke="currentColor" stroke-width="1.8"/>
+          </svg>
+          <span class="map-label">Indicazioni su Google Maps</span>
+          <span class="cta-arrow" aria-hidden="true">↗</span>
+        </a>
       </div>
       <button id="b-replay" class="replay" type="button"><span aria-hidden="true">↻</span> Riguarda la storia</button>
     </div>
@@ -114,7 +143,7 @@
   <p id="status" class="sr-only" role="status"></p>
   <noscript><div class="no-script">Per aprire l’invito, attiva JavaScript nel browser.</div></noscript>
 </main>
-<script src="config.js"></script>
-<script src="script.js"></script>
+<script src="config.js?v=5"></script>
+<script src="script.js?v=5"></script>
 </body>
 </html>

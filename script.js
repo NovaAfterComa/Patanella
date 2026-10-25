@@ -47,10 +47,21 @@
   if (/^https?:\/\//i.test(map)) {$('b-map').href=map; $('b-map').hidden=false;}
   const number = String(C.whatsapp || '').replace(/\D/g, '');
   if (number) {
-    $('b-wa').href = 'https://wa.me/' + number + '?text=' + encodeURIComponent(fill(C.messaggioConferma));
-    $('b-wa').hidden=false;
+    const whatsappUrl = 'https://wa.me/' + number + '?text=';
+    for (const [id, message] of [
+      ['b-wa-yes', C.messaggioConferma],
+      ['b-wa-no', C.messaggioDeclina]
+    ]) {
+      const link = $(id);
+      const preparedMessage = fill(message).trim();
+      if (preparedMessage) {
+        link.href = whatsappUrl + encodeURIComponent(preparedMessage);
+        link.hidden = false;
+      }
+    }
+    $('rsvp').hidden = $('b-wa-yes').hidden && $('b-wa-no').hidden;
   }
-  document.querySelector('.final-actions').hidden = $('b-map').hidden && $('b-wa').hidden;
+  document.querySelector('.final-actions').hidden = $('b-map').hidden && $('rsvp').hidden;
   for (const id of ['brand-monogram', 'mono']) {
     const image = $(id);
     if (C.monogramma) { image.onload=()=>{image.hidden=false;}; image.onerror=()=>{image.hidden=true;}; image.src=C.monogramma; }
@@ -123,7 +134,14 @@
   $('b-sound').hidden=audios.length===0;
   function syncMedia() {
     const running=started && !paused && !document.hidden;
-    for(const {audio} of audios) {audio.muted=muted;if(running && !muted)safePlay(audio);else audio.pause();}
+    for(const {audio} of audios) {
+      audio.muted = muted;
+      if (running && !muted) {
+        if (audio.paused) safePlay(audio);
+      } else if (!audio.paused) {
+        audio.pause();
+      }
+    }
     for(const [name,v] of Object.entries(videos)) {
       const key=activeScene==='citazione' && !videos.citazione ? 'finale' : activeScene;
       const active=name===key;v.classList.toggle('on',active);
@@ -171,13 +189,14 @@
       if($('flash').textContent!==line)$('flash').textContent=line;
     }
     if(scene.name==='epico') {
-      const punch=p>.65;
+      // Sequenza piu rapida: la frase iniziale scompare dopo 2,3 secondi.
+      const punch=p>.54;
+      const headline=$('epico').querySelector('.eyebrow');
+      headline.classList.toggle('closing',local>=2.3);
       $('epic-text').textContent=punch?text.epico2:text.epico1;
       $('epic-text').classList.toggle('punchline',punch);
-      $('epic-text').style.opacity= reduced ? '1' : String(p<.65?clamp((.64-p)*18):clamp((p-.65)*18));
-      // A short, intentional musical silence before the joke.
-      const music=audios.find(a=>a.key==='musica')?.audio;
-      if(music){if(p>.58&&p<.73)music.pause();else if(!paused&&!muted&&!document.hidden&&music.paused)safePlay(music);}
+      $('epic-text').style.opacity=reduced?'1':String(p<.54?clamp((.53-p)*22):clamp((p-.54)*22));
+      // La colonna sonora continua senza interruzioni anche durante il cambio di battuta.
     }
   }
   function render() {

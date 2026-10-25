@@ -13,9 +13,10 @@ window.INVITO_CONFIG = {
   orario: "20:30",
   locale: "La location? Scoprila sulla mappa.",
   indirizzo: "", // Il link indica il luogo; non inventiamo il nome o la via
-  mappa: "https://share.google/5HwNAloj1plsAWSnj",
+  mappa: "https://maps.app.goo.gl/FoxAbSmSC42Bt9TLA",
   whatsapp: "393472343616",
   messaggioConferma: "Ciao Patanella! Confermo che ci sarò alla tua festa del 28 dicembre 2026 alle 20:30! 🎉🥂",
+  messaggioDeclina: "Ciao Patanella! Mi dispiace, purtroppo non ci sarò alla tua festa del 28 dicembre 2026 alle 20:30. Ti auguro una bellissima serata! ❤️",
   monogramma: "assets/monogramma.jpg",
 
   // Scene fotografiche incluse. Puoi lasciarle così.
@@ -51,7 +52,7 @@ window.INVITO_CONFIG = {
   onde: "",                   // es. "assets/onde.mp3"
 
   // Durate in secondi. Pausa e cambio scheda fermano anche il tempo.
-  durate: { messaggio: 6, segreto: 13, prove: 9, complici: 10, epico: 9, citazione: 6 },
+  durate: { messaggio: 6, segreto: 13, prove: 9, complici: 10, epico: 5.5, citazione: 6 },
   testi: {
     introduzione: "Ci sono storie che nascono dal mare…",
     scena1: "Ogni storia ha un inizio…",
