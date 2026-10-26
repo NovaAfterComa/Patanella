@@ -6,7 +6,7 @@ Questo è il sito pronto per **GitHub Pages**, con fotografia realistica, animaz
 
 1. Estrai lo ZIP sul computer.
 2. Apri `index.html` nel browser, oppure carica **tutti i file e la cartella `assets` nella radice** del repository GitHub Pages.
-3. Sul sito, **clicca o tocca direttamente la bottiglia** nella scena iniziale. La storia dura circa 53 secondi; in qualsiasi momento puoi usare **Vai all’invito**.
+3. Sul sito, **clicca o tocca direttamente la bottiglia** nella scena iniziale. La storia dura circa 50 secondi; in qualsiasi momento puoi usare **Salta la storia**.
 4. Lascia attivi audio e altoparlanti se vuoi ascoltare la musica. Per evitare i blocchi di riproduzione automatica di iPhone, Safari, Chrome e altri browser, la musica comincia solo dopo il clic/tocco sulla bottiglia. Puoi disattivarla con l’icona dell’altoparlante.
 
 GitHub Pages pubblica siti statici, quindi non serve alcun server o compilazione. Il sito usa percorsi relativi, compatibili anche con i repository pubblicati in una sottocartella.
@@ -21,7 +21,7 @@ GitHub Pages pubblica siti statici, quindi non serve alcun server o compilazione
 - **Conto alla rovescia:** giorni, ore, minuti e secondi, aggiornati automaticamente fino alle 20:30 del 28/12/2026. Da quel momento compare «È arrivato il momento di festeggiare!».
 - **Colonna sonora:** brano allegato «Chiara Grispo — Oltre l’orizzonte (Da Oceania)», incluso nel file `assets/oltre-lorizzonte.mp3`. Continua senza interruzioni anche durante «Il prossimo capitolo» e sulla schermata finale; si ripete se necessario.
 
-**Il nome e l’indirizzo del locale non sono stati inventati:** il collegamento Google condiviso è stato impostato direttamente. Nel sito compare il testo «La location? Scoprila sulla mappa.»; se preferisci il nome esatto puoi modificarlo in `config.js` (`locale` e `indirizzo`).
+**Non abbiamo aggiunto un indirizzo civico non verificato:** il collegamento Google condiviso è stato impostato direttamente. Nel sito compare il testo «La location? Scoprila sulla mappa.»; se preferisci il nome esatto puoi modificarlo in `config.js` (`locale` e `indirizzo`).
 
 ## Personalizzare le foto senza toccare il codice
 
@@ -101,3 +101,23 @@ L'interazione è progettata per mouse, touch e tastiera. Sui dispositivi che blo
 - L'ellisse si riposiziona automaticamente con l'immagine desktop/mobile, il crop e il lentissimo movimento dello sfondo.
 - Ripristinati l'**alone dorato pulsante** e tre **stelline scintillanti** ispirati alla V6, senza ampliare l'area interattiva sul mare circostante.
 - Il pulsante testuale 'Tocca la bottiglia' continua a funzionare anche da tastiera.
+
+
+## Novita' V9 (26 ottobre 2026)
+
+- URL pubblico: https://novaaftercoma.github.io/Patanella/ ; canonical e meta Open Graph utilizzano questo indirizzo.
+- `assets/anteprima-whatsapp.jpg` e' la foto ottimizzata 1200x630 per l'anteprima di WhatsApp.
+- `assets/favicon.svg` e `assets/apple-touch-icon.png` identificano il sito.
+- La data e l'ora sono gia' nell'HTML, come pure i titoli e il testo essenziale, per una migliore resilienza.
+- Il countdown non mostra 00 alla partenza; quando la festa inizia lascia il messaggio celebrativo.
+- Il file `Patanella_28_dicembre_2026.ics` contiene l'ora di inizio corretta (Roma 20:30 CET); non inventa un'ora di fine.
+- Volume di partenza 35%, musica attivata da interazione con l'invito, pulsante per riprovare se bloccata.
+- Google Maps si apre in nuova scheda con `rel="noopener noreferrer"`.
+
+Dopo aver pubblicato TUTTI i file, inclusa la nuova anteprima social, verifica che il JPEG sia raggiungibile da `https://novaaftercoma.github.io/Patanella/assets/anteprima-whatsapp.jpg`. WhatsApp puo' mantenere un'anteprima precedente in cache: i nuovi metadata funzioneranno solo dopo la pubblicazione e un nuovo aggiornamento del crawler. Se sposti il repository o modifichi il dominio, aggiorna canonical, og:url, og:image e twitter:image nell'index.html.
+
+## Versione 10 — ritocchi finali
+
+- Testo introduttivo su un’unica riga: «C’è un messaggio per te, Scopri cosa custodisce ✧».
+- Eliminata la frase esplicativa sotto i pulsanti WhatsApp.
+- Il monogramma punta al nuovo asset trasparente `assets/monogramma-trasparente.png`, mantenendo invariati i colori e il disegno del JPG originale.

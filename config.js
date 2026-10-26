@@ -17,7 +17,7 @@ window.INVITO_CONFIG = {
   whatsapp: "393472343616",
   messaggioConferma: "Ciao Patanella! Confermo che ci sarò alla tua festa del 28 dicembre 2026 alle 20:30! 🎉🥂",
   messaggioDeclina: "Ciao Patanella! Mi dispiace, purtroppo non ci sarò alla tua festa del 28 dicembre 2026 alle 20:30. Ti auguro una bellissima serata! ❤️",
-  monogramma: "assets/monogramma.jpg",
+  monogramma: "assets/monogramma-trasparente.png",
 
   // Scene fotografiche incluse. Puoi lasciarle così.
   sfondi: {

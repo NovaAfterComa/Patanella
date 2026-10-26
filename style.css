@@ -705,3 +705,100 @@
   .welcome .bottle-aura::before,
   .welcome .bottle-spark { animation: none !important; opacity: .8; }
 }
+
+/* ===== V9: accessibilita', leggibilita' e comandi finali ===== */
+.topbar {
+  padding-top: max(24px, calc(env(safe-area-inset-top) + 12px));
+  padding-left: max(20px, calc(env(safe-area-inset-left) + 20px));
+  padding-right: max(20px, calc(env(safe-area-inset-right) + 20px));
+}
+.story-footer {
+  left: max(20px, calc(env(safe-area-inset-left) + 20px));
+  right: max(20px, calc(env(safe-area-inset-right) + 20px));
+  bottom: max(26px, calc(env(safe-area-inset-bottom) + 18px));
+}
+.final-panel {
+  padding-bottom: max(46px, calc(env(safe-area-inset-bottom) + 32px));
+  padding-left: max(20px, calc(env(safe-area-inset-left) + 20px));
+  padding-right: max(20px, calc(env(safe-area-inset-right) + 20px));
+}
+.welcome-action { bottom: max(28px, calc(env(safe-area-inset-bottom) + 25px)); }
+.date-line { font-size: clamp(14px, 2.6vw, 16px); letter-spacing: .035em; }
+.final-actions .rsvp-intro { font-size: 15px; }
+.final-actions .button.map-cta, .final-actions .button.calendar-cta { font-size: 15px; }
+.final-actions .rsvp-option .cta-copy small { font-size: 14px; }
+.final-actions .rsvp-note { font-size: 13px; }
+.countdown-unit span { font-size: 11px; }
+.countdown-kicker { font-size: 12px; }
+.final-actions .button.calendar-cta {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  gap: 12px;
+  min-height: 52px;
+  border-radius: 8px;
+  border: 1px solid rgba(237,230,216,.56);
+  background: rgba(8,25,36,.48);
+  padding: 11px 21px;
+  color: #fff4e4;
+  text-align: left;
+  font-family: var(--sans);
+  font-weight: 600;
+}
+.final-actions .button.calendar-cta:hover,
+.final-actions .button.calendar-cta:focus-visible { background: rgba(31,59,67,.88); }
+.final-actions .calendar-icon { color:#ffd59e; width: 24px; height: 24px; }
+.audio-retry { border-color: #eed4a0; color: #fff5dc; font-size: 21px; }
+.static-fallback {
+  position: fixed; z-index: 100; inset: 0; overflow: auto;
+  background: rgba(11,35,45,.97); color: #f5e9d5;
+  padding: max(80px, calc(env(safe-area-inset-top) + 55px)) 24px max(30px, env(safe-area-inset-bottom));
+  text-align: center;
+}
+.static-fallback-inner { max-width: 520px; margin:auto; display:grid; gap:18px; justify-items:center; }
+.static-fallback h2 { font-size: clamp(40px, 7vw, 70px); }
+.static-fallback p { font-size: 17px; line-height:1.5; }
+.fallback-links { display:grid; gap:12px; width:100%; margin-top:10px; }
+.fallback-links a, .no-script a {
+  display:block; border:1px solid #e0c899; border-radius:8px; padding:14px 18px;
+  color:#fff5de; background:#153d48; text-decoration:none; font-family:var(--sans); font-size:16px;
+}
+.no-script { position:absolute; inset:0; overflow-y:auto; padding: 23vh 24px 60px; display:grid; gap:18px; place-items:center; background:#112f3b; }
+.no-script h2 {font-size:38px;}
+.no-script p {font-size:16px;}
+@media (max-width: 600px) {
+  .topbar { padding-top: max(18px,calc(env(safe-area-inset-top) + 10px)); }
+  .final-panel { padding-bottom: max(34px,calc(env(safe-area-inset-bottom) + 24px)); }
+  .welcome-action { bottom: max(22px,calc(env(safe-area-inset-bottom) + 17px)); }
+  .date-line { font-size: 15px; }
+  .final-actions .rsvp-intro { font-size:14px; }
+  .final-actions .rsvp-option .cta-copy strong { font-size:16px; }
+  .final-actions .rsvp-option .cta-copy small { font-size:13px; }
+  .final-actions .button.map-cta, .final-actions .button.calendar-cta { font-size:14px; }
+  .final-actions .rsvp-note { font-size:12px; }
+  .countdown-unit span { font-size:10px; }
+  .countdown-kicker { font-size: 11px; }
+  .final-actions .button.calendar-cta {min-height:49px; padding:10px 17px;}
+}
+
+
+/* V10: frase introduttiva su una riga e monogramma senza sfondo. */
+.welcome-action .welcome-message {
+  white-space: nowrap;
+  margin: 0;
+  max-width: calc(100vw - 20px);
+  font-family: var(--serif);
+  font-size: clamp(12px, 2.0vw, 22px);
+  line-height: 1.35;
+  font-weight: 500;
+  letter-spacing: -.035em;
+  color: #fff9f0;
+  text-shadow: 0 2px 3px rgba(0,10,19,.93),0 5px 18px rgba(0,8,16,.85),0 0 26px rgba(0,8,16,.52);
+}
+.welcome-action .welcome-message em { font-style:italic; color:#fff1d6; }
+.welcome-action .welcome-message span { color:#ffdf9b; }
+.brand img,
+.final-monogram { object-fit:contain; background:transparent; border:none; border-radius:0; filter: drop-shadow(0 2px 5px rgba(0,0,0,.4)); }
+@media (max-width: 600px) {
+  .welcome-action .welcome-message { font-size: clamp(11px, 3.8vw, 18px); letter-spacing:-.045em; }
+}

@@ -172,19 +172,31 @@
     $('videos').append(v);videos[name]=v;
   }
   const safePlay = media => {if(!media)return;const p=media.play();if(p?.catch)p.catch(()=>{});};
+  let audioUnlocked = false;
+  let audioFailed = false;
   const audios=[];
-  for (const [key,volume] of [['musica',.6],['onde',.4]]) {
+  for (const [key,volume] of [['musica',.35],['onde',.22]]) {
     if(!C[key])continue;
-    const audio=new Audio(C[key]);audio.loop=true;audio.preload='none';audio.volume=volume;
-    audio.addEventListener('error',()=>{});audios.push({audio,key});
+    const audio=new Audio(C[key]);audio.loop=true;audio.preload='metadata';audio.volume=volume;
+    audio.addEventListener('error',()=>{ audioFailed=true; $('b-audio-retry').hidden=false; $('status').textContent='La musica non è disponibile. Puoi riprovare ad attivarla.'; });
+    audios.push({audio,key});
   }
   $('b-sound').hidden=audios.length===0;
+  function playMusic(audio) {
+    let p;
+    try { p=audio.play(); }
+    catch(e) { audioFailed=true; $('b-audio-retry').hidden=false; return; }
+    if(p && typeof p.then==='function') {
+      p.then(()=>{ audioFailed=false; $('b-audio-retry').hidden=true; })
+       .catch(()=>{ audioFailed=true; $('b-audio-retry').hidden=false; $('status').textContent='La musica non è partita. Tocca il pulsante nota musicale per riprovare.'; });
+    }
+  }
   function syncMedia() {
     const running=started && !paused && !document.hidden;
     for(const {audio} of audios) {
       audio.muted = muted;
-      if (running && !muted) {
-        if (audio.paused) safePlay(audio);
+      if (running && !muted && audioUnlocked) {
+        if (audio.paused) playMusic(audio);
       } else if (!audio.paused) {
         audio.pause();
       }
@@ -265,7 +277,7 @@
   function resumeClock() {lastTime=null;if(!frameId&&!finished&&!paused&&!document.hidden)frameId=requestAnimationFrame(tick);}
   function pauseClock(){if(frameId)cancelAnimationFrame(frameId);frameId=0;lastTime=null;}
   function start() {
-    pauseClock();elapsed=0;started=true;finished=false;paused=false;
+    pauseClock();elapsed=0;started=true;finished=false;paused=false;audioUnlocked=true;
     stage.classList.remove('is-paused','bottle-open');
     $('b-pause').setAttribute('aria-pressed','false');$('b-pause').setAttribute('aria-label','Metti in pausa');
     for(const p of [...kids,...friends])p.classList.remove('visible','stamped','active-photo','previous-photo','past');
@@ -286,7 +298,14 @@
     if(paused)pauseClock();else resumeClock();syncMedia();
   });
   $('b-sound').addEventListener('click',()=>{
-    muted=!muted;$('b-sound').setAttribute('aria-pressed',String(muted));$('b-sound').setAttribute('aria-label',muted?'Attiva l’audio':'Disattiva l’audio');syncMedia();
+    muted=!muted;if (!muted) audioUnlocked=true;$('b-sound').setAttribute('aria-pressed',String(muted));$('b-sound').setAttribute('aria-label',muted?'Attiva l’audio':'Disattiva l’audio');syncMedia();
+  });
+  $('b-audio-retry').addEventListener('click',()=>{
+    audioUnlocked=true; muted=false;
+    $('b-sound').setAttribute('aria-pressed','false');
+    $('b-sound').setAttribute('aria-label','Disattiva l’audio');
+    $('b-audio-retry').hidden=true;
+    syncMedia();
   });
   document.addEventListener('visibilitychange',()=>{
     stage.classList.toggle('is-paused',paused||document.hidden);
@@ -296,6 +315,7 @@
   /* Ora dell'evento: 28 dicembre 2026, 20:30 a Roma (UTC+01:00). */
   const eventTime = Date.parse(C.dataEvento || '2026-12-28T20:30:00+01:00');
   const countdownNode = $('countdown');
+  const countdownUnits = countdownNode.querySelector('.countdown-units');
   if (Number.isFinite(eventTime)) {
     const format = n => String(n).padStart(2, '0');
     function updateCountdown() {
@@ -308,6 +328,7 @@
       $('countdown-message').textContent = remaining > 0
         ? 'Il conto alla rovescia è iniziato…'
         : 'È arrivato il momento di festeggiare!';
+      countdownUnits.hidden = remaining === 0;
       countdownNode.classList.toggle('countdown-finished', remaining === 0);
     }
     updateCountdown();
@@ -321,4 +342,6 @@
   const sources=[...Object.values(backgrounds),...kidData.map(f=>f.src),...friendData.map(f=>f.src)].filter(Boolean);
   // Precarica gli asset, ma la bottiglia è cliccabile fin da subito.
   Promise.all(sources.map(preload)).catch(()=>{});
+  const essentialFallback = $('static-fallback');
+  if (essentialFallback) essentialFallback.hidden = true;
 })();

@@ -6,11 +6,30 @@
   <meta name="theme-color" content="#142b35">
   <meta name="description" content="Una bottiglia, una storia, una festa. Un invito speciale, arrivato dal mare.">
   <title>Una bottiglia, una storia, una festa</title>
+  <link rel="canonical" href="https://novaaftercoma.github.io/Patanella/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="it_IT">
+  <meta property="og:site_name" content="Invito Patanella">
+  <meta property="og:title" content="Una bottiglia, una storia, una festa | Patanella">
+  <meta property="og:description" content="Una bottiglia è arrivata dal mare. Tocca per scoprire l'invito alla festa del 28 dicembre 2026, ore 20:30.">
+  <meta property="og:url" content="https://novaaftercoma.github.io/Patanella/">
+  <meta property="og:image" content="https://novaaftercoma.github.io/Patanella/assets/anteprima-whatsapp.jpg">
+  <meta property="og:image:secure_url" content="https://novaaftercoma.github.io/Patanella/assets/anteprima-whatsapp.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Una bottiglia con una pergamena sulla riva del mare al tramonto">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Una bottiglia, una storia, una festa | Patanella">
+  <meta name="twitter:description" content="Una storia arriva dal mare. Apri la bottiglia e scopri l'invito.">
+  <meta name="twitter:image" content="https://novaaftercoma.github.io/Patanella/assets/anteprima-whatsapp.jpg">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <!-- Calligrafia della pergamena; i font di sistema sono la riserva se offline. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=8">
+  <link rel="stylesheet" href="style.css?v=10">
 </head>
 <body>
 <main id="stage" class="stage" data-scene="welcome">
@@ -29,6 +48,7 @@
       <button id="b-sound" class="control" type="button" hidden aria-label="Disattiva l’audio" aria-pressed="false">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9z"/><path class="sound-on" d="M16 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/><path class="sound-off" d="m16 9 6 6m0-6-6 6"/></svg>
       </button>
+      <button id="b-audio-retry" class="audio-retry control" type="button" hidden aria-label="Riprova ad attivare la musica">♪ <span class="sr-only">Attiva la musica</span></button>
       <button id="b-pause" class="control" type="button" hidden aria-label="Metti in pausa" aria-pressed="false"><span class="pause-symbol" aria-hidden="true">Ⅱ</span><span class="play-symbol" aria-hidden="true">▷</span></button>
       <button id="b-skip" class="skip" type="button" aria-label="Salta la storia e vai subito all’invito">Salta la storia <span aria-hidden="true">↗</span></button>
     </div>
@@ -54,24 +74,23 @@
       <span class="bottle-guide-sub">per iniziare la storia <span class="bottle-guide-arrow">↓</span></span>
     </button>
     <div class="welcome-action">
-      <p class="handwritten">C’è un messaggio per te.</p>
-      <p class="touch-hint">Il suo messaggio ti aspetta <span aria-hidden="true">✧</span></p>
+      <p class="welcome-message"><em>C’è un messaggio per te,</em> Scopri cosa custodisce <span aria-hidden="true">✧</span></p>
       <p class="micro">Una piccola storia da guardare fino in fondo · con audio</p>
     </div>
   </section>
 
   <section id="messaggio" class="panel opening" aria-label="L’inizio della storia" inert>
-    <div class="opening-copy"><p class="eyebrow">Il messaggio</p><h2 id="intro-text"></h2></div>
+    <div class="opening-copy"><p class="eyebrow">La scoperta</p><h2 id="intro-text">Ogni storia ha un inizio…</h2></div>
   </section>
 
   <section id="segreto" class="panel letter-panel" aria-label="Il contenuto segreto" inert>
     <article class="letter">
       <div class="letter-inner">
-        <p class="letter-label">Un messaggio per te</p>
+        <p class="letter-label">Un piccolo segreto per te</p>
         <div class="letter-rule" aria-hidden="true"></div>
-        <p id="ty1" class="typed"></p>
-        <p id="ty2" class="typed typed-strong"></p>
-        <p class="signature" id="signature"></p>
+        <p id="ty1" class="typed">La protagonista di questa storia?</p>
+        <p id="ty2" class="typed typed-strong">Una certa ragazza che non ha nessuna intenzione di crescere davvero…</p>
+        <p class="signature" id="signature">Patanella</p>
       </div>
     </article>
   </section>
@@ -82,51 +101,51 @@
   </section>
 
   <section id="complici" class="panel photos-panel friends-panel" aria-label="I complici della storia" inert>
-    <div class="scene-heading"><p class="eyebrow">I complici</p><h2 id="flash"></h2></div>
+    <div class="scene-heading"><p class="eyebrow">I complici</p><h2 id="flash">Anni di amicizia…</h2></div>
     <div id="friends" class="photo-desk friends"></div>
   </section>
 
   <section id="epico" class="panel poetic" aria-label="Il prossimo capitolo" inert>
-    <div class="poetic-inner"><p class="eyebrow">Il bello deve ancora venire</p><h2 id="epic-text"></h2><div class="fine-line" aria-hidden="true"></div></div>
+    <div class="poetic-inner"><p class="eyebrow">Il bello deve ancora venire</p><h2 id="epic-text">Trent’anni di sogni, risate e persone speciali.</h2><div class="fine-line" aria-hidden="true"></div></div>
   </section>
 
   <section id="citazione" class="panel poetic quote-panel" aria-label="I momenti che contano" inert>
-    <div class="poetic-inner"><span class="quote-mark" aria-hidden="true">“</span><blockquote id="quote-text"></blockquote><div class="fine-line" aria-hidden="true"></div></div>
+    <div class="poetic-inner"><span class="quote-mark" aria-hidden="true">“</span><blockquote id="quote-text">Le cose belle non si contano negli anni, ma nei momenti che ci fanno brillare gli occhi.</blockquote><div class="fine-line" aria-hidden="true"></div></div>
   </section>
 
   <section id="finale" class="panel final-panel" aria-label="L’invito alla festa" inert>
     <div class="invitation">
       <p class="eyebrow">Il prossimo capitolo, insieme</p>
       <img id="mono" class="final-monogram" alt="" hidden>
-      <h2 id="f-name" tabindex="-1"></h2>
-      <p id="f-age" class="age"></p>
-      <p id="f-title" class="final-copy"></p>
+      <h2 id="f-name" tabindex="-1">Rosy</h2>
+      <p id="f-age" class="age">30 anni</p>
+      <p id="f-title" class="final-copy">La storia continua… e stavolta voglio viverla con voi!</p>
       <div class="event-details">
-        <div class="date-line"><p id="f-data"></p><span class="date-divider" aria-hidden="true"></span><p id="f-ora"></p></div>
-        <p id="f-locale" class="venue"></p>
+        <div class="date-line"><time id="f-data" datetime="2026-12-28">Lunedì 28 dicembre 2026</time><span class="date-divider" aria-hidden="true"></span><time id="f-ora" datetime="2026-12-28T20:30:00+01:00">ore 20:30</time></div>
+        <p id="f-locale" class="venue">La location? Scoprila sulla mappa.</p>
         <p id="f-addr" class="address"></p>
       </div>
       <section class="countdown" id="countdown" aria-label="Conto alla rovescia per la festa">
-        <p class="countdown-kicker" id="countdown-message">Manca sempre meno alla nostra festa</p>
-        <div class="countdown-units" role="timer" aria-live="off">
-          <div class="countdown-unit"><strong id="cd-days">00</strong><span>giorni</span></div>
-          <div class="countdown-unit"><strong id="cd-hours">00</strong><span>ore</span></div>
-          <div class="countdown-unit"><strong id="cd-minutes">00</strong><span>minuti</span></div>
-          <div class="countdown-unit"><strong id="cd-seconds">00</strong><span>secondi</span></div>
+        <p class="countdown-kicker" id="countdown-message">Calcolo il tempo che manca alla festa…</p>
+        <div class="countdown-units" role="timer" aria-live="off" hidden>
+          <div class="countdown-unit"><strong id="cd-days">--</strong><span>giorni</span></div>
+          <div class="countdown-unit"><strong id="cd-hours">--</strong><span>ore</span></div>
+          <div class="countdown-unit"><strong id="cd-minutes">--</strong><span>minuti</span></div>
+          <div class="countdown-unit"><strong id="cd-seconds">--</strong><span>secondi</span></div>
         </div>
       </section>
       <div class="final-actions">
-        <div id="rsvp" class="rsvp" hidden>
+        <div id="rsvp" class="rsvp">
           <p class="rsvp-intro">La tua risposta sarebbe gradita</p>
           <div class="rsvp-choices" role="group" aria-label="Rispondi all'invito su WhatsApp">
-            <a id="b-wa-yes" class="button whatsapp-cta rsvp-option rsvp-yes" target="_blank" rel="noopener noreferrer" aria-label="Conferma: ci sono. Apri WhatsApp con il messaggio di conferma" hidden>
+            <a id="b-wa-yes" href="https://wa.me/393472343616?text=Ciao%20Patanella%21%20Confermo%20che%20ci%20sar%C3%B2%20alla%20tua%20festa%20del%2028%20dicembre%202026%20alle%2020%3A30%21%20%F0%9F%8E%89%F0%9F%A5%82" class="button whatsapp-cta rsvp-option rsvp-yes" target="_blank" rel="noopener noreferrer" aria-label="Conferma: ci sono. Apri WhatsApp con il messaggio di conferma">
               <svg class="action-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
                 <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/>
                 <path d="m7.6 12.1 3.2 3.2 5.9-6.1" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
               <span class="cta-copy"><strong>Conferma</strong><small>Ci sono!</small></span>
             </a>
-            <a id="b-wa-no" class="button whatsapp-cta rsvp-option rsvp-no" target="_blank" rel="noopener noreferrer" aria-label="Declina: non ci sono. Apri WhatsApp con il messaggio di assenza" hidden>
+            <a id="b-wa-no" href="https://wa.me/393472343616?text=Ciao%20Patanella%21%20Mi%20dispiace%2C%20purtroppo%20non%20ci%20sar%C3%B2%20alla%20tua%20festa%20del%2028%20dicembre%202026%20alle%2020%3A30.%20Ti%20auguro%20una%20bellissima%20serata%21%20%E2%9D%A4%EF%B8%8F" class="button whatsapp-cta rsvp-option rsvp-no" target="_blank" rel="noopener noreferrer" aria-label="Declina: non ci sono. Apri WhatsApp con il messaggio di assenza">
               <svg class="action-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
                 <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/>
                 <path d="m9 9 6 6m0-6-6 6" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/>
@@ -134,15 +153,23 @@
               <span class="cta-copy"><strong>Declina</strong><small>Non ci sono</small></span>
             </a>
           </div>
-          <p class="rsvp-note">Si aprir&#224; WhatsApp con il messaggio gi&#224; pronto da inviare.</p>
+
         </div>
-        <a id="b-map" class="button secondary map-cta" target="_blank" rel="noopener noreferrer" hidden>
+        <a id="b-map" href="https://maps.app.goo.gl/FoxAbSmSC42Bt9TLA" class="button secondary map-cta" target="_blank" rel="noopener noreferrer">
           <svg class="action-icon map-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
             <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
             <circle cx="12" cy="10" r="2.7" stroke="currentColor" stroke-width="1.8"/>
           </svg>
           <span class="map-label">Indicazioni su Google Maps</span>
           <span class="cta-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a id="b-calendar" class="button secondary calendar-cta" href="Patanella_28_dicembre_2026.ics" download="Patanella_28_dicembre_2026.ics" aria-label="Aggiungi al calendario il 28 dicembre 2026 alle ore 20:30">
+          <svg class="action-icon calendar-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <rect x="3" y="5" width="18" height="16" rx="2.5" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M7 3v4m10-4v4M3 10h18M12 13v5m-2.5-2.5h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+          <span class="map-label">Aggiungi al calendario</span>
+          <span class="cta-arrow" aria-hidden="true">↓</span>
         </a>
       </div>
       <button id="b-replay" class="replay" type="button"><span aria-hidden="true">↻</span> Riguarda la storia</button>
@@ -154,9 +181,30 @@
     <div id="progress" class="progress" role="progressbar" aria-label="Avanzamento della storia" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
   </footer>
   <p id="status" class="sr-only" role="status"></p>
-  <noscript><div class="no-script">Per aprire l’invito, attiva JavaScript nel browser.</div></noscript>
+  <section id="static-fallback" class="static-fallback" hidden aria-label="Invito in versione essenziale">
+    <div class="static-fallback-inner">
+      <p class="eyebrow">Invito alla festa</p>
+      <h2>Rosy · 30 anni</h2>
+      <p>Una bottiglia, una storia, una festa.</p>
+      <p><strong>Lunedì 28 dicembre 2026 · ore 20:30</strong></p>
+      <p>La location? Scoprila sulla mappa.</p>
+      <div class="fallback-links">
+        <a href="https://maps.app.goo.gl/FoxAbSmSC42Bt9TLA" target="_blank" rel="noopener noreferrer">Apri Google Maps</a>
+        <a href="https://wa.me/393472343616?text=Ciao%20Patanella%21%20Confermo%20che%20ci%20sar%C3%B2%20alla%20tua%20festa%20del%2028%20dicembre%202026%20alle%2020%3A30%21%20%F0%9F%8E%89%F0%9F%A5%82" target="_blank" rel="noopener noreferrer">Conferma su WhatsApp</a>
+        <a href="https://wa.me/393472343616?text=Ciao%20Patanella%21%20Mi%20dispiace%2C%20purtroppo%20non%20ci%20sar%C3%B2%20alla%20tua%20festa%20del%2028%20dicembre%202026%20alle%2020%3A30.%20Ti%20auguro%20una%20bellissima%20serata%21%20%E2%9D%A4%EF%B8%8F" target="_blank" rel="noopener noreferrer">Declina su WhatsApp</a>
+        <a href="Patanella_28_dicembre_2026.ics" download>Aggiungi al calendario</a>
+      </div>
+    </div>
+  </section>
+
+  <noscript><section class="no-script" aria-label="Dettagli dell'invito"><h2>Rosy · 30 anni</h2><p>Lunedì 28 dicembre 2026, ore 20:30</p><p>La location è disponibile su Google Maps.</p><p><a href="https://maps.app.goo.gl/FoxAbSmSC42Bt9TLA" target="_blank" rel="noopener noreferrer">Indicazioni Google Maps</a></p><p><a href="https://wa.me/393472343616?text=Ciao%20Patanella%21%20Confermo%20che%20ci%20sar%C3%B2%20alla%20tua%20festa%20del%2028%20dicembre%202026%20alle%2020%3A30%21%20%F0%9F%8E%89%F0%9F%A5%82" target="_blank" rel="noopener noreferrer">Conferma su WhatsApp</a></p><p><a href="Patanella_28_dicembre_2026.ics" download>Aggiungi al calendario</a></p></section></noscript>
 </main>
-<script src="config.js?v=8"></script>
-<script src="script.js?v=8"></script>
+<script>
+  /* Se i file JavaScript non caricano, mostra un invito essenziale. */
+  function showInvitoFallback() { var f=document.getElementById('static-fallback'); if (f) f.hidden=false; }
+  window.addEventListener('error', function(e) { if (e.filename && /(?:config|script)\.js/.test(e.filename)) showInvitoFallback(); });
+</script>
+<script src="config.js?v=10" onerror="showInvitoFallback()"></script>
+<script src="script.js?v=10" onerror="showInvitoFallback()"></script>
 </body>
 </html>
