@@ -1,4 +1,4 @@
-# Invito Patanella - V20
+# Invito Patanella - V22
 
 Un invito interattivo per la festa del 28 dicembre 2026 alle 20:30.
 Il sito e' statico e pronto per GitHub Pages.
@@ -113,4 +113,18 @@ Nota: GitHub Pages rende pubblicamente accessibili le sei fotografie personali a
 
 
 ## V21 — Il segreto della luna
-Nella schermata finale premi e tieni premuta la luna presente nella fotografia per cinque secondi consecutivi. Si illuminerà, cadrà una stella e comparirà una Polaroid aggiuntiva con la foto `assets/photos/polaroid-segreta-08.jpg`. Rilasciando prima, l'effetto si annulla. La foto può essere chiusa con la X o con Esc. La musica e il resto dell'invito rimangono invariati.
+Nella schermata finale premi e tieni premuta la luna presente nella fotografia per cinque secondi consecutivi. Si illuminerà, cadrà una stella e comparirà una Polaroid aggiuntiva con la foto `assets/photos/polaroid-segreta-09.jpg`. Rilasciando prima, l'effetto si annulla. La foto può essere chiusa con la X o con Esc. La musica e il resto dell'invito rimangono invariati.
+
+## Novita V22
+
+- La foto segreta della luna ora e la fotografia 9: Patanella da bambina in mare.
+- Nuova didascalia: Il mare nel cuore, fin da piccola.
+- La Polaroid segreta usa il formato orizzontale 3:2 per non tagliare i braccioli e il mare.
+- Tutta la logica della pressione da 5 secondi, del glow e della stella cadente resta invariata.
+
+## Novita V23
+
+- Nella scena finale un piccolo alone dorato pulsa lentamente intorno alla luna, per suggerire che e interattiva senza svelare il segreto.
+- La pressione di cinque secondi, la stella cadente e la Polaroid restano invariati.
+- Per le preferenze di movimento ridotto il glow e statico.
+- CSS con cache-busting v23.

@@ -1,3 +1,16 @@
+# V23 - Glow discreto sulla luna
+
+- Aggiunto un piccolo alone dorato pulsante sulla luna della scena finale.
+- Nessun testo indizio e nessuna modifica alla hitbox, alla durata del tocco o alla Polaroid.
+- Rispettata la preferenza di movimento ridotto.
+- CSS aggiornato a `?v=23`.
+
+## V22 — Foto segreta della luna aggiornata (26 ottobre 2026)
+- Sostituita la foto 8 (cagnolona) con la nuova foto 9 di Patanella da bambina in mare.
+- Didascalia: "Il mare nel cuore, fin da piccola. ✦".
+- Polaroid segreta in proporzione 3:2 per mostrare la fotografia intera.
+- Aggiornata la versione CSS a v22; tutte le altre scene, i pulsanti e le animazioni restano invariati.
+
 ## V21 — Segreto della luna (26 ottobre 2026)
 - Pressione continua di 5 secondi sulla luna della scena finale.
 - Bagliore dorato, stella cadente e Polaroid nascosta con foto 8.
