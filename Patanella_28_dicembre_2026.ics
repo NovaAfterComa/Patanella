@@ -1,14 +1,21 @@
 BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Invito Patanella//Festa di Rosy//IT
+PRODID:-//Invito Patanella//La festa di Patanella//IT
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 BEGIN:VEVENT
 UID:patanella-20261228-2030@novaaftercoma.github.io
 DTSTAMP:20261026T180000Z
 DTSTART:20261228T193000Z
-SUMMARY:La festa di Rosy - Patanella
-DESCRIPTION:Una bottiglia\, una storia\, una festa.\nIndicazioni: https://maps.app.goo.gl/FoxAbSmSC42Bt9TLA
-URL:https://novaaftercoma.github.io/Patanella/
+DTEND:20261228T230000Z
+SUMMARY:La festa di Patanella
+LOCATION:https://maps.app.goo.gl/FoxAbSmSC42Bt9TLA
+DESCRIPTION:Una bottiglia è arrivata dal mare e questa volta il messaggio 
+ è chiaro: si festeggia Patanella! 🌊🍾\nTi aspettano risate\, brindis
+ i e nuovi ricordi da aggiungere alla nostra storia. 🥂✨\nDove ci vedia
+ mo? Scopri la location sulla mappa: https://maps.app.goo.gl/FoxAbSmSC42Bt9
+ TLA
+URL:https://maps.app.goo.gl/FoxAbSmSC42Bt9TLA
+STATUS:CONFIRMED
 END:VEVENT
 END:VCALENDAR

@@ -110,7 +110,7 @@ L'interazione è progettata per mouse, touch e tastiera. Sui dispositivi che blo
 - `assets/favicon.svg` e `assets/apple-touch-icon.png` identificano il sito.
 - La data e l'ora sono gia' nell'HTML, come pure i titoli e il testo essenziale, per una migliore resilienza.
 - Il countdown non mostra 00 alla partenza; quando la festa inizia lascia il messaggio celebrativo.
-- Il file `Patanella_28_dicembre_2026.ics` contiene l'ora di inizio corretta (Roma 20:30 CET); non inventa un'ora di fine.
+- Il file `Patanella_28_dicembre_2026.ics` contiene **La festa di Patanella**, dalle 20:30 del 28 dicembre alle **00:00 del 29 dicembre 2026** (fuso di Roma). La posizione e il collegamento del calendario utilizzano entrambi il medesimo URL Google Maps del pulsante sul sito. La descrizione contiene un breve testo festoso.
 - Volume di partenza 35%, musica attivata da interazione con l'invito, pulsante per riprovare se bloccata.
 - Google Maps si apre in nuova scheda con `rel="noopener noreferrer"`.
 
@@ -121,3 +121,12 @@ Dopo aver pubblicato TUTTI i file, inclusa la nuova anteprima social, verifica c
 - Testo introduttivo su un’unica riga: «C’è un messaggio per te, Scopri cosa custodisce ✧».
 - Eliminata la frase esplicativa sotto i pulsanti WhatsApp.
 - Il monogramma punta al nuovo asset trasparente `assets/monogramma-trasparente.png`, mantenendo invariati i colori e il disegno del JPG originale.
+
+### Revisione 11 — evento calendario
+
+- Titolo del calendario: **La festa di Patanella**.
+- Inizio: **28/12/2026 alle 20:30**, fine: **29/12/2026 alle 00:00**, fuso orario italiano.
+- Posizione e link dell'evento: `https://maps.app.goo.gl/FoxAbSmSC42Bt9TLA`.
+- Descrizione: invito festoso a tema bottiglia e mare.
+- Per aggiornare solo il calendario senza sovrascrivere altre modifiche del sito, caricare esclusivamente `Patanella_28_dicembre_2026.ics` nella radice del repository GitHub Pages.
+- La descrizione Open Graph dell'anteprima WhatsApp non riporta data e ora, come richiesto.
