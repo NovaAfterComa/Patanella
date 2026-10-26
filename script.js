@@ -27,6 +27,7 @@
   const normalize = f => typeof f === 'string' ? {src:f} : (f || {});
   const fill = s => String(s || '').replace(/\{(\w+)\}/g, (_, key) => C[key] || '');
   const setContent = (id, value) => {const e=$(id); e.textContent=value || ''; e.hidden=!value;};
+  const setTextIfChanged = (element, value) => {if (element.textContent !== value) element.textContent = value;};
 
   setContent('intro-text', text.scena1);
   setContent('quote-text', text.citazione);
@@ -67,17 +68,37 @@
     if (C.monogramma) { image.onload=()=>{image.hidden=false;}; image.onerror=()=>{image.hidden=true;}; image.src=C.monogramma; }
     else image.hidden=true;
   }
-  if(text.introduzione && text.introduzione !== 'Ci sono storie che nascono dal mare…') $('welcome-title').textContent=text.introduzione;
+  if (text.introduzione && text.introduzione !== 'Ci sono storie che nascono dal mare…') {
+    const title = $('welcome-title');
+    const value = String(text.introduzione).trim();
+    // Keep the original line breaks and final emphasized words when config changes.
+    const parts = value.split(/\s+/);
+    title.replaceChildren();
+    if (parts.length <= 3) {
+      const em = document.createElement('em'); em.textContent=value; title.append(em);
+    } else {
+      const first = parts.slice(0, 3).join(' ');
+      const middle = parts.slice(3, -2).join(' ');
+      const last = parts.slice(-2).join(' ');
+      title.append(document.createTextNode(first));
+      if (middle) { title.append(document.createElement('br'), document.createTextNode(middle)); }
+      title.append(document.createElement('br'));
+      const em = document.createElement('em'); em.textContent=last; title.append(em);
+    }
+  }
   const backgrounds = Object.assign({messaggioMobile:'assets/scenes/bottiglia-mobile.jpg',aperturaMobile:'assets/scenes/bottiglia-aperta-mobile.jpg',messaggio:'assets/scenes/bottiglia.jpg', apertura:'assets/scenes/bottiglia-aperta.jpg', notte:'assets/scenes/mare-notte.jpg', carta:'assets/scenes/carta.jpg'}, C.sfondi);
   function setPhotographicFraming() {
-    const portrait = matchMedia('(max-aspect-ratio: 3/4)').matches;
-    const shore = portrait && backgrounds.messaggioMobile ? backgrounds.messaggioMobile : backgrounds.messaggio;
-    const open = portrait && backgrounds.aperturaMobile ? backgrounds.aperturaMobile : (backgrounds.apertura || backgrounds.messaggio);
-    if($('shore').getAttribute('src') !== shore) $('shore').src=shore;
-    if($('shore-open').getAttribute('src') !== open) $('shore-open').src=open;
+    // <picture> chooses the correct source, avoiding a desktop download on mobile.
+    const main = backgrounds.messaggio || 'assets/scenes/bottiglia.jpg';
+    const open = backgrounds.apertura || main;
+    const mainMobile = backgrounds.messaggioMobile || main;
+    const openMobile = backgrounds.aperturaMobile || open;
+    if ($('shore').getAttribute('src') !== main) $('shore').src = main;
+    if ($('shore-open').getAttribute('src') !== open) $('shore-open').src = open;
+    if ($('shore-mobile-source').getAttribute('srcset') !== mainMobile) $('shore-mobile-source').srcset = mainMobile;
+    if ($('open-mobile-source').getAttribute('srcset') !== openMobile) $('open-mobile-source').srcset = openMobile;
   }
   setPhotographicFraming();
-  addEventListener('resize', setPhotographicFraming);
 
   /* La hitbox resta ovale (clip-path: ellipse) e segue la bottiglia reale,
      anche col ritaglio object-fit: cover e il movimento fotografico. */
@@ -110,21 +131,19 @@
     bottleGuide.style.left = (x + w * .51).toFixed(2) + 'px';
     bottleGuide.style.top = (y - 17).toFixed(2) + 'px';
   }
-  let bottleTrackingFrame = 0, lastBottleSync = -Infinity;
-  function trackBottle(now) {
-    bottleTrackingFrame = 0;
-    if (started || activeScene !== 'welcome') return;
-    // Lo sfondo si muove lentissimamente: ~15 aggiornamenti al secondo
-    // sono sufficienti e riducono il lavoro su smartphone.
-    if (now - lastBottleSync >= 65) {
-      positionBottleHitbox();
-      lastBottleSync = now;
-    }
-    bottleTrackingFrame = requestAnimationFrame(trackBottle);
-  }
+  // The bottle backdrop drifts with CSS. 70ms is enough to keep the ellipse aligned.
+  let bottleTrackingTimer = setInterval(() => {
+    if (activeScene !== 'welcome' || document.hidden) return;
+    positionBottleHitbox();
+  }, 70);
+  const stopBottleTracking = () => {
+    if (bottleTrackingTimer !== null) clearInterval(bottleTrackingTimer);
+    bottleTrackingTimer = null;
+  };
   $('shore').addEventListener('load', positionBottleHitbox);
   addEventListener('resize', positionBottleHitbox);
-  bottleTrackingFrame = requestAnimationFrame(trackBottle);
+  if ('ResizeObserver' in window) new ResizeObserver(positionBottleHitbox).observe(stage);
+  positionBottleHitbox();
   $('night').src=backgrounds.notte;
   $('shore-open').onerror=()=>{$('shore-open').style.display='none';};
   $('night').onerror=()=>{stage.classList.add('night-missing');};
@@ -158,6 +177,7 @@
     fig.style.setProperty('--dy', ((i%3)*20-10)+'px');
     return fig;
   });
+  const lastBarProgress=timeline.map(()=>null);
   const bars=timeline.map(()=>{
     const track=document.createElement('span'), bar=document.createElement('i');track.append(bar);$('progress').append(track);return bar;
   });
@@ -188,7 +208,7 @@
     catch(e) { audioFailed=true; $('b-audio-retry').hidden=false; return; }
     if(p && typeof p.then==='function') {
       p.then(()=>{ audioFailed=false; $('b-audio-retry').hidden=true; })
-       .catch(()=>{ audioFailed=true; $('b-audio-retry').hidden=false; $('status').textContent='La musica non è partita. Tocca il pulsante nota musicale per riprovare.'; });
+       .catch(()=>{ audioFailed=true; $('b-audio-retry').hidden=false; $('status').textContent='La musica non è partita. Tocca la nota musicale per riprovare e controlla il volume del telefono.'; });
     }
   }
   function syncMedia() {
@@ -227,7 +247,8 @@
     if(scene.name==='segreto') {
       const a=String(text.macchina1 || ''),b=String(text.macchina2 || '');
       const p1=reduced?1:clamp((p-.10)/.19),p2=reduced?1:clamp((p-.37)/.39);
-      $('ty1').textContent=a.slice(0,Math.ceil(a.length*p1));$('ty2').textContent=b.slice(0,Math.ceil(b.length*p2));
+      setTextIfChanged($('ty1'), a.slice(0,Math.ceil(a.length*p1)));
+      setTextIfChanged($('ty2'), b.slice(0,Math.ceil(b.length*p2)));
       $('ty1').classList.toggle('typing',p1>0&&p1<1);$('ty2').classList.toggle('typing',p2>0&&p2<1);
     }
     if(scene.name==='prove') {
@@ -252,16 +273,20 @@
       const punch=p>.54;
       const headline=$('epico').querySelector('.eyebrow');
       headline.classList.toggle('closing',local>=2.3);
-      $('epic-text').textContent=punch?text.epico2:text.epico1;
+      setTextIfChanged($('epic-text'), punch?text.epico2:text.epico1);
       $('epic-text').classList.toggle('punchline',punch);
-      $('epic-text').style.opacity=reduced?'1':String(p<.54?clamp((.53-p)*22):clamp((p-.54)*22));
+      const nextOpacity=reduced?'1':String(Math.round((p<.54?clamp((.53-p)*22):clamp((p-.54)*22))*100)/100);
+      if ($('epic-text').style.opacity !== nextOpacity) $('epic-text').style.opacity=nextOpacity;
       // La colonna sonora continua senza interruzioni anche durante il cambio di battuta.
     }
   }
   function render() {
     if(!started)return;
     const i=timeline.findIndex(s=>elapsed<s.start+s.duration);
-    bars.forEach((bar,n)=>bar.style.setProperty('--p',clamp((elapsed-timeline[n].start)/timeline[n].duration)));
+    bars.forEach((bar,n)=>{
+      const value=Math.round(clamp((elapsed-timeline[n].start)/timeline[n].duration)*200)/200;
+      if (lastBarProgress[n] !== value) {bar.style.setProperty('--p',value);lastBarProgress[n]=value;}
+    });
     const percent=Math.round(clamp(elapsed/total)*100);
     if(percent!==lastPercent){$('progress').setAttribute('aria-valuenow',percent);lastPercent=percent;}
     if(i<0){finished=true;setScene('finale',6);return;}
@@ -277,7 +302,7 @@
   function resumeClock() {lastTime=null;if(!frameId&&!finished&&!paused&&!document.hidden)frameId=requestAnimationFrame(tick);}
   function pauseClock(){if(frameId)cancelAnimationFrame(frameId);frameId=0;lastTime=null;}
   function start() {
-    pauseClock();elapsed=0;started=true;finished=false;paused=false;audioUnlocked=true;
+    stopBottleTracking();pauseClock();elapsed=0;started=true;finished=false;paused=false;audioUnlocked=true;
     stage.classList.remove('is-paused','bottle-open');
     $('b-pause').setAttribute('aria-pressed','false');$('b-pause').setAttribute('aria-label','Metti in pausa');
     for(const p of [...kids,...friends])p.classList.remove('visible','stamped','active-photo','previous-photo','past');
@@ -288,7 +313,7 @@
   }
   $('bottle').addEventListener('click',start);$('bottle-guide').addEventListener('click',start);$('b-replay').addEventListener('click',start);
   $('b-skip').addEventListener('click',()=>{
-    pauseClock();started=true;paused=false;elapsed=total;finished=true;stage.classList.remove('is-paused');
+    stopBottleTracking();pauseClock();started=true;paused=false;elapsed=total;finished=true;stage.classList.remove('is-paused');
     render();syncMedia();$('f-name').focus({preventScroll:true});
   });
   $('b-pause').addEventListener('click',()=>{
@@ -330,18 +355,30 @@
         : 'È arrivato il momento di festeggiare!';
       countdownUnits.hidden = remaining === 0;
       countdownNode.classList.toggle('countdown-finished', remaining === 0);
+      if (remaining === 0) countdownNode.dispatchEvent(new Event('countdown-completed'));
     }
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
+    let countdownTimer = null;
+    const startCountdown = () => {
+      updateCountdown();
+      if (!document.hidden && Date.now() < eventTime && countdownTimer === null) {
+        countdownTimer = setInterval(updateCountdown, 1000);
+      }
+    };
+    const stopCountdown = () => {
+      if (countdownTimer !== null) clearInterval(countdownTimer);
+      countdownTimer = null;
+    };
+    countdownNode.addEventListener('countdown-completed', stopCountdown);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stopCountdown(); else startCountdown();
+    });
+    startCountdown();
   } else if (countdownNode) {
     countdownNode.hidden = true;
   }
 
-  /* Never leave the invitation blocked when a custom photo cannot be loaded. */
-  const preload=src=>new Promise(resolve=>{const im=new Image();im.onload=im.onerror=resolve;im.src=src;});
-  const sources=[...Object.values(backgrounds),...kidData.map(f=>f.src),...friendData.map(f=>f.src)].filter(Boolean);
-  // Precarica gli asset, ma la bottiglia è cliccabile fin da subito.
-  Promise.all(sources.map(preload)).catch(()=>{});
+  /* Images for the story are loaded by their IMG elements. Avoid downloading
+     duplicate desktop/mobile variants with a separate eager preload. */
   const essentialFallback = $('static-fallback');
   if (essentialFallback) essentialFallback.hidden = true;
 })();

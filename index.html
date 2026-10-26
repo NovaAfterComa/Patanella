@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#142b35">
+  <meta name="robots" content="noindex, nofollow">
   <meta name="description" content="Una bottiglia, una storia, una festa. Un invito speciale, arrivato dal mare.">
   <title>Una bottiglia, una storia, una festa</title>
   <link rel="canonical" href="https://novaaftercoma.github.io/Patanella/">
@@ -29,13 +30,19 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=10">
+  <link rel="stylesheet" href="style.css?v=12">
 </head>
 <body>
 <main id="stage" class="stage" data-scene="welcome">
   <div class="backdrops" aria-hidden="true">
-    <img id="shore" class="backdrop shore" src="assets/scenes/bottiglia.jpg" alt="" fetchpriority="high">
-    <img id="shore-open" class="backdrop shore shore-open" src="assets/scenes/bottiglia-aperta.jpg" alt="">
+    <picture>
+      <source id="shore-mobile-source" media="(max-aspect-ratio: 3/4)" srcset="assets/scenes/bottiglia-mobile.jpg">
+      <img id="shore" class="backdrop shore" src="assets/scenes/bottiglia.jpg" alt="" fetchpriority="high">
+    </picture>
+    <picture>
+      <source id="open-mobile-source" media="(max-aspect-ratio: 3/4)" srcset="assets/scenes/bottiglia-aperta-mobile.jpg">
+      <img id="shore-open" class="backdrop shore shore-open" src="assets/scenes/bottiglia-aperta.jpg" alt="">
+    </picture>
     <img id="night" class="backdrop night" src="assets/scenes/mare-notte.jpg" alt="">
     <div id="videos" class="videos"></div>
     <div class="shade"></div>
@@ -204,7 +211,7 @@
   function showInvitoFallback() { var f=document.getElementById('static-fallback'); if (f) f.hidden=false; }
   window.addEventListener('error', function(e) { if (e.filename && /(?:config|script)\.js/.test(e.filename)) showInvitoFallback(); });
 </script>
-<script src="config.js?v=10" onerror="showInvitoFallback()"></script>
-<script src="script.js?v=10" onerror="showInvitoFallback()"></script>
+<script src="config.js?v=12" onerror="showInvitoFallback()"></script>
+<script src="script.js?v=12" onerror="showInvitoFallback()"></script>
 </body>
 </html>

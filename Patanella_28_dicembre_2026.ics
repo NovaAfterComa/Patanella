@@ -17,5 +17,10 @@ DESCRIPTION:Una bottiglia è arrivata dal mare e questa volta il messaggio
  TLA
 URL:https://maps.app.goo.gl/FoxAbSmSC42Bt9TLA
 STATUS:CONFIRMED
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-P1D
+DESCRIPTION:Domani si festeggia Patanella!
+END:VALARM
 END:VEVENT
 END:VCALENDAR

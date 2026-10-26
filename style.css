@@ -802,3 +802,10 @@
 @media (max-width: 600px) {
   .welcome-action .welcome-message { font-size: clamp(11px, 3.8vw, 18px); letter-spacing:-.045em; }
 }
+
+/* V12: legibility of useful microcopy while preserving the artistic layout. */
+@media (max-width: 600px) {
+  .welcome-copy .eyebrow, .scene-heading .eyebrow, .poetic .eyebrow,
+  .invitation .eyebrow, .micro, .chapter { font-size: 10px; }
+  .brand span { font-size: 10px; }
+}
