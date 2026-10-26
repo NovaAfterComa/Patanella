@@ -1,3 +1,12 @@
+# V24 - Testi e scadenza della conferma
+
+- Rimosse le etichette visibili La scoperta, Un piccolo segreto per te, Le prove e Qualche anno dopo.
+- Indicatori della storia privi dei due titoli rimossi, mantenendo le barre di avanzamento.
+- Corretta la frase finale in prima persona: E non sono ancora diventata una persona seria.
+- Aggiunta la scadenza della conferma: entro e non oltre il 7 dicembre 2026.
+- Aggiornati i riferimenti cache per CSS, JS e configurazione.
+- Nessuna modifica a foto, audio, glow, animazioni o easter egg.
+
 # V23 - Glow discreto sulla luna
 
 - Aggiunto un piccolo alone dorato pulsante sulla luna della scena finale.

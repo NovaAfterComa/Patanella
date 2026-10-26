@@ -1,4 +1,4 @@
-# Invito Patanella - V22
+# Invito Patanella - V24
 
 Un invito interattivo per la festa del 28 dicembre 2026 alle 20:30.
 Il sito e' statico e pronto per GitHub Pages.
@@ -128,3 +128,11 @@ Nella schermata finale premi e tieni premuta la luna presente nella fotografia p
 - La pressione di cinque secondi, la stella cadente e la Polaroid restano invariati.
 - Per le preferenze di movimento ridotto il glow e statico.
 - CSS con cache-busting v23.
+
+## Novita V24
+
+- Eliminate le etichette visibili «La scoperta», «Un piccolo segreto per te», «Le prove» e «Qualche anno dopo».
+- Rimosse anche le ultime due etichette dagli indicatori di avanzamento senza togliere le barre.
+- Cambiata la frase in «E non sono ancora diventata una persona seria.».
+- La conferma e' gradita entro e non oltre il 7 dicembre 2026, come indicato nella schermata finale e nel fallback.
+- Versione aggiornata a `v=24` per CSS e JavaScript.

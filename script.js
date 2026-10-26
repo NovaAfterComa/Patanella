@@ -8,12 +8,12 @@
     scena1: 'Ogni storia ha un inizio…', macchina1: 'La protagonista di questa storia?',
     macchina2: 'Una ragazza che non ha nessuna intenzione di crescere davvero…',
     complici: ['Poi gli anni sono passati…', 'E qualcosa è cambiato…', 'Ma non troppo.'],
-    epico1: 'Trent’anni di sogni, risate e persone speciali.', epico2: 'E non è ancora diventata una persona seria.',
+    epico1: 'Trent’anni di sogni, risate e persone speciali.', epico2: 'E non sono ancora diventata una persona seria.',
     citazione: 'Le cose belle non si contano negli anni, ma nei momenti che ci fanno brillare gli occhi.',
     finale: 'La storia continua… e stavolta voglio viverla con voi!'
   }, C.testi);
   const defaults = {messaggio:6, segreto:13, prove:9, complici:10, epico:9, citazione:6};
-  const labels = ['Il messaggio', 'Il segreto', 'Le prove', 'Qualche anno dopo', 'Il prossimo capitolo', 'I momenti che contano'];
+  const labels = ['Il messaggio', 'Il segreto', '', '', 'Il prossimo capitolo', 'I momenti che contano'];
   let total = 0;
   const timeline = Object.keys(defaults).map((name, i) => {
     const requested = Number((C.durate || {})[name]);

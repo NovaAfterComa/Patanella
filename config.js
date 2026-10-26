@@ -60,7 +60,7 @@ window.INVITO_CONFIG = {
     macchina2: "Una ragazza che non ha nessuna intenzione di crescere davvero…",
     complici: ["Poi gli anni sono passati…", "E qualcosa è cambiato…", "Ma non troppo."],
     epico1: "Trent’anni di sogni, risate e persone speciali.",
-    epico2: "E non è ancora diventata una persona seria.",
+    epico2: "E non sono ancora diventata una persona seria.",
     citazione: "Le cose belle non si contano negli anni, ma nei momenti che ci fanno brillare gli occhi.",
     finale: "La storia continua… e stavolta voglio viverla con voi!"
   }

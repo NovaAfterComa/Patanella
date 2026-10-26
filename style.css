@@ -913,3 +913,17 @@
   .moon-hold.moon-activated::before,.moon-star.falling {animation-duration:.05s!important;}
   .moon-secret-inner {opacity:1;transform:none!important;}
 }
+
+/* V24 - scritte superflue eliminate, scadenza RSVP leggibile. */
+#messaggio .opening-copy h2,
+#prove .scene-heading h2,
+#complici .scene-heading h2 { margin-top: 0; }
+.rsvp-deadline {
+  display: block;
+  margin-top: 5px;
+  font-size: .95em;
+  color: #f2d5a6;
+  font-weight: 600;
+  letter-spacing: .015em;
+  line-height: 1.45;
+}
