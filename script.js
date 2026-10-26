@@ -79,7 +79,7 @@
     } else {
       const first = parts.slice(0, 3).join(' ');
       const middle = parts.slice(3, -2).join(' ');
-      const last = parts.slice(-2).join(' ');
+      const last = parts.slice(Math.max(3, parts.length - 2)).join(' ');
       title.append(document.createTextNode(first));
       if (middle) { title.append(document.createElement('br'), document.createTextNode(middle)); }
       title.append(document.createElement('br'));
@@ -90,13 +90,10 @@
   function setPhotographicFraming() {
     // <picture> chooses the correct source, avoiding a desktop download on mobile.
     const main = backgrounds.messaggio || 'assets/scenes/bottiglia.jpg';
-    const open = backgrounds.apertura || main;
     const mainMobile = backgrounds.messaggioMobile || main;
-    const openMobile = backgrounds.aperturaMobile || open;
     if ($('shore').getAttribute('src') !== main) $('shore').src = main;
-    if ($('shore-open').getAttribute('src') !== open) $('shore-open').src = open;
     if ($('shore-mobile-source').getAttribute('srcset') !== mainMobile) $('shore-mobile-source').srcset = mainMobile;
-    if ($('open-mobile-source').getAttribute('srcset') !== openMobile) $('open-mobile-source').srcset = openMobile;
+    // The open-bottle image is queued only after the main photograph loads.
   }
   setPhotographicFraming();
 
@@ -129,7 +126,10 @@
     bottleFrame.style.width = w.toFixed(2) + 'px';
     bottleFrame.style.height = h.toFixed(2) + 'px';
     bottleGuide.style.left = (x + w * .51).toFixed(2) + 'px';
-    bottleGuide.style.top = (y - 17).toFixed(2) + 'px';
+    // On very short 320px-wide phones, bring the callout closer to the bottle
+    // so it doesn't touch the last line of the headline above it.
+    const tinyPortrait = stageRect.width <= 350 && stageRect.height <= 610;
+    bottleGuide.style.top = (y - (tinyPortrait ? -7 : 17)).toFixed(2) + 'px';
   }
   // The bottle backdrop drifts with CSS. 70ms is enough to keep the ellipse aligned.
   let bottleTrackingTimer = setInterval(() => {
@@ -144,7 +144,6 @@
   addEventListener('resize', positionBottleHitbox);
   if ('ResizeObserver' in window) new ResizeObserver(positionBottleHitbox).observe(stage);
   positionBottleHitbox();
-  $('night').src=backgrounds.notte;
   $('shore-open').onerror=()=>{$('shore-open').style.display='none';};
   $('night').onerror=()=>{stage.classList.add('night-missing');};
   if (backgrounds.carta) stage.style.setProperty('--paper', 'url(' + JSON.stringify(backgrounds.carta) + ')');
@@ -160,7 +159,10 @@
   function makePhoto(data, index, container, stamp, fallback) {
     const figure=document.createElement('figure'); figure.className='pol';
     const image=new Image(); image.alt=data.etichetta || data.didascalia || 'Un ricordo'; image.decoding='async';
-    image.src=data.src || fallback; image.style.objectPosition=data.posizione || '50% 50%';
+    // Create the Polaroid now, but download its image only after #shore loads.
+    image.dataset.deferredSrc=data.src || fallback;
+    image.fetchPriority='low';
+    image.style.objectPosition=data.posizione || '50% 50%';
     image.onerror=()=>{image.onerror=null; if(image.getAttribute('src')!==fallback) image.src=fallback;};
     figure.append(image);
     const caption=document.createElement('figcaption'); caption.textContent=data.didascalia || '\u00a0'; figure.append(caption);
@@ -177,6 +179,35 @@
     fig.style.setProperty('--dy', ((i%3)*20-10)+'px');
     return fig;
   });
+  // Give the first photograph exclusive priority. Start downloading the later
+  // scenes and Polaroids after #shore finishes (or errors), with a ready-cache
+  // fast path for browsers that loaded it before this script ran.
+  let secondaryMediaQueued=false;
+  function loadSecondaryMedia() {
+    if (secondaryMediaQueued) return;
+    secondaryMediaQueued=true;
+    const open = backgrounds.apertura || backgrounds.messaggio || 'assets/scenes/bottiglia-aperta.jpg';
+    const mobileSource = $('open-mobile-source');
+    const openImage = $('shore-open');
+    mobileSource.srcset = backgrounds.aperturaMobile || open;
+    openImage.src = open;
+    if (backgrounds.notte) $('night').src=backgrounds.notte;
+    for (const photo of [...kids, ...friends]) {
+      const img=photo.querySelector('img');
+      if (img?.dataset.deferredSrc) {
+        img.src=img.dataset.deferredSrc;
+        delete img.dataset.deferredSrc;
+      }
+    }
+  }
+  const mainImage = $('shore');
+  if (mainImage.complete) {
+    requestAnimationFrame(loadSecondaryMedia);
+  } else {
+    mainImage.addEventListener('load', loadSecondaryMedia, {once:true});
+    mainImage.addEventListener('error', loadSecondaryMedia, {once:true});
+  }
+
   const lastBarProgress=timeline.map(()=>null);
   const bars=timeline.map(()=>{
     const track=document.createElement('span'), bar=document.createElement('i');track.append(bar);$('progress').append(track);return bar;
@@ -377,8 +408,8 @@
     countdownNode.hidden = true;
   }
 
-  /* Images for the story are loaded by their IMG elements. Avoid downloading
-     duplicate desktop/mobile variants with a separate eager preload. */
+  /* Secondary images are deferred until the first bottle photograph has
+     loaded. The <picture> elements select one orientation per device. */
   const essentialFallback = $('static-fallback');
   if (essentialFallback) essentialFallback.hidden = true;
 })();

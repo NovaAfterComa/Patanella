@@ -1,4 +1,4 @@
-# Invito Patanella - V12
+# Invito Patanella - V17
 
 Un invito interattivo per la festa del 28 dicembre 2026 alle 20:30.
 Il sito e' statico e pronto per GitHub Pages.
@@ -47,3 +47,35 @@ con licenza d'uso compatibile e un test visivo del rendering.
   della sua cache; l'immagine e' in `assets/anteprima-whatsapp.jpg`.
 
 Vedi `CHANGELOG.md` per l'elenco delle modifiche.
+
+## Novita V13
+
+- Corretto il titolo introduttivo configurabile con esattamente quattro parole.
+- Le immagini successive (bottiglia aperta, mare notturno, Polaroid) si avviano
+  dopo il caricamento della fotografia iniziale.
+- Indicazione sulla bottiglia piu vicina alla foto sui display 320 x 568 px.
+- Cache-busting CSS/JS aggiornato alla versione 13.
+
+## Novita V14
+
+- Corretto il caricamento differito della versione mobile della bottiglia aperta: il percorso ora proviene da `backgrounds.aperturaMobile`, con fallback all'immagine desktop.
+- Ripristinato il caricamento delle scene notturne e delle fotografie, che prima veniva interrotto da `ReferenceError`.
+- Cache-busting CSS e JS aggiornato alla versione 14.
+
+## Novita V15
+
+- Il messaggio WhatsApp del pulsante Conferma include il campo per allergie/intolleranze alimentari.
+- Il testo di conferma nel collegamento HTML e in `config.js` e allineato.
+- Aggiornata la cache della sola configurazione a `v=15`, senza modificare musica, grafica o script.
+
+## Novita V16
+
+- Eliminata data e ora dal messaggio WhatsApp di declino.
+- Allineati i link WhatsApp statici ai messaggi della configurazione, anche senza JavaScript.
+- Cache della configurazione aggiornata a `v=16`; immagini, audio, CSS e logica JS invariati.
+
+## Novita V17
+
+- Conferma WhatsApp con segnaposto breve `Allergie/intolleranze: ___`.
+- Messaggio Declina senza data e ora, come in V16.
+- Aggiornati tutti i link WhatsApp nell'HTML e la cache della configurazione a `v=17`.

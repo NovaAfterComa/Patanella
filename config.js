@@ -15,8 +15,8 @@ window.INVITO_CONFIG = {
   indirizzo: "", // Il link indica il luogo; non inventiamo il nome o la via
   mappa: "https://maps.app.goo.gl/FoxAbSmSC42Bt9TLA",
   whatsapp: "393472343616",
-  messaggioConferma: "Ciao Patanella! Confermo che ci sarò alla tua festa del 28 dicembre 2026 alle 20:30! 🎉🥂",
-  messaggioDeclina: "Ciao Patanella! Mi dispiace, purtroppo non ci sarò alla tua festa del 28 dicembre 2026 alle 20:30. Ti auguro una bellissima serata! ❤️",
+  messaggioConferma: "Ciao Patanella! 🎉🥂\nConfermo che ci sarò alla tua festa!\n\n🍽️ Allergie/intolleranze: ___",
+  messaggioDeclina: "Ciao Patanella! Mi dispiace, purtroppo non ci sarò alla tua festa. Ti auguro una bellissima serata! ❤️",
   monogramma: "assets/monogramma-trasparente.png",
 
   // Scene fotografiche incluse. Puoi lasciarle così.

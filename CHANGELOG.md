@@ -1,3 +1,37 @@
+## V17 - Conferma WhatsApp piu semplice
+
+- Sostituito il campo lungo per allergie con `Allergie/intolleranze: ___`.
+- Mantenuta la rinuncia senza data e ora dalla V16.
+- Sincronizzati tutti i link WhatsApp statici e di fallback.
+- Aggiornato `config.js?v=17`.
+
+## V16 - Messaggio Declina WhatsApp
+
+- Rimossi data e orario dal messaggio precompilato di rinuncia.
+- Aggiornati il link principale e i link della versione essenziale nell'HTML.
+- I link statici di conferma ora coincidono con il testo di `config.js`.
+- Riferimento configurazione aggiornato a `v=16`.
+
+## V15 - Messaggio di conferma WhatsApp
+
+- Modificato solamente il testo WhatsApp di Conferma per chiedere eventuali allergie/intolleranze alimentari.
+- Aggiornati `config.js` e il link di fallback nell'HTML; `config.js?v=15`.
+- Nessun testo aggiuntivo nel sito, nessuna modifica al pulsante Declina.
+
+# V14 - Correzione caricamento immagini
+
+- Risolto `ReferenceError: openMobile is not defined` in `loadSecondaryMedia()`.
+- La sorgente mobile di bottiglia aperta usa `backgrounds.aperturaMobile || open`.
+- Caricamento di bottiglia aperta, mare notturno e Polaroid riattivato su mobile e desktop.
+- Cache-busting aggiornato a v14.
+
+# V13 - Correzioni mirate
+
+- Titolo personalizzato di quattro parole: niente duplicazioni.
+- Caricamento differito delle immagini delle scene successive dopo la bottiglia iniziale.
+- Richiamo sulla bottiglia ribassato soltanto sui telefoni molto piccoli (es. 320 x 568).
+- Cache-busting v13; monogramma invariato.
+
 # Changelog
 
 ## V12 - 26 ottobre 2026
