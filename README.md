@@ -1,4 +1,4 @@
-# Invito Patanella - V17
+# Invito Patanella - V20
 
 Un invito interattivo per la festa del 28 dicembre 2026 alle 20:30.
 Il sito e' statico e pronto per GitHub Pages.
@@ -15,7 +15,7 @@ Il sito e' statico e pronto per GitHub Pages.
 ## Personalizzare l'invito
 
 - `config.js`: nomi, data, contatti, testi, musica, immagini e durata delle scene.
-- `assets/photos/`: sostituisci i JPG dimostrativi con foto tue usando gli stessi nomi.
+- `assets/photos/`: le prime tre Polaroid usano ora le fotografie personali 1, 2 e 3 caricate dall’utente; le altre tre Polaroid usano le fotografie personali 6, 5 e 7 (versione adulta).
 - `assets/scenes/`: immagini fotografiche delle diverse scene (desktop e mobile).
 - `assets/monogramma-trasparente.png`: simbolo RD, con trasparenza.
 - `assets/anteprima-whatsapp.jpg`: immagine mostrata quando il link viene condiviso.
@@ -79,3 +79,34 @@ Vedi `CHANGELOG.md` per l'elenco delle modifiche.
 - Conferma WhatsApp con segnaposto breve `Allergie/intolleranze: ___`.
 - Messaggio Declina senza data e ora, come in V16.
 - Aggiornati tutti i link WhatsApp nell'HTML e la cache della configurazione a `v=17`.
+
+## Novita V18
+
+- Nella pergamena: «Una ragazza» al posto di «Una certa ragazza».
+- Sostituite le prime tre Polaroid con le tre foto fornite, nell'ordine 1, 2, 3.
+- Rimossi tutti i timbri dalle tre Polaroid d'infanzia.
+- Ritaglio calibrato per il formato quadrato delle Polaroid, senza alterare i file originali.
+- Cache-busting di `config.js` e `script.js` aggiornato alla V18.
+
+Le fotografie personali resteranno pubblicamente accessibili tramite GitHub Pages.
+
+## Novita V19: il prima e il dopo
+
+- La seconda carrellata si intitola **Qualche anno dopo** (al posto di I complici).
+- Le 3 fotografie dell'eta adulta sono `assets/photos/adulta-01.jpg`, `adulta-02.jpg`, `adulta-03.jpg`, in ordine 4, 5, 6.
+- Una frase in alto per ciascuna foto: "Poi gli anni sono passati…", "E qualcosa è cambiato…", "Ma non troppo.".
+- Le didascalie delle foto: "Il mare, ancora.", "Le idee, ancora più chiare.", "Piccola peste, edizione 30.".
+- Rimossi i timbri dalle tre Polaroid adulte; le transizioni sono rimaste invariate.
+- Testo alto e fotografia sono collegati allo stesso indice, quindi cambiano sempre insieme.
+- Cache aggiornata alla V19 per script, configurazione e CSS.
+
+Nota: GitHub Pages rende pubblicamente accessibili le sei fotografie personali a chiunque conosca l'URL dei file.
+
+## Novita V20: nuove foto, stesso racconto
+
+- Il carosello «Qualche anno dopo» mostra le immagini originali nell'ordine **6, 5, 7**.
+- Foto 1 (ex 6): «Poi gli anni sono passati…» / «Il mare, ancora.».
+- Foto 2 (ex 5): «E qualcosa è cambiato…» / «Le idee, ancora più chiare.».
+- Foto 3 (nuova 7): «Ma non troppo.» / «Piccola peste, edizione 30.».
+- Nessuna modifica ai testi, alla musica, ai timbri o alle animazioni.
+- Le foto sostituite hanno query `?v=20` per evitare la vecchia cache dei browser.

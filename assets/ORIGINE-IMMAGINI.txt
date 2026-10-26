@@ -1,10 +1,12 @@
 ORIGINE DELLE IMMAGINI
 
-Il monogramma.jpg proviene dal progetto originale fornito dall’utente.
-Tutti i file in photos/ e scenes/ sono immagini sintetiche fotorealistiche
-create per questo invito con lo strumento integrato image_gen (non CLI/API).
-Le foto di persone sono segnaposto immaginari da sostituire con le proprie.
-I file finali sono JPEG ottimizzati per il sito; non richiedono servizi remoti.
+Le fotografie assets/photos/bambina-01.jpg, bambina-02.jpg, bambina-03.jpg
+provengono dalle immagini personali 1.jpeg, 2.jpeg, 3.jpeg fornite dall'utente.
+Le fotografie assets/photos/adulta-01.jpg, adulta-02.jpg, adulta-03.jpg
+provengono rispettivamente dalle immagini 6.jpeg, 5.jpeg e 7.jpeg fornite dall'utente.
+Sono inserite in originale, senza ritocco; il ritaglio delle Polaroid e' effettuato via CSS.
+Gli sfondi di assets/scenes/ sono scene fotorealistiche precedentemente create.
+Le fotografie personali non devono essere riutilizzate al di fuori del contesto autorizzato.
 
 DIREZIONE VISIVA E PROMPT
 
@@ -39,32 +41,12 @@ Fotografia dall’alto di un foglio bianco avorio di carta di cotone,
 fibre, bordi irregolari, leggere pieghe, luce laterale morbida. Centro
 completamente libero per il testo HTML. Nessun oggetto decorativo.
 
-photos/bambina-01.jpg
-Fotografia di famiglia anni Novanta: bambina immaginaria con capelli
-castani che costruisce un castello di sabbia su una spiaggia italiana.
-Luce naturale, imperfezioni e grana di una scansione analogica.
+photos/bambina-01.jpg, photos/bambina-02.jpg, photos/bambina-03.jpg
+Fotografie personali dell'infanzia fornite dall'utente il 26 ottobre 2026.
+Sono usate nell'ordine 1, 2, 3; non sono fotografie generate.
 
-photos/bambina-02.jpg
-Fotografia di famiglia primi anni Duemila: bambina immaginaria con capelli
-castani che soffia sulle candeline in una cucina italiana. Illuminazione
-calda e leggero flash, aspetto spontaneo, senza cornici o scritte.
+photos/bambina-01.jpg, photos/bambina-02.jpg, photos/bambina-03.jpg
+Tre fotografie personali d'infanzia in ordine 1, 2, 3.
 
-photos/bambina-03.jpg
-Fotografia analogica di una bambina immaginaria che ride con un gelato
-sul lungomare. Capelli castani, maglietta a righe e salopette. Mare sullo
-sfondo, pelle naturale, colori di una scansione fotografica.
-
-photos/amiche.jpg
-Due amiche adulte immaginarie di circa trent’anni che ridono sul mare
-al tramonto. Capelli al vento, pelle naturale, abiti semplici, momento
-spontaneo con aspetto da pellicola 35 mm. Nessuna cornice o scritta.
-
-photos/cagnolona.jpg
-Golden retriever femmina adulta sulla sabbia bagnata, mare sullo sfondo.
-Pelo dorato umido, occhi morbidi, ripresa bassa, luce naturale pomeridiana,
-realismo di peli, baffi e sabbia.
-
-photos/festa.jpg
-Quattro amici adulti immaginari che brindano a cena su una terrazza
-mediterranea al crepuscolo. Piccole luci, piatti sul tavolo, sorriso
-spontaneo, fotografia analogica con flash e colori caldi.
+photos/adulta-01.jpg, photos/adulta-02.jpg, photos/adulta-03.jpg
+Tre fotografie personali da adulta nell'ordine 6, 5, 7.

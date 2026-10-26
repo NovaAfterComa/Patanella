@@ -1,3 +1,32 @@
+## V20 - Riordino del carosello delle foto adulte
+
+- La precedente foto 6 diventa la prima (al posto della 4).
+- La foto 5 resta la seconda.
+- La nuova foto 7 diventa la terza (al posto della 6).
+- Aggiornate le descrizioni accessibili delle foto e i ritagli.
+- Nessuna modifica alle tre frasi e alle tre didascalie gia approvate.
+- Cache-busting V20 per CSS, JavaScript, configurazione e foto sostituite.
+
+## V19 - Il prima e dopo nelle Polaroid
+
+- Tre nuove fotografie adulte fornite dall'utente (4, 5, 6), in ordine.
+- Didascalie: "Il mare, ancora.", "Le idee, ancora più chiare.", "Piccola peste, edizione 30.".
+- Titolo della seconda carrellata: "Qualche anno dopo".
+- Tre frasi sincronizzate con la foto corrente: "Poi gli anni sono passati…",
+  "E qualcosa è cambiato…", "Ma non troppo.".
+- Nessun timbro sulle foto adulte.
+- Cache CSS/JS/config aggiornata alla V19.
+
+## V18 - Polaroid personali e pergamena
+
+- Pergamena: rimossa la parola «certa» dalla descrizione della protagonista.
+- Prime tre Polaroid: inserite le fotografie 1.jpeg, 2.jpeg, 3.jpeg
+  nell'ordine indicato, mantenendo i percorsi JPEG preesistenti.
+- Rimossi i timbri «Testardaggine: confermata», «Maturità: non pervenuta»
+  e «Potenziale di guai: elevato» senza cambiare l'animazione fotografica.
+- Regolate soltanto le coordinate di ritaglio delle immagini nelle cornici.
+- Cache aggiornata per `config.js` e `script.js`.
+
 ## V17 - Conferma WhatsApp piu semplice
 
 - Sostituito il campo lungo per allergie con `Allergie/intolleranze: ___`.

@@ -6,14 +6,14 @@
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const text = Object.assign({
     scena1: 'Ogni storia ha un inizio…', macchina1: 'La protagonista di questa storia?',
-    macchina2: 'Una certa ragazza che non ha nessuna intenzione di crescere davvero…',
-    complici: ['Anni di amicizia…', 'Segreti mantenuti…', 'Serate finite troppo tardi…', 'E prove che sarebbe meglio distruggere.'],
+    macchina2: 'Una ragazza che non ha nessuna intenzione di crescere davvero…',
+    complici: ['Poi gli anni sono passati…', 'E qualcosa è cambiato…', 'Ma non troppo.'],
     epico1: 'Trent’anni di sogni, risate e persone speciali.', epico2: 'E non è ancora diventata una persona seria.',
     citazione: 'Le cose belle non si contano negli anni, ma nei momenti che ci fanno brillare gli occhi.',
     finale: 'La storia continua… e stavolta voglio viverla con voi!'
   }, C.testi);
   const defaults = {messaggio:6, segreto:13, prove:9, complici:10, epico:9, citazione:6};
-  const labels = ['Il messaggio', 'Il segreto', 'Le prove', 'I complici', 'Il prossimo capitolo', 'I momenti che contano'];
+  const labels = ['Il messaggio', 'Il segreto', 'Le prove', 'Qualche anno dopo', 'Il prossimo capitolo', 'I momenti che contano'];
   let total = 0;
   const timeline = Object.keys(defaults).map((name, i) => {
     const requested = Number((C.durate || {})[name]);
@@ -150,9 +150,9 @@
 
   const kidFallbacks = [1,2,3].map((n)=>({src:'assets/photos/bambina-0'+n+'.jpg',didascalia:'Un ricordo da conservare.'}));
   const friendFallbacks = [
-    {src:'assets/photos/amiche.jpg',didascalia:'Le mie persone.'},
-    {src:'assets/photos/cagnolona.jpg',didascalia:'L’ospite d’onore.'},
-    {src:'assets/photos/festa.jpg',didascalia:'Un altro brindisi.'}
+    {src:'assets/photos/adulta-01.jpg',didascalia:'Il mare, ancora.'},
+    {src:'assets/photos/adulta-02.jpg',didascalia:'Le idee, ancora più chiare.'},
+    {src:'assets/photos/adulta-03.jpg',didascalia:'Piccola peste, edizione 30.'}
   ];
   const kidData = (C.fotoBambina?.length ? C.fotoBambina : kidFallbacks).slice(0,3).map(normalize);
   const friendData = (C.fotoComplici?.length ? C.fotoComplici : friendFallbacks).slice(0,10).map(normalize);
@@ -172,7 +172,7 @@
   }
   const kids=kidData.map((f,i)=>makePhoto(f,i,$('kids'),(C.timbri || [])[i],kidFallbacks[i].src));
   const friends=friendData.map((f,i)=>{
-    const fig=makePhoto(f,i,$('friends'),i===friendData.length-1?C.timbroFinale:'',friendFallbacks[i%3].src);
+    const fig=makePhoto(f,i,$('friends'),'',friendFallbacks[i%3].src);
     const sign=i%2 ? 1 : -1;
     fig.style.setProperty('--r', (sign*(4+(i%3)*2))+'deg');
     fig.style.setProperty('--dx', (sign*(74+(i%3)*8))+'%');
@@ -293,10 +293,10 @@
       const current=Math.min(friends.length-1,Math.floor(p*friends.length));
       friends.forEach((photo,i)=>{
         photo.classList.toggle('visible',i<=current);photo.classList.toggle('active-photo',i===current);
-        photo.classList.toggle('previous-photo',i<current);photo.classList.toggle('stamped',i===friends.length-1&&p>.88);
+        photo.classList.toggle('previous-photo',i<current);
       });
       const lines=Array.isArray(text.complici)?text.complici:[];
-      const line=lines[Math.min(lines.length-1,Math.floor(p*lines.length))] || '';
+      const line=lines[current] || ''; // Same index as the visible adult Polaroid.
       if($('flash').textContent!==line)$('flash').textContent=line;
     }
     if(scene.name==='epico') {

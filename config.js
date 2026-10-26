@@ -1,8 +1,7 @@
 /* =============================================================
    PERSONALIZZA QUI — non servono installazioni o compilazioni.
-   Le foto dimostrative sono già incluse: sostituisci i file in
-   assets/photos/ mantenendo i nomi, oppure cambia i percorsi qui.
-   Le persone nelle foto di prova sono generate e immaginarie.
+   Le sei Polaroid ora contengono le fotografie personali fornite.
+   Per sostituirle, mantieni i nomi in assets/photos/ o modifica i percorsi qui.
    ============================================================= */
 window.INVITO_CONFIG = {
   nome: "Rosy",
@@ -31,18 +30,19 @@ window.INVITO_CONFIG = {
 
   // Le tre foto d’infanzia. posizione regola il ritaglio (CSS object-position).
   fotoBambina: [
-    { src: "assets/photos/bambina-01.jpg", etichetta: "Da piccola, al mare", didascalia: "Il mare, da sempre.", posizione: "50% 50%" },
-    { src: "assets/photos/bambina-02.jpg", etichetta: "Un compleanno da bambina", didascalia: "Le idee erano già chiare.", posizione: "50% 50%" },
-    { src: "assets/photos/bambina-03.jpg", etichetta: "Un ricordo d’infanzia", didascalia: "Una piccola peste.", posizione: "50% 50%" }
+    { src: "assets/photos/bambina-01.jpg", etichetta: "Bambina seduta su una coperta", didascalia: "Il mare, da sempre.", posizione: "50% 20%" },
+    { src: "assets/photos/bambina-02.jpg", etichetta: "Bambina seduta sulla spiaggia", didascalia: "Le idee erano già chiare.", posizione: "50% 50%" },
+    { src: "assets/photos/bambina-03.jpg", etichetta: "Bambina che gioca nell’acqua del mare", didascalia: "Una piccola peste.", posizione: "50% 42%" }
   ],
-  timbri: ["TESTARDAGGINE: CONFERMATA", "MATURITÀ: NON PERVENUTA", "POTENZIALE DI GUAI: ELEVATO"],
-  timbroFinale: "TOP SECRET",
+  timbri: [], // Nessun timbro sulle tre Polaroid d’infanzia
+  timbroFinale: "", // Nessun timbro neppure nella seconda carrellata
 
-  // Da 1 a 10 ricordi. Puoi aggiungere voci o usare solo percorsi stringa.
+  // Seconda carrellata: il "dopo", tre foto adulte: 6, 5, 7.
+  // Il nome tecnico fotoComplici resta invariato per compatibilita con il sito.
   fotoComplici: [
-    { src: "assets/photos/amiche.jpg", didascalia: "Le mie persone.", etichetta: "Due amiche al mare" },
-    { src: "assets/photos/cagnolona.jpg", didascalia: "L’ospite d’onore.", etichetta: "La cagnolona sulla spiaggia" },
-    { src: "assets/photos/festa.jpg", didascalia: "Solo un ultimo brindisi…", etichetta: "Una serata con gli amici" }
+    { src: "assets/photos/adulta-01.jpg?v=20", didascalia: "Il mare, ancora.", etichetta: "Rosy adulta guarda il mare al tramonto", posizione: "50% 43%" },
+    { src: "assets/photos/adulta-02.jpg", didascalia: "Le idee, ancora più chiare.", etichetta: "Rosy adulta sorride durante un brindisi", posizione: "50% 39%" },
+    { src: "assets/photos/adulta-03.jpg?v=20", didascalia: "Piccola peste, edizione 30.", etichetta: "Rosy adulta salta felice sulla spiaggia", posizione: "50% 44%" }
   ],
 
   // Video REALI opzionali: MP4, senza audio, loop. Hanno precedenza
@@ -57,8 +57,8 @@ window.INVITO_CONFIG = {
     introduzione: "Ci sono storie che nascono dal mare…",
     scena1: "Ogni storia ha un inizio…",
     macchina1: "La protagonista di questa storia?",
-    macchina2: "Una certa ragazza che non ha nessuna intenzione di crescere davvero…",
-    complici: ["Anni di amicizia…", "Segreti mantenuti…", "Serate finite troppo tardi…", "E prove che sarebbe meglio distruggere."],
+    macchina2: "Una ragazza che non ha nessuna intenzione di crescere davvero…",
+    complici: ["Poi gli anni sono passati…", "E qualcosa è cambiato…", "Ma non troppo."],
     epico1: "Trent’anni di sogni, risate e persone speciali.",
     epico2: "E non è ancora diventata una persona seria.",
     citazione: "Le cose belle non si contano negli anni, ma nei momenti che ci fanno brillare gli occhi.",
