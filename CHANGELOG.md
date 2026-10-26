@@ -1,3 +1,9 @@
+## V21 — Segreto della luna (26 ottobre 2026)
+- Pressione continua di 5 secondi sulla luna della scena finale.
+- Bagliore dorato, stella cadente e Polaroid nascosta con foto 8.
+- Supporto touch, mouse, tastiera, uscita e accessibilità.
+- Invariata la restante storia della V20.
+
 ## V20 - Riordino del carosello delle foto adulte
 
 - La precedente foto 6 diventa la prima (al posto della 4).

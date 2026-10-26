@@ -30,7 +30,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20">
+  <link rel="stylesheet" href="style.css?v=21">
 </head>
 <body>
 <main id="stage" class="stage" data-scene="welcome">
@@ -121,6 +121,10 @@
   </section>
 
   <section id="finale" class="panel final-panel" aria-label="L’invito alla festa" inert>
+    <!-- Segreto nascosto: tieni premuta per cinque secondi la luna della foto notturna. -->
+    <button id="moon-hold" class="moon-hold" type="button" hidden aria-label="Tieni premuta la luna per cinque secondi per scoprire un segreto">
+      <svg class="moon-progress" viewBox="0 0 80 80" aria-hidden="true"><circle class="moon-progress-track" cx="40" cy="40" r="34"/><circle class="moon-progress-fill" cx="40" cy="40" r="34"/></svg>
+    </button>
     <div class="invitation">
       <p class="eyebrow">Il prossimo capitolo, insieme</p>
       <img id="mono" class="final-monogram" alt="" hidden>
@@ -183,6 +187,22 @@
     </div>
   </section>
 
+  <!-- Si apre soltanto dopo la pressione continua di 5 secondi sulla luna. -->
+  <div id="moon-star" class="moon-star" aria-hidden="true" hidden>✦</div>
+  <section id="moon-secret" class="moon-secret" role="dialog" aria-modal="true" aria-labelledby="moon-secret-title" hidden>
+    <div class="moon-secret-veil" aria-hidden="true"></div>
+    <button id="moon-secret-close" type="button" class="moon-secret-close" aria-label="Chiudi la fotografia segreta">×</button>
+    <div class="moon-secret-inner">
+      <p class="moon-secret-kicker">UN ULTIMO PICCOLO SEGRETO ✦</p>
+      <figure class="moon-polaroid">
+        <img src="assets/photos/polaroid-segreta-08.jpg" alt="La cagnolona seduta davanti al mare al tramonto" width="900" height="1200" loading="lazy" decoding="async">
+        <figcaption>Ospite d’onore, naturalmente. <span aria-hidden="true">✦</span></figcaption>
+      </figure>
+      <h2 id="moon-secret-title">Il segreto della luna</h2>
+      <p class="moon-secret-copy">Cinque secondi di pazienza? Da te non me l’aspettavo.<br>Hai trovato il segreto della luna…</p>
+    </div>
+  </section>
+
   <footer class="story-footer" id="story-footer" hidden>
     <span id="chapter" class="chapter" aria-live="polite"></span>
     <div id="progress" class="progress" role="progressbar" aria-label="Avanzamento della storia" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
@@ -211,7 +231,7 @@
   function showInvitoFallback() { var f=document.getElementById('static-fallback'); if (f) f.hidden=false; }
   window.addEventListener('error', function(e) { if (e.filename && /(?:config|script)\.js/.test(e.filename)) showInvitoFallback(); });
 </script>
-<script src="config.js?v=20" onerror="showInvitoFallback()"></script>
-<script src="script.js?v=20" onerror="showInvitoFallback()"></script>
+<script src="config.js?v=21" onerror="showInvitoFallback()"></script>
+<script src="script.js?v=21" onerror="showInvitoFallback()"></script>
 </body>
 </html>

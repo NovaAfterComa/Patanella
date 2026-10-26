@@ -23,6 +23,114 @@
   let elapsed = 0, lastTime = null, started = false, paused = false, muted = false, finished = false;
   let activeScene = 'welcome', activeIndex = -1, lastPercent = -1, frameId = 0;
   const panels = [...document.querySelectorAll('.panel')];
+
+  /* Luna segreta nella scena finale: il bersaglio segue la luna *fotografata*
+     (object-fit cover, object-position e movimento lento dell'immagine inclusi). */
+  const moonButton = $('moon-hold');
+  const moonSecret = $('moon-secret');
+  const moonStar = $('moon-star');
+  const moonClose = $('moon-secret-close');
+  const moonNightImage = $('night');
+  let moonHoldTimer = null, moonHoldStart = 0, moonPointer = null;
+  let moonTrackingTimer = null, moonSequenceTimer = null, moonRevealed = false;
+  let moonPreviousFocus = null;
+  const MOON_DELAY = 5000;
+  // Coordinate misurate sulla foto originale 1536 x 1024.
+  const moonPixel = {x:1117, y:198};
+  function positionMoonButton() {
+    if (activeScene !== 'finale' || !moonNightImage.naturalWidth || !moonNightImage.naturalHeight) return;
+    const rect=moonNightImage.getBoundingClientRect();
+    const stageRect=stage.getBoundingClientRect();
+    const scale=Math.max(rect.width/moonNightImage.naturalWidth,rect.height/moonNightImage.naturalHeight);
+    const cropX=(rect.width - moonNightImage.naturalWidth*scale)*.72;
+    const cropY=(rect.height - moonNightImage.naturalHeight*scale)*.50;
+    const x=rect.left-stageRect.left+cropX+moonPixel.x*scale;
+    const y=rect.top-stageRect.top+cropY+moonPixel.y*scale;
+    moonButton.style.left=x.toFixed(2)+'px';
+    moonButton.style.top=y.toFixed(2)+'px';
+    return {x,y};
+  }
+  function moonTracking(on) {
+    if(moonTrackingTimer!==null){clearInterval(moonTrackingTimer);moonTrackingTimer=null;}
+    if(on) { positionMoonButton(); moonTrackingTimer=setInterval(()=>{ if(!document.hidden && !moonRevealed) positionMoonButton(); },120); }
+  }
+  function cancelMoonHold() {
+    if(moonHoldTimer!==null){clearTimeout(moonHoldTimer);moonHoldTimer=null;}
+    moonHoldStart=0; moonPointer=null;
+    moonButton.classList.remove('holding');
+  }
+  function dismissMoonSecret() {
+    if(moonSequenceTimer!==null){clearTimeout(moonSequenceTimer);moonSequenceTimer=null;}
+    moonSecret.classList.remove('open');moonSecret.hidden=true;
+    $('finale').inert=false;
+    moonButton.inert=false;
+    moonButton.classList.remove('moon-activated');
+    moonStar.hidden=true; moonStar.classList.remove('falling');
+    moonRevealed=false;
+    if(activeScene==='finale'){moonTracking(true);(moonPreviousFocus?.isConnected?moonPreviousFocus:moonButton).focus({preventScroll:true});}
+  }
+  function revealMoonPhoto() {
+    if(activeScene!=='finale' || document.hidden) return;
+    moonSecret.hidden=false;
+    $('finale').inert=true; // Non navigare dietro la Polaroid aperta.
+    moonButton.inert=false;
+    moonPreviousFocus=document.activeElement;
+    moonSecret.classList.add('open');
+    moonClose.focus({preventScroll:true});
+    $('status').textContent='Hai trovato il segreto della luna: una Polaroid speciale!';
+  }
+  function unlockMoonSecret() {
+    cancelMoonHold();
+    moonRevealed=true;
+    moonTracking(false);
+    const center=positionMoonButton() || {x:innerWidth*.7,y:innerHeight*.19};
+    moonButton.classList.add('moon-activated');
+    moonStar.hidden=false;moonStar.classList.remove('falling');
+    moonStar.style.setProperty('--star-x',center.x+'px');
+    moonStar.style.setProperty('--star-y',center.y+'px');
+    moonStar.style.setProperty('--star-dx',(stage.clientWidth*.5-center.x)+'px');
+    moonStar.style.setProperty('--star-dy',(stage.clientHeight*.48-center.y)+'px');
+    // Restart CSS animation reliably if the secret is found a second time.
+    void moonStar.offsetWidth;
+    moonStar.classList.add('falling');
+    moonSequenceTimer=setTimeout(()=>{moonSequenceTimer=null;revealMoonPhoto();},reduced?180:1120);
+  }
+  function beginMoonHold(pointerId) {
+    if(activeScene!=='finale'||moonRevealed||document.hidden||moonHoldTimer!==null) return;
+    moonPointer=pointerId;
+    moonHoldStart=performance.now();
+    moonButton.classList.remove('holding'); void moonButton.offsetWidth;
+    moonButton.classList.add('holding');
+    moonHoldTimer=setTimeout(()=>{
+      moonHoldTimer=null;
+      if(moonHoldStart && performance.now()-moonHoldStart>=MOON_DELAY-20) unlockMoonSecret();
+      else cancelMoonHold();
+    },MOON_DELAY);
+  }
+  moonButton.addEventListener('pointerdown',e=>{
+    if(!e.isPrimary||e.button!==0)return;
+    e.preventDefault(); beginMoonHold(e.pointerId);
+  });
+  for(const name of ['pointerup','pointercancel','pointerleave'])moonButton.addEventListener(name,e=>{
+    if(moonPointer===e.pointerId)cancelMoonHold();
+  });
+  moonButton.addEventListener('contextmenu',e=>e.preventDefault());
+  moonButton.addEventListener('keydown',e=>{
+    if((e.key===' '||e.key==='Enter')&&!e.repeat){e.preventDefault();beginMoonHold('keyboard');}
+  });
+  moonButton.addEventListener('keyup',e=>{
+    if((e.key===' '||e.key==='Enter')&&moonPointer==='keyboard'){e.preventDefault();cancelMoonHold();}
+  });
+  moonButton.addEventListener('blur',()=>{if(moonPointer==='keyboard')cancelMoonHold();});
+  moonClose.addEventListener('click',dismissMoonSecret);
+  moonSecret.addEventListener('click',e=>{if(e.target===moonSecret||e.target.classList.contains('moon-secret-veil'))dismissMoonSecret();});
+  document.addEventListener('keydown',e=>{
+    if(!moonSecret.hidden && e.key==='Escape'){e.preventDefault();dismissMoonSecret();}
+    if(!moonSecret.hidden && e.key==='Tab'){e.preventDefault();moonClose.focus({preventScroll:true});}
+  });
+  moonNightImage.addEventListener('load',positionMoonButton);
+  addEventListener('resize',positionMoonButton);
+
   const clamp = n => Math.max(0, Math.min(1, n));
   const normalize = f => typeof f === 'string' ? {src:f} : (f || {});
   const fill = s => String(s || '').replace(/\{(\w+)\}/g, (_, key) => C[key] || '');
@@ -265,6 +373,10 @@
     activeScene=name;activeIndex=index;stage.dataset.scene=name;
     for(const panel of panels) {const active=panel.id===name;panel.classList.toggle('active',active);panel.inert=!active;}
     const isFinal=name==='finale';
+    cancelMoonHold();
+    moonButton.hidden=!isFinal;
+    moonTracking(isFinal);
+    if(!isFinal && !moonSecret.hidden) dismissMoonSecret();
     $('b-skip').hidden=isFinal;$('b-pause').hidden=isFinal;
     $('story-footer').hidden=isFinal;
     if(!isFinal) $('chapter').textContent=timeline[index].label;
@@ -333,6 +445,8 @@
   function resumeClock() {lastTime=null;if(!frameId&&!finished&&!paused&&!document.hidden)frameId=requestAnimationFrame(tick);}
   function pauseClock(){if(frameId)cancelAnimationFrame(frameId);frameId=0;lastTime=null;}
   function start() {
+    cancelMoonHold();
+    if(!moonSecret.hidden) dismissMoonSecret();
     stopBottleTracking();pauseClock();elapsed=0;started=true;finished=false;paused=false;audioUnlocked=true;
     stage.classList.remove('is-paused','bottle-open');
     $('b-pause').setAttribute('aria-pressed','false');$('b-pause').setAttribute('aria-label','Metti in pausa');
@@ -364,6 +478,8 @@
     syncMedia();
   });
   document.addEventListener('visibilitychange',()=>{
+    if(document.hidden){cancelMoonHold();moonTracking(false);}
+    else if(activeScene==='finale'&&!moonRevealed)moonTracking(true);
     stage.classList.toggle('is-paused',paused||document.hidden);
     if(document.hidden)pauseClock();else resumeClock();syncMedia();
   });
