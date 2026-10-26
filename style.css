@@ -927,3 +927,8 @@
   letter-spacing: .015em;
   line-height: 1.45;
 }
+
+/* V25 - solo barre nell'indicatore di avanzamento, nessuna etichetta. */
+.story-footer { justify-content: center; }
+.story-footer .chapter { display: none; }
+.story-footer .progress { margin-left: 0; width: min(430px, 100%); flex: 1 1 auto; }

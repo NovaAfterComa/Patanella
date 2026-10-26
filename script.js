@@ -13,7 +13,7 @@
     finale: 'La storia continua… e stavolta voglio viverla con voi!'
   }, C.testi);
   const defaults = {messaggio:6, segreto:13, prove:9, complici:10, epico:9, citazione:6};
-  const labels = ['Il messaggio', 'Il segreto', '', '', 'Il prossimo capitolo', 'I momenti che contano'];
+  const labels = ['', '', '', '', '', ''];
   let total = 0;
   const timeline = Object.keys(defaults).map((name, i) => {
     const requested = Number((C.durate || {})[name]);

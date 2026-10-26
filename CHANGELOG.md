@@ -1,3 +1,10 @@
+# V25 - Indicatore di avanzamento senza titoli
+
+- Rimosse le etichette residue: Il messaggio, Il segreto, Il prossimo capitolo, I momenti che contano.
+- Mantenute le barre di avanzamento, ora centrate, e il loro funzionamento.
+- Nessun intervento sul contenuto delle scene, sui testi della pagina finale o sulle animazioni.
+- Aggiornati i riferimenti di cache a v25.
+
 # V24 - Testi e scadenza della conferma
 
 - Rimosse le etichette visibili La scoperta, Un piccolo segreto per te, Le prove e Qualche anno dopo.

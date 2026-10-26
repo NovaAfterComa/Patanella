@@ -1,4 +1,4 @@
-# Invito Patanella - V24
+# Invito Patanella - V25
 
 Un invito interattivo per la festa del 28 dicembre 2026 alle 20:30.
 Il sito e' statico e pronto per GitHub Pages.
