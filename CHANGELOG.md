@@ -1,120 +1,104 @@
-# V25 - Indicatore di avanzamento senza titoli
+## V43 — Stelline più presenti e scrittura stabile (1 novembre 2026)
 
-- Rimosse le etichette residue: Il messaggio, Il segreto, Il prossimo capitolo, I momenti che contano.
-- Mantenute le barre di avanzamento, ora centrate, e il loro funzionamento.
-- Nessun intervento sul contenuto delle scene, sui testi della pagina finale o sulle animazioni.
-- Aggiornati i riferimenti di cache a v25.
+- Stelline dorate più grandi e frequenti: fino a 4 su smartphone e 7 su desktop, se c'è spazio libero.
+- Al cambio di scena svaniscono in circa 0,85 secondi invece di scomparire bruscamente.
+- Le stelle rimangono decorative: niente tocchi catturati e nessuna sovrapposizione con le aree di testo e i pulsanti durante la creazione.
+- La pergamena determina i ritorni a capo prima della scrittura e rivela le righe a inchiostro senza spostare le parole già visibili.
+- Eliminato l'effetto grafico temporaneo sulla firma che causava un piccolo salto al completamento.
+- Riferimenti cache aggiornati a V43; fotografie, video, audio e collegamenti invariati.
 
-# V24 - Testi e scadenza della conferma
+## V42 — Stelline dorate ambientali (1 novembre 2026)
 
-- Rimosse le etichette visibili La scoperta, Un piccolo segreto per te, Le prove e Qualche anno dopo.
-- Indicatori della storia privi dei due titoli rimossi, mantenendo le barre di avanzamento.
-- Corretta la frase finale in prima persona: E non sono ancora diventata una persona seria.
-- Aggiunta la scadenza della conferma: entro e non oltre il 7 dicembre 2026.
-- Aggiornati i riferimenti cache per CSS, JS e configurazione.
-- Nessuna modifica a foto, audio, glow, animazioni o easter egg.
+- Effetto scintille dorate ispirato alle stelline della bottiglia, nelle scene successive.
+- Posizioni casuali e variabili; il codice evita titoli, pergamena, Polaroid, contenuti della pagina finale e controlli.
+- Una o due stelline per volta su smartphone (massimo tre su desktop), senza catturare clic o tocchi.
+- Nessuna nuova richiesta di immagini o video; animazione CSS leggera.
+- Rispetta Pausa, visibilita della scheda e Riduci movimento.
+- **Invariati** i video della bottiglia, il mare notturno e l’easter egg della luna della V41.
 
-# V23 - Glow discreto sulla luna
+## V41 — Nuova carta marina e allineamento pre/post tap
+- Pergamena marina illustrata con conchiglie, ritagliata in trasparenza e ottimizzata WebP, senza cambiare il layout del testo.
+- Video mobile dello stappo riallineato rispetto alla bottiglia in attesa, senza riposizionamenti CSS che potrebbero scoprire i bordi.
+- Poster dell'apertura rigenerato dal video corretto.
+- Loop del mare notturno V40 e tutte le altre funzioni invariati.
 
-- Aggiunto un piccolo alone dorato pulsante sulla luna della scena finale.
-- Nessun testo indizio e nessuna modifica alla hitbox, alla durata del tocco o alla Polaroid.
-- Rispettata la preferenza di movimento ridotto.
-- CSS aggiornato a `?v=23`.
+## V40 — Mare naturale e raccordi video senza JPG visibile
+- Eliminata l'inversione temporale del mare: ciclo in avanti con raccordo progressivo dei fotogrammi finali e iniziali.
+- Primo fotogramma reale del video di attesa usato come poster della schermata iniziale.
+- Passaggio al filmato dello stappo solo quando il nuovo video e' pronto, mantenendo in riproduzione quello precedente durante l'incrocio.
+- Corretta la hitbox per il poster 720x1080 e aggiornata la cache alla V40.
 
-## V22 — Foto segreta della luna aggiornata (26 ottobre 2026)
-- Sostituita la foto 8 (cagnolona) con la nuova foto 9 di Patanella da bambina in mare.
-- Didascalia: "Il mare nel cuore, fin da piccola. ✦".
-- Polaroid segreta in proporzione 3:2 per mostrare la fotografia intera.
-- Aggiornata la versione CSS a v22; tutte le altre scene, i pulsanti e le animazioni restano invariati.
+## V39 - Loop mare notturno senza stacco
+- Rimossa la giunzione brusca tra fine e inizio del video notturno originale.
+- Nuovo ciclo di 14 secondi: onda che si ritira e torna ad avanzare lentamente, con accelerazione e frenata dolci nei punti di inversione.
+- Primo e ultimo fotogramma ricondotti alla stessa posa, senza dissolvenze sovrapposte, ghosting o slittamento laterale.
+- Video H.264 silenzioso, dimensioni originali 768x1344; posizione della luna e area interattiva invariate.
+- Un solo video continuo nelle scene 5, 6 e finale, solo su smartphone; desktop e tutte le altre funzioni invariati. Cache v39.
 
-## V21 — Segreto della luna (26 ottobre 2026)
-- Pressione continua di 5 secondi sulla luna della scena finale.
-- Bagliore dorato, stella cadente e Polaroid nascosta con foto 8.
-- Supporto touch, mouse, tastiera, uscita e accessibilità.
-- Invariata la restante storia della V20.
+## V38 - Mare notturno anche nelle scene 5 e 6
+- Il video `mare-notte-mobile.mp4` comincia con `epico` (scena 5), continua in `citazione` (6) e rimane attivo nella schermata finale senza ricominciare.
+- Eliminato il lieve scorrimento orizzontale del filmato stabilizzando la porzione fissa del cielo. Onde e riflessi restano in movimento.
+- Disattivato il `night-drift` CSS nelle tre scene e aggiunto il preload del video durante la seconda carrellata.
+- Desktop e controlli della luna invariati. Cache V38.
 
-## V20 - Riordino del carosello delle foto adulte
+## V37 - Apertura con il nuovo video su smartphone
+- Sostituito `assets/video/apertura-mobile.mp4` con il video fornito dall'utente, ottimizzato (zoom 8%, audio rimosso, H.264).
+- Durata dell'apertura mobile adeguata a 5,05 secondi per far vedere sia il tappo sia l'uscita della pergamena, senza pause aggiuntive.
+- Apertura su desktop invariata (2,7 secondi, immagine originale).
+- Cache-busting aggiornato alla versione 37.
 
-- La precedente foto 6 diventa la prima (al posto della 4).
-- La foto 5 resta la seconda.
-- La nuova foto 7 diventa la terza (al posto della 6).
-- Aggiornate le descrizioni accessibili delle foto e i ritagli.
-- Nessuna modifica alle tre frasi e alle tre didascalie gia approvate.
-- Cache-busting V20 per CSS, JavaScript, configurazione e foto sostituite.
+## V35 — Pergamena leggibile
+- Nuova immagine carta.png come pergamena originale.
+- Testo più grande, leggibile, con righe stabili.
+- Firma ampliata e con spazio aggiuntivo.
 
-## V19 - Il prima e dopo nelle Polaroid
+## V33 — Pergamena e calligrafia
+- Sfondo carta isolato dalla fotografia originale con bordi sfrangiati morbidi (PNG trasparente).
+- Rimosso il ritaglio geometrico della V32.
+- Nuovo font Pinyon Script per il testo, ispirato alla calligrafia a pennino del riferimento.
+- Firma Great Vibes ancora animata per ultima; dimensioni adattive su mobile.
 
-- Tre nuove fotografie adulte fornite dall'utente (4, 5, 6), in ordine.
-- Didascalie: "Il mare, ancora.", "Le idee, ancora più chiare.", "Piccola peste, edizione 30.".
-- Titolo della seconda carrellata: "Qualche anno dopo".
-- Tre frasi sincronizzate con la foto corrente: "Poi gli anni sono passati…",
-  "E qualcosa è cambiato…", "Ma non troppo.".
-- Nessun timbro sulle foto adulte.
-- Cache CSS/JS/config aggiornata alla V19.
+## V32 — Pergamena
+- Rimossa la linea ornamentale superiore.
+- Tolta ombra rettangolare e ripristinate proporzioni 2:3 del foglio.
+- Font Marck Script con tonalità inchiostro seppia, firma Great Vibes progressiva invariata.
+- Testo ridimensionato su mobile e schermi bassi.
 
-## V18 - Polaroid personali e pergamena
+## V30 — Pergamena senza attesa
+- Accorciata la scena di apertura da 6 a 2,7 secondi, sincronizzata con il filmato di stappo da 2,58 secondi.
+- La pergamena appare oltre 3 secondi prima rispetto alla V29.
+- Conservate la dissolvenza introdotta nella V29 e le altre scene senza modifiche.
+- Cache-busting dei file HTML, CSS e JavaScript aggiornato alla V30.
 
-- Pergamena: rimossa la parola «certa» dalla descrizione della protagonista.
-- Prime tre Polaroid: inserite le fotografie 1.jpeg, 2.jpeg, 3.jpeg
-  nell'ordine indicato, mantenendo i percorsi JPEG preesistenti.
-- Rimossi i timbri «Testardaggine: confermata», «Maturità: non pervenuta»
-  e «Potenziale di guai: elevato» senza cambiare l'animazione fotografica.
-- Regolate soltanto le coordinate di ritaglio delle immagini nelle cornici.
-- Cache aggiornata per `config.js` e `script.js`.
+V29 - apertura immediata al tap: clip apertura attivata subito, precaricamento dedicato, dissolvenza piu morbida e fallback fotografico anticipato. Resto invariato.
+# V28 - Predisposizione ai filmati realistici
 
-## V17 - Conferma WhatsApp piu semplice
+- Prima clip reale: `assets/video/attesa-mobile.mp4` (PixVerse, watermark tagliato con zoom, loop con dissolvenza di 1 s, 720x1080, circa 0,9 MB). Solo verticale: su desktop resta la foto finche' non c'e' una clip `desktop`.
+- Seconda clip: `assets/video/apertura-mobile.mp4` (Viggle, solo dal secondo 2,6 in poi, dove il watermark e' in basso a destra e si taglia). Mostra la bottiglia gia' aperta con il tappo sulla sabbia; il tappo che esce non c'e'.
+- Una clip `mobile` si usa solo in verticale e una `desktop` solo in orizzontale, mai al posto l'una dell'altra.
 
-- Sostituito il campo lungo per allergie con `Allergie/intolleranze: ___`.
-- Mantenuta la rinuncia senza data e ora dalla V16.
-- Sincronizzati tutti i link WhatsApp statici e di fallback.
-- Aggiornato `config.js?v=17`.
+- Nuovo blocco `clip` in `config.js` con i sette filmati del PIANO_VIDEO_REALISTICI.md: intro, attesa, apertura, pergamena, ritorno, slideshow, finale. Ogni voce e' un percorso MP4 oppure `{ desktop, mobile }`.
+- Sequenza: intro (una volta) -> attesa (loop) -> apertura al tocco -> pergamena -> ritorno -> slideshow sotto le foto -> finale (loop, luna ferma).
+- Clip mancante o che non si carica: resta la fotografia di quella scena, senza errori. Con `prefers-reduced-motion` o risparmio dati le clip non vengono caricate.
+- Con una clip attiva la foto sotto smette di muoversi, cosi' le hitbox della bottiglia e della luna restano allineate al filmato.
+- Pergamena: con il filmato attivo il testo HTML e la firma compaiono a carta srotolata e spariscono al ritorno.
+- Senza clip il sito si comporta esattamente come la V25. Nessun file video e' incluso: vanno girati o prodotti e copiati in `assets/video/`.
 
-## V16 - Messaggio Declina WhatsApp
 
-- Rimossi data e orario dal messaggio precompilato di rinuncia.
-- Aggiornati il link principale e i link della versione essenziale nell'HTML.
-- I link statici di conferma ora coincidono con il testo di `config.js`.
-- Riferimento configurazione aggiornato a `v=16`.
 
-## V15 - Messaggio di conferma WhatsApp
+## V31 - Firma calligrafica
+La firma Patanella non compare subito: viene rivelata da sinistra verso destra soltanto al termine del testo della pergamena. Rimane leggibile prima che la storia prosegua.
 
-- Modificato solamente il testo WhatsApp di Conferma per chiedere eventuali allergie/intolleranze alimentari.
-- Aggiornati `config.js` e il link di fallback nell'HTML; `config.js?v=15`.
-- Nessun testo aggiuntivo nel sito, nessuna modifica al pulsante Declina.
+## V34 — Pergamena stabile
+- Proporzioni 2:3 della fotografia della carta; nessun allungamento.
+- Eliminato il cursore verticale dopo le lettere.
+- Testo con spazio riservato prima della scrittura per evitare salti al ritorno a capo.
+- Firma con spazio verticale e margini maggiori per non tagliare gli svolazzi.
 
-# V14 - Correzione caricamento immagini
 
-- Risolto `ReferenceError: openMobile is not defined` in `loadSecondaryMedia()`.
-- La sorgente mobile di bottiglia aperta usa `backgrounds.aperturaMobile || open`.
-- Caricamento di bottiglia aperta, mare notturno e Polaroid riattivato su mobile e desktop.
-- Cache-busting aggiornato a v14.
-
-# V13 - Correzioni mirate
-
-- Titolo personalizzato di quattro parole: niente duplicazioni.
-- Caricamento differito delle immagini delle scene successive dopo la bottiglia iniziale.
-- Richiamo sulla bottiglia ribassato soltanto sui telefoni molto piccoli (es. 320 x 568).
-- Cache-busting v13; monogramma invariato.
-
-# Changelog
-
-## V12 - 26 ottobre 2026
-
-- Richiesta di non indicizzazione (`noindex, nofollow`) nel markup.
-- Versione dei file CSS e JavaScript aggiornata a 12 per evitare vecchia cache.
-- Monogramma ridimensionato a 256 px e ottimizzato, file JPG ridondante eliminato.
-- Immagini iniziali responsive con `<picture>`, senza caricare prima il desktop.
-- Rimosso precaricamento indiscriminato e duplicato delle scene.
-- Brano in MP3 ottimizzato a 128 kbps senza cambiare percorso o comportamento.
-- Aggiornamenti DOM animati solo quando i valori cambiano.
-- Titolo personalizzato preserva interruzioni di riga e corsivo in modo sicuro.
-- Allineamento bottiglia mantenuto, con aggiornamento ogni 70 ms anziche' callback a ogni frame.
-- Countdown fermo quando la scheda non e' visibile; refresh al ritorno.
-- Promemoria ICS 24 ore prima; titolo, orari e link Maps confermati.
-- Microtesti piu' leggibili su telefoni piccoli.
-- README semplificato.
-
-Non modificati: hitbox ovale, glow, stelline, scene, WhatsApp, Google Maps e
-indirizzo pubblico. La pulizia completa dei CSS stratificati e i font
-ospitati localmente richiedono una verifica visiva dedicata e non sono
-inclusi in questa versione di ottimizzazione prudente.
+### V36 - Sfondo video finale
+- Aggiunto filmato mare notturno per smartphone, senza traccia audio, con zoom 11%.
+- Poster e fallback dedicati; desktop invariato.
+- Corretta la posizione dell'easter egg della luna rispetto al nuovo video.
+- Il video notturno viene mostrato soltanto nella schermata finale, non nelle scene precedenti.
+- Versione cache aggiornata.

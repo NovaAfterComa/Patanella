@@ -22,10 +22,10 @@ window.INVITO_CONFIG = {
   sfondi: {
     messaggio: "assets/scenes/bottiglia.jpg",
     apertura: "assets/scenes/bottiglia-aperta.jpg",
-    messaggioMobile: "assets/scenes/bottiglia-mobile.jpg",
+    messaggioMobile: "assets/scenes/bottiglia-attesa-poster-mobile.jpg",
     aperturaMobile: "assets/scenes/bottiglia-aperta-mobile.jpg",
     notte: "assets/scenes/mare-notte.jpg",
-    carta: "assets/scenes/carta.jpg"
+    carta: "assets/scenes/pergamena-marina.webp"
   },
 
   // Le tre foto d’infanzia. posizione regola il ritaglio (CSS object-position).
@@ -48,11 +48,18 @@ window.INVITO_CONFIG = {
   // Video REALI opzionali: MP4, senza audio, loop. Hanno precedenza
   // sulla fotografia della scena. Un file mancante lascia la foto.
   video: { messaggio: "", segreto: "", prove: "", complici: "", epico: "", citazione: "", finale: "" },
+  // Filmati realistici del PIANO_VIDEO_REALISTICI.md. Lascia "" per usare la foto.
+  // Forma: "percorso.mp4" oppure { desktop: "...", mobile: "..." } (mobile = verticale).
+  // intro: arrivo dal mare (una volta) | attesa: loop sulla bottiglia | apertura: tappo e pergamena
+  // pergamena: carta che si srotola | ritorno: carta che si riavvolge | slideshow: onde sotto le foto
+  // finale: mare notturno in loop, luna ferma.
+  clip: { intro: "", attesa: { mobile: "assets/video/attesa-mobile.mp4" }, apertura: { mobile: "assets/video/apertura-mobile.mp4?v=41" }, pergamena: "", ritorno: "", slideshow: "", finale: { mobile: "assets/video/mare-notte-mobile.mp4?v=40" } },
   musica: "assets/oltre-lorizzonte.mp3", // Il brano allegato; parte cliccando sulla bottiglia
   onde: "",                   // es. "assets/onde.mp3"
 
   // Durate in secondi. Pausa e cambio scheda fermano anche il tempo.
-  durate: { messaggio: 6, segreto: 13, prove: 9, complici: 10, epico: 5.5, citazione: 6 },
+  durate: { messaggio: 2.7, segreto: 13, prove: 9, complici: 10, epico: 5.5, citazione: 6 },
+  durataAperturaMobile: 5.05, // Il nuovo filmato mostra tappo e pergamena senza essere troncato; desktop resta a 2,7 s.
   testi: {
     introduzione: "Ci sono storie che nascono dal mare…",
     scena1: "Ogni storia ha un inizio…",

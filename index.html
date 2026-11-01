@@ -29,25 +29,31 @@
   <!-- Calligrafia della pergamena; i font di sistema sono la riserva se offline. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=25">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Great+Vibes&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=43">
 </head>
 <body>
 <main id="stage" class="stage" data-scene="welcome">
   <div class="backdrops" aria-hidden="true">
     <picture>
-      <source id="shore-mobile-source" media="(max-aspect-ratio: 3/4)" srcset="assets/scenes/bottiglia-mobile.jpg">
+      <source id="shore-mobile-source" media="(max-aspect-ratio: 3/4)" srcset="assets/scenes/bottiglia-attesa-poster-mobile.jpg">
       <img id="shore" class="backdrop shore" src="assets/scenes/bottiglia.jpg" alt="" fetchpriority="high">
     </picture>
     <picture>
       <source id="open-mobile-source" media="(max-aspect-ratio: 3/4)">
       <img id="shore-open" class="backdrop shore shore-open" alt="" decoding="async" fetchpriority="low">
     </picture>
-    <img id="night" class="backdrop night" alt="" decoding="async" fetchpriority="low">
+    <picture>
+      <source id="night-mobile-source" media="(max-aspect-ratio: 3/4)" srcset="assets/scenes/mare-notte-mobile-poster.jpg">
+      <img id="night" class="backdrop night" alt="" decoding="async" fetchpriority="low">
+    </picture>
     <div id="videos" class="videos"></div>
+    <div id="clips" class="clips"></div>
     <div class="shade"></div>
     <div class="vignette"></div>
   </div>
+
+  <div id="ambient-sparks" class="ambient-sparks" aria-hidden="true"></div>
 
   <header class="topbar">
     <div class="brand"><img id="brand-monogram" alt="" width="36" height="36"><span id="brand-name">Una storia da festeggiare</span></div>
@@ -94,7 +100,6 @@
     <article class="letter">
       <div class="letter-inner">
         
-        <div class="letter-rule" aria-hidden="true"></div>
         <p id="ty1" class="typed">La protagonista di questa storia?</p>
         <p id="ty2" class="typed typed-strong">Una ragazza che non ha nessuna intenzione di crescere davvero…</p>
         <p class="signature" id="signature">Patanella</p>
@@ -232,7 +237,8 @@
   function showInvitoFallback() { var f=document.getElementById('static-fallback'); if (f) f.hidden=false; }
   window.addEventListener('error', function(e) { if (e.filename && /(?:config|script)\.js/.test(e.filename)) showInvitoFallback(); });
 </script>
-<script src="config.js?v=25" onerror="showInvitoFallback()"></script>
-<script src="script.js?v=25" onerror="showInvitoFallback()"></script>
+<script src="config.js?v=43" onerror="showInvitoFallback()"></script>
+<script src="script.js?v=43" onerror="showInvitoFallback()"></script>
+<script src="sparkles.js?v=43" defer></script>
 </body>
 </html>

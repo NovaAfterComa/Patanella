@@ -12,11 +12,11 @@
     citazione: 'Le cose belle non si contano negli anni, ma nei momenti che ci fanno brillare gli occhi.',
     finale: 'La storia continua… e stavolta voglio viverla con voi!'
   }, C.testi);
-  const defaults = {messaggio:6, segreto:13, prove:9, complici:10, epico:9, citazione:6};
+  const defaults = {messaggio:2.7, segreto:13, prove:9, complici:10, epico:9, citazione:6};
   const labels = ['', '', '', '', '', ''];
   let total = 0;
   const timeline = Object.keys(defaults).map((name, i) => {
-    const requested = Number((C.durate || {})[name]);
+    const requested = Number(name === 'messaggio' && matchMedia('(max-aspect-ratio: 3/4)').matches && C.durataAperturaMobile ? C.durataAperturaMobile : (C.durate || {})[name]);
     const duration = Number.isFinite(requested) && requested > 0 ? requested : defaults[name];
     const scene = {name, duration, start:total, label:labels[i]}; total += duration; return scene;
   });
@@ -38,14 +38,25 @@
   // Coordinate misurate sulla foto originale 1536 x 1024.
   const moonPixel = {x:1117, y:198};
   function positionMoonButton() {
-    if (activeScene !== 'finale' || !moonNightImage.naturalWidth || !moonNightImage.naturalHeight) return;
-    const rect=moonNightImage.getBoundingClientRect();
+    if (activeScene !== 'finale') return;
+    // Su mobile il filmato ha un'inquadratura diversa dalla foto desktop.
+    // Poster e video usano lo stesso zoom e object-position: la hitbox segue
+    // esattamente la luna e continua a funzionare anche se il video non parte.
+    const useMobile = matchMedia('(max-aspect-ratio: 3/4)').matches;
+    const finalVideo = document.querySelector('#clips video[data-clip="finale"]');
+    const useVideo = useMobile && finalVideo && finalVideo.classList.contains('on') && finalVideo.videoWidth > 0;
+    const media = useVideo ? finalVideo : moonNightImage;
+    const mw = useVideo ? finalVideo.videoWidth : moonNightImage.naturalWidth;
+    const mh = useVideo ? finalVideo.videoHeight : moonNightImage.naturalHeight;
+    if (!mw || !mh) return;
+    const rect=media.getBoundingClientRect();
     const stageRect=stage.getBoundingClientRect();
-    const scale=Math.max(rect.width/moonNightImage.naturalWidth,rect.height/moonNightImage.naturalHeight);
-    const cropX=(rect.width - moonNightImage.naturalWidth*scale)*.72;
-    const cropY=(rect.height - moonNightImage.naturalHeight*scale)*.50;
-    const x=rect.left-stageRect.left+cropX+moonPixel.x*scale;
-    const y=rect.top-stageRect.top+cropY+moonPixel.y*scale;
+    const scale=Math.max(rect.width/mw,rect.height/mh);
+    const cropX=(rect.width - mw*scale)*.72;
+    const cropY=(rect.height - mh*scale)*.50;
+    const pixel = useMobile ? {x:608,y:401} : moonPixel;
+    const x=rect.left-stageRect.left+cropX+pixel.x*scale;
+    const y=rect.top-stageRect.top+cropY+pixel.y*scale;
     moonButton.style.left=x.toFixed(2)+'px';
     moonButton.style.top=y.toFixed(2)+'px';
     return {x,y};
@@ -136,6 +147,113 @@
   const fill = s => String(s || '').replace(/\{(\w+)\}/g, (_, key) => C[key] || '');
   const setContent = (id, value) => {const e=$(id); e.textContent=value || ''; e.hidden=!value;};
   const setTextIfChanged = (element, value) => {if (element.textContent !== value) element.textContent = value;};
+  // V43 - Impaginazione completa prima della prima lettera. Le righe vengono
+  // misurate nel font finale e poi rivelate senza modificare testo o wrapping:
+  // nessuna parola salta alla riga successiva durante la scrittura.
+  const writtenLines = {};
+  for (const [id, full] of [['ty1', String(text.macchina1 || '')], ['ty2', String(text.macchina2 || '')]]) {
+    const box = $(id);
+    box.textContent = '';
+    const measure = document.createElement('span');
+    measure.className = 'letter-measure';
+    measure.setAttribute('aria-hidden', 'true');
+    measure.textContent = full;
+    const ink = document.createElement('span');
+    ink.className = 'letter-ink';
+    ink.setAttribute('aria-hidden', 'true');
+    box.append(measure, ink);
+    writtenLines[id] = {box, measure, ink, full, lines: [], shown: 0};
+  }
+  function writeLetterTo(id, count) {
+    const entry = writtenLines[id];
+    if (!entry) return;
+    entry.shown = Math.max(0, Math.min(entry.full.length, count));
+    for (const line of entry.lines) {
+      const shown = Math.max(0, Math.min(line.end - line.start, entry.shown - line.start));
+      if (shown === line.lastShown) continue;
+      line.lastShown = shown;
+      // Soprattutto sui font corsivi la larghezza finale puo' variare con il
+      // font web caricato: usa le dimensioni correnti, non pixel memorizzati.
+      // Le righe successive rimangono completamente invisibili fino al turno.
+      line.node.style.visibility = shown === 0 ? 'hidden' : 'visible';
+      if (shown >= line.end - line.start) {
+        line.node.style.clipPath = 'none';
+      } else if (shown === 0) {
+        line.node.style.clipPath = 'inset(0 100% 0 0)';
+      } else {
+        const fullWidth = line.widths[line.widths.length - 1] || 1;
+        const visibleWidth = line.widths[shown] || 0;
+        const visibleRatio = Math.min(1, visibleWidth / fullWidth);
+        const right = (line.node.getBoundingClientRect().width * (1 - visibleRatio));
+        line.node.style.clipPath = `inset(0 ${right.toFixed(2)}px 0 0)`;
+      }
+    }
+  }
+  function layoutLetter(id) {
+    const entry = writtenLines[id];
+    if (!entry) return;
+    const {measure, ink, full, box} = entry;
+    ink.replaceChildren();
+    entry.lines = [];
+    const node = measure.firstChild;
+    if (!node || !full) return;
+    const range = document.createRange();
+    const groups = [];
+    // Nel corsivo le coordinate Y dei singoli caratteri variano lungo la
+    // stessa parola (la linea di base e' inclinata). Una nuova riga si
+    // riconosce dal ritorno della posizione X al margine iniziale.
+    let previousX = null;
+    for (let i = 0; i < full.length; i++) {
+      if (/\s/.test(full[i])) continue;
+      range.setStart(node, i);
+      range.setEnd(node, i + 1);
+      const rect = range.getClientRects()[0];
+      if (!rect || !rect.width) continue;
+      const wrapped = previousX !== null && rect.left < previousX - 7;
+      if (!groups.length || wrapped) groups.push({start:i, end:i+1});
+      else groups[groups.length - 1].end = i+1;
+      previousX = rect.left;
+    }
+    const style = getComputedStyle(box);
+    let lineHeight = parseFloat(style.lineHeight);
+    if (!Number.isFinite(lineHeight)) lineHeight = parseFloat(style.fontSize) * 1.3;
+    groups.forEach((group, index) => {
+      const span = document.createElement('span');
+      span.className = 'letter-ink-line';
+      span.textContent = full.slice(group.start, group.end);
+      span.style.top = `${(index * lineHeight).toFixed(2)}px`;
+      ink.appendChild(span);
+      const textNode = span.firstChild;
+      const charRange = document.createRange();
+      const widths = [0];
+      const length = textNode?.length || 0;
+      for (let n = 1; n <= length; n++) {
+        charRange.setStart(textNode, 0);
+        charRange.setEnd(textNode, n);
+        widths.push(charRange.getBoundingClientRect().width);
+      }
+      const width = Math.max(widths[length] || 0, span.getBoundingClientRect().width);
+      entry.lines.push({node:span, start:group.start, end:group.end,
+        widths, width, lastShown:-1});
+    });
+    writeLetterTo(id, entry.shown);
+  }
+  function layoutAllLetters() {
+    layoutLetter('ty1');
+    layoutLetter('ty2');
+  }
+  layoutAllLetters();
+  document.fonts?.ready?.then(layoutAllLetters);
+  let letterLayoutRaf = 0;
+  const scheduleLetterLayout = () => {
+    cancelAnimationFrame(letterLayoutRaf);
+    letterLayoutRaf = requestAnimationFrame(layoutAllLetters);
+  };
+  if (window.ResizeObserver) {
+    const observer = new ResizeObserver(scheduleLetterLayout);
+    observer.observe($('ty1'));
+    observer.observe($('ty2'));
+  } else window.addEventListener('resize', scheduleLetterLayout, {passive: true});
 
   setContent('intro-text', text.scena1);
   setContent('quote-text', text.citazione);
@@ -224,7 +342,14 @@
     const cropTop = (imageRect.height - image.naturalHeight * fittedScale) * .5;
     const portrait = matchMedia('(max-aspect-ratio: 3/4)').matches && Boolean(backgrounds.messaggioMobile);
     const shape = portrait ? bottleShapes.portrait : bottleShapes.landscape;
-    const [x1, y1, x2, y2] = shape.bounds;
+    // La foto mobile iniziale coincide con il primo fotogramma del video di attesa.
+    // Le coordinate della bottiglia restano espresse nel sistema dell'originale
+    // (1024x1536); normalizzarle evita di spostare la hitbox con il poster 720x1080.
+    const originalW = portrait ? 1024 : 1536;
+    const originalH = portrait ? 1536 : 1024;
+    const [x1, y1, x2, y2] = shape.bounds.map((v,i) =>
+      v * ((i % 2 === 0 ? image.naturalWidth / originalW : image.naturalHeight / originalH))
+    );
     const x = imageRect.left - stageRect.left + cropLeft + x1 * fittedScale;
     const y = imageRect.top - stageRect.top + cropTop + y1 * fittedScale;
     const w = (x2 - x1) * fittedScale;
@@ -330,6 +455,130 @@
     v.onerror=()=>{v.classList.remove('on');v.remove();delete videos[name];};
     $('videos').append(v);videos[name]=v;
   }
+  /* ===== Filmati realistici (vedi PIANO_VIDEO_REALISTICI.md) =====
+     Sette clip opzionali in C.clip. Ogni clip mancante o rotta viene scartata
+     in silenzio e resta la fotografia della scena. Con "riduci movimento" o
+     "risparmio dati" le clip non vengono caricate. */
+  const clipLayer = $('clips');
+  const clipEl = {};
+  const portraitMQ = matchMedia('(max-aspect-ratio: 3/4)');
+  const clipDefs = C.clip || {};
+  const clipLoops = {attesa:true, slideshow:true, finale:true};
+  let clipTransitionId = 0;
+  const clipsAllowed = !reduced && !(navigator.connection && navigator.connection.saveData);
+  let clipCurrent = null, introDone = false, clipLastLocal = 0, clipLastDur = 1, clipLastP = 0;
+  const clipSrc = def => {
+    if (!def) return '';
+    if (typeof def === 'string') return def;
+    // Verticale: solo la versione mobile. Orizzontale: solo desktop. Mai l'una al posto dell'altra,
+    // perche' un filmato con l'inquadratura sbagliata sposta bottiglia e luna rispetto alle hitbox.
+    return portraitMQ.matches ? (def.mobile || '') : (def.desktop || def.src || '');
+  };
+  function dropClip(name) {
+    const v = clipEl[name]; if (!v) return;
+    v.remove(); delete clipEl[name];
+    if (name === 'intro') introDone = true;
+    if (clipCurrent === name) { clipCurrent = null; stage.dataset.clip = ''; }
+    clipSync();
+  }
+  function clipTextSync() {
+    const v = clipEl.pergamena;
+    const unrolled = clipCurrent === 'pergamena' && v && (v.ended || (isFinite(v.duration) && v.duration - v.currentTime < .6));
+    stage.classList.toggle('clip-paper', clipCurrent === 'pergamena' || clipCurrent === 'ritorno');
+    stage.classList.toggle('clip-text', Boolean(unrolled));
+  }
+  if (clipsAllowed && clipLayer) {
+    for (const name of ['intro','attesa','apertura','pergamena','ritorno','slideshow','finale']) {
+      const src = clipSrc(clipDefs[name]); if (!src) continue;
+      const v = document.createElement('video');
+      v.muted = true; v.defaultMuted = true; v.playsInline = true; v.loop = Boolean(clipLoops[name]);
+      v.preload = (name === 'intro' || name === 'attesa' || name === 'apertura') ? 'auto' : 'metadata';
+      v.setAttribute('playsinline', ''); v.setAttribute('muted', ''); v.setAttribute('aria-hidden', 'true');
+      v.disablePictureInPicture = true; v.dataset.clip = name;
+      if (portraitMQ.matches) {
+        if (name === 'attesa') v.poster = 'assets/scenes/bottiglia-attesa-poster-mobile.jpg';
+        if (name === 'apertura') v.poster = 'assets/scenes/bottiglia-apertura-poster-mobile.jpg';
+        if (name === 'finale') v.poster = 'assets/scenes/mare-notte-mobile-poster.jpg';
+      }
+      v.src = src;
+      v.addEventListener('error', () => dropClip(name));
+      v.addEventListener('ended', () => { if (name === 'intro') introDone = true; clipSync(); clipTextSync(); });
+      if (name === 'pergamena') v.addEventListener('timeupdate', clipTextSync);
+      clipLayer.append(v); clipEl[name] = v;
+    }
+  }
+  function desiredClip() {
+    const rest = clipEl.attesa ? 'attesa' : (clipEl.intro ? 'intro' : null);
+    switch (activeScene) {
+      case 'welcome': return (clipEl.intro && !introDone) ? 'intro' : rest;
+      case 'messaggio': return clipEl.apertura ? 'apertura' : rest; // Avvia subito lo stappo al tap
+      case 'segreto': {
+        if (!clipEl.pergamena) return null;
+        const r = clipEl.ritorno;
+        if (r) {
+          const len = (isFinite(r.duration) ? r.duration : 2.5) + .3;
+          if (clipLastLocal >= clipLastDur - len) return 'ritorno';
+        }
+        return 'pergamena';
+      }
+      case 'prove': case 'complici': return clipEl.slideshow ? 'slideshow' : null;
+      // Il mare notturno continua in UN SOLO loop dalle sezioni 5 e 6
+      // fino all'invito finale: nessun riavvio o salto al cambio di scena.
+      case 'epico': case 'citazione': case 'finale':
+        return clipEl.finale ? 'finale' : null;
+      default: return null;
+    }
+  }
+  function activateClip(name) {
+    const v = clipEl[name]; if (!v) return;
+    const transitionId = ++clipTransitionId;
+    try { v.currentTime = 0; } catch {}
+    // Il filmato precedente rimane visibile e continua a riprodursi finche'
+    // il nuovo non ha decodificato il primo fotogramma. Niente flash di JPG.
+    const reveal = () => {
+      if (clipCurrent !== name || transitionId !== clipTransitionId) return;
+      for (const [n, o] of Object.entries(clipEl)) {
+        o.classList.toggle('on', n === name);
+        if (n !== name) setTimeout(() => {
+          // Lascia finire l'incrocio di opacita' prima di mettere in pausa.
+          if (!o.classList.contains('on')) o.pause();
+        }, 850);
+      }
+      stage.dataset.clip = name; clipTextSync();
+      if (name === 'finale') positionMoonButton();
+    };
+    const p = v.play();
+    const afterPlay = () => {
+      if (clipCurrent !== name || transitionId !== clipTransitionId) return;
+      if (typeof v.requestVideoFrameCallback === 'function') {
+        let shown = false;
+        const fallback = setTimeout(() => { if (!shown) { shown = true; reveal(); } }, 450);
+        v.requestVideoFrameCallback(() => {
+          if (shown) return;
+          shown = true; clearTimeout(fallback); reveal();
+        });
+      } else requestAnimationFrame(reveal);
+    };
+    if (p && p.then) p.then(afterPlay).catch(() => dropClip(name));
+    else afterPlay();
+  }
+  function clipSync() {
+    if (!clipLayer) return;
+    const want = desiredClip();
+    if (want !== clipCurrent) {
+      clipCurrent = want;
+      if (want) activateClip(want);
+      else {
+        stage.dataset.clip = ''; clipTextSync();
+        for (const o of Object.values(clipEl)) { o.classList.remove('on'); setTimeout(() => { if (!o.classList.contains('on')) o.pause(); }, 850); }
+      }
+    }
+    const v = clipEl[clipCurrent];
+    if (v) {
+      const live = !paused && !document.hidden;
+      if (live && v.paused && !v.ended) safePlay(v); else if (!live && !v.paused) v.pause();
+    }
+  }
   const safePlay = media => {if(!media)return;const p=media.play();if(p?.catch)p.catch(()=>{});};
   let audioUnlocked = false;
   let audioFailed = false;
@@ -365,12 +614,18 @@
       const active=name===key;v.classList.toggle('on',active);
       if(running && active)safePlay(v);else v.pause();
     }
+    clipSync();
   }
   function setScene(name,index) {
     if(name===activeScene)return;
     const previous=panels.find(p=>p.id===activeScene);
     const focusedInside=previous?.contains(document.activeElement);
-    activeScene=name;activeIndex=index;stage.dataset.scene=name;
+    activeScene=name;activeIndex=index;stage.dataset.scene=name;clipLastP=0;clipLastLocal=0;
+    // Precarica il mare notturno durante l'ultimo carosello.
+    if(name==='complici' && clipEl.finale && clipEl.finale.preload!=='auto') {
+      clipEl.finale.preload='auto';
+    }
+    if(name==='segreto') { const signature=$('signature'); signature.style.setProperty('--signed','0%');signature.classList.remove('signing','signed'); }
     for(const panel of panels) {const active=panel.id===name;panel.classList.toggle('active',active);panel.inert=!active;}
     const isFinal=name==='finale';
     cancelMoonHold();
@@ -386,13 +641,23 @@
   }
   function updateScene(local, scene) {
     const p=clamp(local/scene.duration);
-    if(scene.name==='messaggio')stage.classList.toggle('bottle-open',p>.52);
+    clipLastLocal=local;clipLastDur=scene.duration;clipLastP=p;clipSync();
+    if(scene.name==='messaggio')stage.classList.toggle('bottle-open',p>.16); // fallback fotografico, dissolvenza ravvicinata al tap
     if(scene.name==='segreto') {
       const a=String(text.macchina1 || ''),b=String(text.macchina2 || '');
       const p1=reduced?1:clamp((p-.10)/.19),p2=reduced?1:clamp((p-.37)/.39);
-      setTextIfChanged($('ty1'), a.slice(0,Math.ceil(a.length*p1)));
-      setTextIfChanged($('ty2'), b.slice(0,Math.ceil(b.length*p2)));
+      writeLetterTo('ty1', Math.ceil(a.length*p1));
+      writeLetterTo('ty2', Math.ceil(b.length*p2));
       $('ty1').classList.toggle('typing',p1>0&&p1<1);$('ty2').classList.toggle('typing',p2>0&&p2<1);
+      // La firma inizia solo quando l'ultima lettera del messaggio e' comparsa.
+      // Rivelazione progressiva dell'inchiostro da sinistra a destra;
+      // resta leggibile prima della chiusura della pergamena.
+      const signatureProgress = reduced ? (p2 >= 1 ? 1 : 0) : clamp((p-.78)/.13);
+      const signature=$('signature');
+      const signaturePct=Math.round(signatureProgress*1000)/10;
+      signature.style.setProperty('--signed',signaturePct+'%');
+      // Nessun filtro temporaneo: evita il piccolo cambio di rasterizzazione alla fine.
+      signature.classList.toggle('signed',signatureProgress>=1);
     }
     if(scene.name==='prove') {
       kids.forEach((photo,i)=>{
@@ -449,11 +714,14 @@
     if(!moonSecret.hidden) dismissMoonSecret();
     stopBottleTracking();pauseClock();elapsed=0;started=true;finished=false;paused=false;audioUnlocked=true;
     stage.classList.remove('is-paused','bottle-open');
+    stage.classList.add('bottle-tapped');
+    window.setTimeout(()=>stage.classList.remove('bottle-tapped'),1050);
     $('b-pause').setAttribute('aria-pressed','false');$('b-pause').setAttribute('aria-label','Metti in pausa');
     for(const p of [...kids,...friends])p.classList.remove('visible','stamped','active-photo','previous-photo','past');
-    $('ty1').textContent='';$('ty2').textContent='';
+    writeLetterTo('ty1',0);writeLetterTo('ty2',0);
     for(const {audio} of audios){try{audio.currentTime=0;}catch{}}
     for(const v of Object.values(videos)){try{v.currentTime=0;}catch{}}
+    introDone=true;clipLastP=0;clipLastLocal=0;
     render();syncMedia();resumeClock();
   }
   $('bottle').addEventListener('click',start);$('bottle-guide').addEventListener('click',start);$('b-replay').addEventListener('click',start);
@@ -526,6 +794,7 @@
 
   /* Secondary images are deferred until the first bottle photograph has
      loaded. The <picture> elements select one orientation per device. */
+  clipSync(); // schermata iniziale: intro / attesa
   const essentialFallback = $('static-fallback');
   if (essentialFallback) essentialFallback.hidden = true;
 })();

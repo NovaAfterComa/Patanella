@@ -1,3 +1,69 @@
+# Invito Patanella V43 — stelline e pergamena rifinite
+
+La V43 mantiene i filmati, le immagini, la musica e le interazioni della V42.
+Le stelline sono ora più numerose e leggermente più grandi, e al cambio scena si dissolvono senza essere cancellate di colpo. Il testo calligrafico sulla pergamena viene impaginato prima di iniziare la scrittura, evitando che le parole saltino di riga durante l'animazione. La firma mantiene le stesse dimensioni per l'intero effetto.
+
+Per GitHub Pages, estrai lo ZIP e carica tutti i file e le cartelle nella radice del repository `Patanella`.
+
+---
+
+# Invito Patanella V41 — nuova pergamena e apertura riallineata
+
+Aggiornamento mirato della V40:
+- La pergamena con le conchiglie fornita dall'utente ora sostituisce la precedente, con contorno trasparente e proporzioni originali (2:3). Testo, font e firma animata restano invariati.
+- Il video di apertura su smartphone e' stato riallineato verticalmente nel filmato stesso, in modo che la bottiglia non scenda visibilmente al tap. Il poster dell'apertura e' stato aggiornato allo stesso fotogramma.
+- Il video del mare notturno V40, sempre in avanti, e tutte le altre interazioni restano invariati.
+- Riferimenti cache CSS, JS e video apertura aggiornati a V41.
+
+Per GitHub Pages carica **tutti i file** presenti nello ZIP nella radice del repository `Patanella` (non la cartella contenitore).
+
+---
+
+# Invito Patanella V40 — onde in avanti e transizioni della bottiglia
+
+- Mare notturno su smartphone: nuovo loop **solo in avanti**, ricostruito dalla clip originale stabilizzata con un raccordo a dissolvenza graduale, rallentato leggermente per un movimento piu morbido (niente reverse). Rimane continuo nelle sezioni 5 e 6 e nel finale.
+- L'immagine di apertura mobile viene dal primo fotogramma del video di attesa, per evitare il lampo tra JPG e MP4 quando si apre il sito.
+- Dopo il tap, il video di attesa resta visibile finche' il primo fotogramma di apertura non e' pronto; raccordo di 0,68 secondi senza esporre la foto statica intermedia.
+- Hitbox ovale ricalibrata per il nuovo poster mobile; controlli, musica, pergamena e luna segreta invariati.
+- Cache CSS/JS/clip aggiornata a V40.
+
+Per GitHub Pages, pubblicare **tutti** i file e le cartelle contenuti nello ZIP alla radice del repository, senza la cartella contenitore.
+
+---
+
+# Invito Patanella V39 — mare notturno con loop fluido
+
+Il mare notturno su smartphone ora utilizza un ciclo lento di 14 secondi con inversione graduale del movimento: l’onda avanza e si ritira senza il salto netto del video precedente. La luna, l’easter egg dei cinque secondi, le scene 5 e 6 e la pagina finale restano operativi. Su desktop resta l’immagine panoramica.
+
+Per GitHub Pages, caricare tutti i file e le cartelle di questo ZIP nella radice del repository (non la cartella contenitore).
+
+# Invito Patanella - V38 (mare notturno continuo e stabilizzato)
+
+- Sul telefono in verticale lo stesso video notturno appare nelle scene 5 ("Il bello deve ancora venire"), 6 (citazione) e nella schermata finale. Rimane in riproduzione continua anche passando da una scena all'altra.
+- Stabilizzato il movimento laterale del filmato (circa 9 px lungo il loop) senza modificare il movimento naturale delle onde.
+- La luna, il glow e l'easter egg con pressione di 5 secondi rimangono nel finale; su desktop si utilizza ancora il panorama fotografico originale.
+- Cache aggiornata alla V38.
+
+## Istruzioni di pubblicazione
+
+Estrai lo ZIP e sostituisci tutti i file nel repository GitHub Pages, mantenendo le cartelle `assets/` complete. Testa la sequenza su smartphone.
+
+---
+
+# Invito Patanella - V37 (apertura della bottiglia su mobile)
+
+La V37 conserva tutti i contenuti e le funzioni della V36.
+
+**Novita**
+- Il video della bottiglia che si stappa, fornito dall'utente, e stato ottimizzato e usato nella scena di apertura **solo sui telefoni in verticale**.
+- Il video ha un ritaglio/zoom centrale di circa 8%, non contiene audio aggiuntivo e pesa circa 0,9 MB.
+- Per mostrare tappo e pergamena senza interromperli, la scena di apertura dura circa 5,05 secondi su mobile. Su desktop dura ancora 2,7 secondi e mantiene il comportamento preesistente.
+- Il video di attesa viene dissolto nel video di apertura; il resto del sito, incluso l'easter egg della luna, e invariato.
+
+**Nota:** il ritaglio nasconde/attenua i difetti ai bordi, ma non puo correggere eventuali artefatti interni alla generazione.
+
+---
+
 # Invito Patanella - V25
 
 Un invito interattivo per la festa del 28 dicembre 2026 alle 20:30.
@@ -136,3 +202,22 @@ Nella schermata finale premi e tieni premuta la luna presente nella fotografia p
 - Cambiata la frase in «E non sono ancora diventata una persona seria.».
 - La conferma e' gradita entro e non oltre il 7 dicembre 2026, come indicato nella schermata finale e nel fallback.
 - Versione aggiornata a `v=24` per CSS e JavaScript.
+
+## Novita V28
+
+Predisposizione ai filmati realistici del `PIANO_VIDEO_REALISTICI.md`: blocco `clip` in `config.js`, sequenza intro/attesa/apertura/pergamena/ritorno/slideshow/finale, ripiego automatico sulle foto. Nessun video incluso: senza clip il sito e' identico alla V25. Dettagli e vincoli di ripresa in fondo al PIANO.
+
+
+### V30 — Pergamena anticipata
+La scena di stappo ora dura 2,7 secondi, per raccordarsi al video di circa 2,58 secondi. La pergamena entra subito dopo.
+
+
+## V36 - video mare notturno
+- Su smartphone la schermata finale usa `assets/video/mare-notte-mobile.mp4`, senza audio, in loop.
+- Leggero zoom CSS (11%) per limitare i difetti visibili sui bordi del video.
+- Sul desktop viene mantenuta la fotografia originale, poiche' il video e' verticale.
+- `assets/scenes/mare-notte-mobile-poster.jpg` offre il fallback mobile.
+- La hitbox della luna segue ora il video mobile e la foto desktop.
+
+### V42: stelline ambientali
+Le scintille decorative sono gestite da `sparkles.js`, sono casuali, non cliccabili e vengono mostrate solo dove non coprono i contenuti. Per disattivarle, rimuovere dal file `index.html` lo script `sparkles.js?v=43`.

@@ -932,3 +932,317 @@
 .story-footer { justify-content: center; }
 .story-footer .chapter { display: none; }
 .story-footer .progress { margin-left: 0; width: min(430px, 100%); flex: 1 1 auto; }
+
+/* ===== V28: filmati realistici (PIANO_VIDEO_REALISTICI.md) ===== */
+.clips,.clips video{position:absolute;inset:0;width:100%;height:100%}
+.clips{pointer-events:none}
+.clips video{object-fit:cover;object-position:51% 50%;opacity:0;transition:opacity .45s ease;pointer-events:none}
+.clips video.on{opacity:1}
+.clips video[data-clip="finale"]{object-position:72% 50%}
+/* Il filmato e' fermo nell'inquadratura: la foto sotto non deve piu' muoversi,
+   cosi' le hitbox della bottiglia e della luna restano allineate. */
+.stage[data-clip="intro"] .shore,.stage[data-clip="attesa"] .shore,.stage[data-clip="apertura"] .shore,.stage[data-clip="finale"] .night{animation:none}
+/* Pergamena: la carta e' nel video; il testo HTML compare a carta srotolata. */
+.stage.clip-paper .letter{background:none;box-shadow:none;transform:none!important;transition:none}
+.stage.clip-paper .letter-inner{opacity:0;transition:opacity .7s ease}
+.stage.clip-paper.clip-text .letter-inner{opacity:1}
+
+/* V29: risposta immediata e raccordo morbido dopo il tap */
+.clips video { transition: opacity 1.05s ease-in-out; }
+.stage.bottle-tapped .bottle-glow, .stage.bottle-tapped .bottle-halo { filter: brightness(1.35); }
+@media (prefers-reduced-motion: reduce) { .clips video { transition-duration: .12s; } }
+
+/* V31: firma che si scrive soltanto dopo la conclusione del messaggio. */
+.stage[data-scene="segreto"] .signature {
+  clip-path: inset(0 calc(100% - var(--signed, 0%)) 0 0);
+  -webkit-clip-path: inset(0 calc(100% - var(--signed, 0%)) 0 0);
+  opacity: 1;
+}
+.stage[data-scene="segreto"] .signature.signing {
+  filter: drop-shadow(0 0 1px rgba(83,62,50,.22));
+}
+
+
+/* V32: pergamena a proporzioni naturali, senza cartoncino rettangolare esterno. */
+.letter-panel { padding: clamp(65px, 9vh, 90px) 15px clamp(45px, 7vh, 70px); }
+.letter-panel .letter {
+  width: min(380px, 72vw, calc((100dvh - 155px) * .6667));
+  aspect-ratio: 2 / 3;
+  min-height: 0;
+  height: auto;
+  background: url("assets/scenes/carta.jpg") center / 100% 100% no-repeat;
+  background-color: transparent;
+  box-shadow: none;
+  border: 0;
+  border-radius: 0;
+  /* Nasconde il bordo fotografico esterno, conservando il contorno sfrangiato della carta. */
+  clip-path: polygon(3% 1.9%, 16% 1.5%, 34% 1.4%, 61% 1.7%, 82% 1.5%, 96% 2.1%, 98% 10%, 97.5% 29%, 98% 53%, 97% 78%, 97% 95%, 93% 98%, 75% 98.5%, 46% 98.6%, 18% 98.3%, 3% 97.4%, 2% 85%, 2% 52%, 2% 21%);
+}
+.letter-panel .letter-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 15% 13% 13%;
+  width: 100%;
+  height: 100%;
+  gap: 0;
+}
+.letter-panel .letter-rule { display: none !important; }
+.letter-panel .letter .typed {
+  font-family: "Marck Script", "Dancing Script", "Segoe Script", cursive;
+  font-size: clamp(17px, 2.1vw, 26px);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: 0;
+  min-height: 0;
+  color: #493325;
+  text-shadow: 0 .25px .25px rgba(70,35,14,.13);
+  overflow-wrap: break-word;
+}
+.letter-panel .letter .typed-strong { margin-top: 12px; min-height: 0; font-weight: 400; }
+.letter-panel .letter .signature {
+  font-family: "Great Vibes", "Dancing Script", cursive;
+  color: #453027;
+  font-size: clamp(33px, 4.7vw, 49px);
+  line-height: 1.2;
+  margin-top: 16px;
+  padding-right: 4px;
+}
+@media (max-width: 600px) {
+  .letter-panel .letter { width: min(78vw, calc((100dvh - 140px) * .6667)); }
+  .letter-panel .letter-inner { padding: 15% 12% 12%; }
+  .letter-panel .letter .typed { font-size: clamp(17px, 5.1vw, 23px); line-height: 1.18; }
+  .letter-panel .letter .typed-strong { margin-top: 10px; }
+  .letter-panel .letter .signature { font-size: clamp(34px, 10vw, 47px); margin-top: 12px; }
+}
+@media (max-height: 620px) {
+  .letter-panel .letter { width: min(70vw, calc((100dvh - 125px) * .6667)); }
+  .letter-panel .letter-inner { padding: 11% 11%; }
+  .letter-panel .letter .typed { font-size: clamp(15px, 3.8vh, 19px); line-height: 1.12; }
+  .letter-panel .letter .typed-strong { margin-top: 7px; }
+  .letter-panel .letter .signature { font-size: clamp(29px, 7vh, 37px); margin-top: 7px; }
+}
+
+/* V33 — Carta ritagliata dalla fotografia originale, senza contorni geometrici.
+   Inchiostro a pennino sottile; il testo si adatta alla carta. */
+.letter-panel .letter {
+  width:min(380px, 72vw, calc((100dvh - 142px) * .6667));
+  aspect-ratio:2 / 3;
+  min-height:0; height:auto;
+  background: url("assets/scenes/carta-scontornata.png") center / contain no-repeat !important;
+  background-color:transparent !important;
+  clip-path:none !important; -webkit-clip-path:none !important;
+  border:0 !important; border-radius:0 !important; box-shadow:none !important;
+}
+.letter-panel .letter-inner {box-sizing:border-box; width:100%; height:100%; padding:20% 16% 17%; justify-content:center;}
+.letter-panel .letter .typed {
+  font-family:"Pinyon Script", "Great Vibes", cursive !important;
+  color:#342416;
+  font-size:clamp(23px,2.6vw,30px);
+  font-weight:400; line-height:1.13;
+  min-height:0; text-shadow:none; letter-spacing:0;
+  overflow-wrap:normal; word-break:normal;
+}
+.letter-panel .letter .typed-strong {font-weight:400; margin-top:14px; min-height:0;}
+.letter-panel .letter .signature {
+  font-family:"Great Vibes", "Pinyon Script", cursive;
+  color:#271a12; font-size:clamp(36px,4.6vw,51px);
+  line-height:1.08; margin-top:17px; padding-right:7px;
+}
+@media(max-width:600px){
+ .letter-panel .letter{width:min(83vw,calc((100dvh - 125px)*.6667));}
+ .letter-panel .letter-inner{padding:18% 15% 15%;}
+ .letter-panel .letter .typed{font-size:clamp(20px,5.7vw,26px);line-height:1.12;}
+ .letter-panel .letter .typed-strong{margin-top:10px;}
+ .letter-panel .letter .signature{font-size:clamp(34px,10vw,46px);margin-top:13px;}
+}
+@media(max-height:620px){
+ .letter-panel .letter{width:min(74vw,calc((100dvh - 115px)*.6667));}
+ .letter-panel .letter-inner{padding:14% 14%;}
+ .letter-panel .letter .typed{font-size:clamp(17px,3.6vh,22px);line-height:1.05;}
+ .letter-panel .letter .typed-strong{margin-top:6px;}
+ .letter-panel .letter .signature{font-size:clamp(29px,6vh,38px);margin-top:8px;}
+}
+
+
+/* V34: carta con rapporto originale 900:1350; blocchi di scrittura stabili. */
+.letter-panel .letter {
+  aspect-ratio: 2 / 3 !important; height: auto !important;
+  min-height: 0 !important; flex-shrink: 0;
+  background-size: 100% 100% !important;
+  overflow: visible !important;
+}
+.letter-panel .letter-inner {
+  display: flex !important; flex-direction: column !important;
+  justify-content: center !important; align-items: stretch !important;
+  padding: 16% 14% 18% !important; overflow: visible !important;
+}
+.letter-panel .typed {
+  display: block !important; position: relative !important;
+  width: 100%; min-height: 0 !important;
+  white-space: pre-wrap; overflow-wrap: break-word !important;
+  font-size: clamp(20px, 2.3vw, 26px) !important;
+  line-height: 1.14 !important;
+}
+.letter-panel .typed.typing::after, .letter-panel .typed::after {
+  content: none !important; display: none !important;
+}
+.letter-measure {visibility: hidden; display: block; white-space: pre-wrap;}
+.letter-ink {
+  position: absolute; inset: 0; display: block; white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+.letter-panel .typed-strong {margin-top: 11px !important;}
+.letter-panel .signature {
+  align-self: stretch; box-sizing: border-box;
+  width: 100%; padding: 9px 14px 12px 0 !important;
+  margin: 10px 0 0 !important;
+  overflow: visible !important;
+  font-size: clamp(32px, 4vw, 43px) !important;
+  line-height: 1.45 !important;
+  white-space: nowrap;
+}
+@media(max-width:600px){
+ .letter-panel .letter-inner{padding:15% 13% 17% !important;}
+ .letter-panel .typed{font-size:clamp(19px,5.2vw,23px) !important;line-height:1.12 !important;}
+ .letter-panel .signature{font-size:clamp(29px,8.7vw,38px) !important;}
+}
+@media(max-height:620px){
+ .letter-panel .letter-inner{padding:12% 12% 15% !important;}
+ .letter-panel .typed{font-size:clamp(16px,3.2vh,19px) !important;line-height:1.08 !important;}
+ .letter-panel .typed-strong{margin-top:5px !important;}
+ .letter-panel .signature{font-size:clamp(26px,5.5vh,34px) !important;margin-top:4px !important;}
+}
+
+
+/* V35 - carta originale trasparente, testo leggibile distribuito sul foglio */
+.letter-panel .letter {
+  width: min(440px, 88vw, calc((100dvh - 110px) * 2 / 3)) !important;
+  aspect-ratio: 2 / 3 !important; height: auto !important; min-height: 0 !important;
+  background: url("assets/scenes/carta-nuova.png") center / 100% 100% no-repeat !important;
+  box-shadow: none !important; border: 0 !important; clip-path: none !important;
+}
+.letter-panel .letter-inner {
+  box-sizing: border-box !important; padding: 12% 11% 12% !important;
+  display: flex !important; flex-direction: column !important;
+  align-items: stretch !important; justify-content: center !important;
+  gap: 0 !important; height: 100% !important;
+}
+.letter-panel .letter .typed {
+  font-family: "Dancing Script", "Segoe Script", cursive !important;
+  font-weight: 600 !important; font-size: clamp(25px, 2.65vw, 30px) !important;
+  line-height: 1.33 !important; letter-spacing: .005em !important;
+  color: #342315 !important; text-shadow: none !important;
+  overflow-wrap: normal !important; word-break: normal !important;
+}
+.letter-panel .letter .typed-strong {margin-top: 25px !important; }
+.letter-panel .signature {
+  font-family: "Great Vibes", "Pinyon Script", cursive !important;
+  font-size: clamp(46px, 5vw, 57px) !important;
+  line-height: 1.55 !important; padding: 12px 12px 20px 4px !important;
+  margin: 24px 0 0 !important; color: #2d1c12 !important;
+  overflow: visible !important; flex-shrink: 0 !important;
+}
+@media (max-width: 600px) {
+  .letter-panel .letter {width: min(88vw, calc((100dvh - 100px) * 2 / 3)) !important;}
+  .letter-panel .letter-inner {padding: 12% 10.5% 12% !important;}
+  .letter-panel .letter .typed {font-size: clamp(23px, 5.8vw, 28px) !important; line-height: 1.25 !important;}
+  .letter-panel .letter .typed-strong {margin-top: 17px !important;}
+  .letter-panel .signature {font-size: clamp(41px, 10.5vw, 51px) !important; margin-top: 16px !important;}
+}
+@media (max-height: 650px) {
+  .letter-panel .letter {width: min(86vw, calc((100dvh - 85px) * 2 / 3)) !important;}
+  .letter-panel .letter-inner {padding: 10% 10% !important;}
+  .letter-panel .letter .typed {font-size: clamp(20px, 3.5vh, 24px) !important;line-height:1.21 !important;}
+  .letter-panel .letter .typed-strong {margin-top: 10px !important;}
+  .letter-panel .signature {font-size: clamp(35px, 7vh, 45px) !important; margin-top: 8px !important;}
+}
+
+/* V36 - Il video del mare notturno viene mostrato solo su schermi verticali.
+   Un leggero zoom nasconde eventuali artefatti sui bordi; la luna resta
+   ferma e la hitbox segue la sua posizione nel video e nel poster. */
+@media (max-aspect-ratio: 3/4) {
+  .night { animation: none !important; transform: scale(1.11) !important;
+           transform-origin: center center; object-position:72% 50%; }
+  #clips video[data-clip="finale"] {
+    object-position:72% 50%; transform: scale(1.11); transform-origin:center center;
+  }
+}
+
+/* V38: nessun movimento laterale del fondale tra le ultime tre scene.
+   La ripresa stabilizzata scorre in un unico loop senza riavvii. */
+.stage[data-scene="epico"] .night,
+.stage[data-scene="citazione"] .night,
+.stage[data-scene="finale"] .night { animation:none !important; }
+
+/* V40: nessun flash statico al click. Il video di attesa continua finche'
+   il primo fotogramma dell'apertura non e' decodificato; dissolvenza .68s. */
+.clips video { transition: opacity .68s ease-in-out; }
+.stage[data-clip="attesa"] .shore-open,
+.stage[data-clip="apertura"] .shore-open { opacity: 0 !important; }
+@media (prefers-reduced-motion: reduce) { .clips video { transition-duration: .12s; } }
+
+
+/* V41: pergamena marina nuova, con il profilo trasparente non deformato.
+   Manteniamo il rapporto 2:3 e tutte le misure del testo della V40. */
+.letter-panel .letter {
+  background-image: url("assets/scenes/pergamena-marina.webp") !important;
+  background-size: 100% 100% !important;
+  background-repeat: no-repeat !important;
+}
+
+/* V42 - Scintille dorate occasionali, abbinate al glow della bottiglia.
+   Posizione scelta solo in aree libere, nessuna interferenza con i tocchi. */
+.ambient-sparks {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.ambient-spark {
+  position: absolute;
+  display: block;
+  color: #fff0bd;
+  font-family: Georgia, serif;
+  font-weight: 400;
+  line-height: 1;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.48);
+  text-shadow: 0 0 8px #fff1ca, 0 0 19px #ffd18f, 0 0 30px rgba(255,204,120,.46);
+  pointer-events: none;
+  animation: ambient-spark-bloom var(--spark-life, 2.3s) ease-in-out forwards;
+  will-change: opacity, transform;
+}
+@keyframes ambient-spark-bloom {
+  0% {opacity: 0; transform: translate(-50%, -50%) scale(.45);}
+  35% {opacity: .84; transform: translate(-50%, -54%) scale(1.07);}
+  64% {opacity: .72; transform: translate(-50%, -57%) scale(.88);}
+  100% {opacity: 0; transform: translate(-50%, -60%) scale(.42);}
+}
+@media (prefers-reduced-motion: reduce) {
+  .ambient-sparks {display: none !important;}
+}
+
+/* V43 - linee già composte nel font definitivo, rivelate senza reflow. */
+.letter-panel .letter-measure { visibility:hidden; display:block; white-space:normal; }
+.letter-panel .letter-ink {position:absolute; inset:0; pointer-events:none; display:block; }
+.letter-panel .letter-ink-line {
+  position:absolute; left:0; display:block; width:max-content;
+  white-space:pre; line-height:inherit; font:inherit; letter-spacing:inherit;
+  color:inherit; overflow:visible; will-change:clip-path;
+}
+/* Mantieni esattamente lo stesso aspetto della firma durante e dopo la scrittura. */
+.stage[data-scene="segreto"] .signature.signing {filter:none !important;}
+.letter-panel .signature {filter:none !important; -webkit-font-smoothing:antialiased;}
+
+/* V43 - scintille ambientali: più grandi, un po' più frequenti, e dissolvenza
+   quando cambia scena al posto della rimozione improvvisa. */
+.ambient-spark {text-shadow:0 0 9px #fff2c7,0 0 22px #ffdb9d,0 0 34px rgba(255,203,114,.52);}
+.ambient-spark.is-retiring {animation:ambient-spark-retire .85s ease-out both !important;}
+@keyframes ambient-spark-retire {
+  from {opacity:var(--retire-opacity, .65); transform:var(--retire-transform, translate(-50%,-50%) scale(1));}
+  to {opacity:0; transform:var(--retire-transform, translate(-50%,-50%) scale(1));}
+}
