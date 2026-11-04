@@ -1264,7 +1264,13 @@
 }
 .moon-polaroid .moon-polaroid-caption span {color:#ab7d37;}
 .moon-polaroid-trigger:focus-visible {outline:3px solid #f8d390;outline-offset:7px;}
-.moon-polaroid-trigger:hover img {filter:brightness(1.045);}
+/* V48: nessuna variazione hover sui display touch: evita il doppio tap su Safari iOS. */
+@media (hover:hover) and (pointer:fine) {
+  .moon-polaroid-trigger:hover img {filter:brightness(1.045);}
+}
+@media (hover:none) {
+  .moon-polaroid-trigger img {filter:none!important;}
+}
 .moon-memory-hint {
   color:#f6d9a6; font:500 12px/1.4 var(--sans);
   margin:-7px 0 14px; letter-spacing:.03em;

@@ -136,25 +136,56 @@
   // V44: la Polaroid della luna e' l'unica porta d'accesso al Memory.
   // Il gioco salta la propria seconda introduzione, ma conserva immersione e bollicine.
   const memoryTrigger = $('moon-memory-trigger');
-  memoryTrigger?.addEventListener('click', () => {
-    if (moonSecret.hidden || !window.PatanellaMemory) return;
+  let memoryOpening = false;
+  let polaroidTouchStart = null;
+  function openMemoryFromPolaroid() {
+    if (memoryOpening || moonSecret.hidden || moonSecret.inert || !window.PatanellaMemory) return;
+    // Blocca le attivazioni doppie (touchend + click sintetico di Safari).
+    memoryOpening = true;
     moonSecret.setAttribute('aria-hidden', 'true');
     moonSecret.inert = true;
     try {
       window.PatanellaMemory.open({
         origin: memoryTrigger.closest('.moon-polaroid'),
         onClose: () => {
+          memoryOpening = false;
           moonSecret.inert = false;
           moonSecret.removeAttribute('aria-hidden');
           if (!moonSecret.hidden) memoryTrigger.focus({preventScroll:true});
         }
       });
     } catch (error) {
+      memoryOpening = false;
       moonSecret.inert = false;
       moonSecret.removeAttribute('aria-hidden');
       console.error('Impossibile aprire il Memory:', error);
     }
-  });
+  }
+  // iOS Safari: il primo tap può limitarsi ad attivare :hover/focus,
+  // senza produrre subito click. Usiamo touchend per un tocco reale,
+  // mantenendo click nativo per mouse, tastiera e tecnologie assistive.
+  memoryTrigger?.addEventListener('touchstart', event => {
+    if (event.touches.length !== 1) { polaroidTouchStart = null; return; }
+    const finger = event.touches[0];
+    polaroidTouchStart = {x: finger.clientX, y: finger.clientY};
+  }, {passive: true});
+  memoryTrigger?.addEventListener('touchmove', event => {
+    if (!polaroidTouchStart || event.touches.length !== 1) return;
+    const finger = event.touches[0];
+    if (Math.hypot(finger.clientX - polaroidTouchStart.x,
+                   finger.clientY - polaroidTouchStart.y) > 14) polaroidTouchStart = null;
+  }, {passive: true});
+  memoryTrigger?.addEventListener('touchend', event => {
+    const start = polaroidTouchStart;
+    polaroidTouchStart = null;
+    if (!start || event.changedTouches.length !== 1) return;
+    const finger = event.changedTouches[0];
+    if (Math.hypot(finger.clientX - start.x, finger.clientY - start.y) > 14) return;
+    event.preventDefault(); // evita il click sintetico successivo al primo tap
+    openMemoryFromPolaroid();
+  }, {passive: false});
+  memoryTrigger?.addEventListener('touchcancel', () => { polaroidTouchStart = null; });
+  memoryTrigger?.addEventListener('click', openMemoryFromPolaroid);
   moonClose.addEventListener('click',dismissMoonSecret);
   moonSecret.addEventListener('click',e=>{if(e.target===moonSecret||e.target.classList.contains('moon-secret-veil'))dismissMoonSecret();});
   document.addEventListener('keydown',e=>{

@@ -1,3 +1,10 @@
+# Invito Patanella V48 — Un solo tocco per aprire il Memory
+
+Aggiornamento mirato della V47: dopo aver sbloccato la luna, **un solo tocco sulla Polaroid** apre il Memory su smartphone. Restano invariati lo sfondo sfocato, la transizione con bollicine, le fotografie e gli altri elementi dell'invito.
+
+Pubblica i file alla radice del repository GitHub Pages, senza caricare la cartella contenitore. I file modificati sono `script.js`, `style.css`, `index.html`, `README.md` e `CHANGELOG.md`.
+
+---
 # Invito Patanella V47 — Richiamo Polaroid e spaziatura Memory
 
 Carica **tutti i file** nella radice del repository GitHub Pages, mantenendo la cartella `assets`. Il testo sotto la Polaroid segreta ora compare in dissolvenza con piccolo rimbalzo e continua con una morbida pulsazione. Nel Memory, pulsanti e testi hanno spazi uniformi anche su smartphone.

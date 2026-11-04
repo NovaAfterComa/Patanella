@@ -1,3 +1,13 @@
+# Versione 48 — Apertura Memory con un solo tocco
+
+- Corretto il doppio tap richiesto talvolta da Safari su smartphone per aprire il Memory dalla Polaroid finale.
+- Il primo tocco valido avvia subito l'immersione; eventuali click sintetici duplicati non possono avviarla una seconda volta.
+- Un dito che scorre sulla schermata non attiva accidentalmente il gioco.
+- L'effetto `:hover` sulla foto si applica soltanto ai dispositivi con mouse, senza interferire con i tocchi.
+- Confermati il click da desktop e l'attivazione da tastiera; Polaroid, animazioni, bollicine, musica e Memory invariati.
+- Aggiornata la cache del codice modificato (CSS e JS) a V48.
+
+---
 # Versione 47 — Richiamo Polaroid e spaziatura Memory
 
 - Ripristinato un effetto di ingresso chiaramente visibile della scritta «Tocca la Polaroid»: dissolvenza e piccolo rimbalzo, seguiti da un movimento lento e continuo di respirazione senza salti.
