@@ -1,0 +1,24 @@
+/* Transizione basata sulla dissolvenza e sulle bollicine del Memory originale. */
+.patanella-memory-layer{position:fixed;inset:0;z-index:2147483647;overflow:hidden;isolation:isolate;background:#09273f;}
+.patanella-memory-frame{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;opacity:0;transition:opacity .65s ease;z-index:1;background:#09273f;}
+.patanella-memory-dive{position:absolute;inset:0;z-index:2;overflow:hidden;pointer-events:none;background:radial-gradient(ellipse at 50% 0%,#76b5c0 0%,#317894 36%,#0b3d5c 76%,#09273f 100%);opacity:1;transition:opacity .85s ease;}
+.patanella-memory-dive::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% -30%,#397b9155 0%,#104b6a88 43%,#061b35 100%);animation:patanella-sea-dive 2s ease-in forwards;}
+.patanella-memory-layer.is-ready .patanella-memory-frame{opacity:1;pointer-events:auto;}
+.patanella-memory-layer.is-ready .patanella-memory-dive{opacity:0;}
+.patanella-memory-photo{position:fixed!important;max-width:none!important;margin:0!important;pointer-events:none!important;z-index:2;animation:patanella-photo-dive 1.7s cubic-bezier(.2,.6,.2,1) forwards;transform-origin:center center;}
+.patanella-memory-photo *{pointer-events:none!important;}
+.patanella-memory-dive .patanella-memory-photo .moon-polaroid-caption{color:#33434a;}
+.patanella-memory-bubble{position:absolute;bottom:-48px;left:var(--x);width:var(--size);height:var(--size);z-index:3;border-radius:50%;border:1px solid rgba(216,248,255,.65);box-shadow:inset 0 0 7px rgba(255,255,255,.3),0 0 11px rgba(124,228,241,.3);background:radial-gradient(circle at 32% 26%,rgba(255,255,255,.65),rgba(204,245,255,.08) 40%,rgba(10,132,169,.2) 70%,transparent 80%);opacity:0;animation:patanella-bubble-rise var(--duration) ease-out var(--delay) both;}
+.patanella-memory-caption{position:absolute;z-index:4;top:42%;left:12px;right:12px;text-align:center;color:#fff1d8;text-shadow:0 2px 15px #032d46;font:italic clamp(24px,5.8vw,39px)/1.2 Georgia,serif;letter-spacing:.01em;animation:patanella-caption 1.8s ease both;}
+.patanella-memory-caption small{display:block;font:500 11px/1.5 system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;margin-top:16px;color:#ffe4b6;}
+@keyframes patanella-sea-dive{to{opacity:1;transform:scale(1.07);}}
+@keyframes patanella-photo-dive{0%{opacity:1;transform:rotate(-4deg) scale(1);filter:blur(0)}25%{opacity:1;}100%{opacity:0;transform:translateY(-13vh) rotate(-5deg) scale(1.16);filter:blur(10px)}}
+@keyframes patanella-bubble-rise{0%{opacity:0;transform:translate(0,0) scale(.65)}18%{opacity:.78;}65%{opacity:.75;}100%{opacity:0;transform:translate(var(--drift),calc(-100vh - 160px)) scale(1.28)}}
+@keyframes patanella-caption{0%,12%{opacity:0;transform:translateY(18px)}32%,75%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-15px)}}
+@media(prefers-reduced-motion:reduce){
+.patanella-memory-photo,.patanella-memory-bubble,.patanella-memory-caption,.patanella-memory-dive::before{animation-duration:.15s!important;}
+.patanella-memory-dive,.patanella-memory-frame{transition-duration:.15s!important;}
+}
+
+/* V45 — La scritta dell'immersione si chiude prima della griglia. */
+.patanella-memory-layer.is-ready .patanella-memory-caption{opacity:0!important;visibility:hidden;animation:none!important;}

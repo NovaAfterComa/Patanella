@@ -133,11 +133,33 @@
     if((e.key===' '||e.key==='Enter')&&moonPointer==='keyboard'){e.preventDefault();cancelMoonHold();}
   });
   moonButton.addEventListener('blur',()=>{if(moonPointer==='keyboard')cancelMoonHold();});
+  // V44: la Polaroid della luna e' l'unica porta d'accesso al Memory.
+  // Il gioco salta la propria seconda introduzione, ma conserva immersione e bollicine.
+  const memoryTrigger = $('moon-memory-trigger');
+  memoryTrigger?.addEventListener('click', () => {
+    if (moonSecret.hidden || !window.PatanellaMemory) return;
+    moonSecret.setAttribute('aria-hidden', 'true');
+    moonSecret.inert = true;
+    try {
+      window.PatanellaMemory.open({
+        origin: memoryTrigger.closest('.moon-polaroid'),
+        onClose: () => {
+          moonSecret.inert = false;
+          moonSecret.removeAttribute('aria-hidden');
+          if (!moonSecret.hidden) memoryTrigger.focus({preventScroll:true});
+        }
+      });
+    } catch (error) {
+      moonSecret.inert = false;
+      moonSecret.removeAttribute('aria-hidden');
+      console.error('Impossibile aprire il Memory:', error);
+    }
+  });
   moonClose.addEventListener('click',dismissMoonSecret);
   moonSecret.addEventListener('click',e=>{if(e.target===moonSecret||e.target.classList.contains('moon-secret-veil'))dismissMoonSecret();});
   document.addEventListener('keydown',e=>{
-    if(!moonSecret.hidden && e.key==='Escape'){e.preventDefault();dismissMoonSecret();}
-    if(!moonSecret.hidden && e.key==='Tab'){e.preventDefault();moonClose.focus({preventScroll:true});}
+    if(!moonSecret.hidden && !moonSecret.inert && e.key==='Escape'){e.preventDefault();dismissMoonSecret();}
+    if(!moonSecret.hidden && !moonSecret.inert && e.key==='Tab'){e.preventDefault();moonClose.focus({preventScroll:true});}
   });
   moonNightImage.addEventListener('load',positionMoonButton);
   addEventListener('resize',positionMoonButton);

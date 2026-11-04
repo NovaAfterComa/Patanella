@@ -1,3 +1,8 @@
+# Invito Patanella V47 — Richiamo Polaroid e spaziatura Memory
+
+Carica **tutti i file** nella radice del repository GitHub Pages, mantenendo la cartella `assets`. Il testo sotto la Polaroid segreta ora compare in dissolvenza con piccolo rimbalzo e continua con una morbida pulsazione. Nel Memory, pulsanti e testi hanno spazi uniformi anche su smartphone.
+
+---
 # Invito Patanella V43 — stelline e pergamena rifinite
 
 La V43 mantiene i filmati, le immagini, la musica e le interazioni della V42.
@@ -221,3 +226,11 @@ La scena di stappo ora dura 2,7 secondi, per raccordarsi al video di circa 2,58 
 
 ### V42: stelline ambientali
 Le scintille decorative sono gestite da `sparkles.js`, sono casuali, non cliccabili e vengono mostrate solo dove non coprono i contenuti. Per disattivarle, rimuovere dal file `index.html` lo script `sparkles.js?v=43`.
+
+
+## Easter egg Memory — V44
+
+Nella schermata finale, tieni premuta la luna per cinque secondi. Compare la stessa Polaroid dell'infanzia della V43. Toccando la Polaroid si attivano dissolvenza, bollicine e immersione nel gioco **Il tesoro degli abissi**. Il gioco mostra direttamente le carte e non ripete l'introduzione: usa `memory.html` e `memory-loader.js`, che devono rimanere accanto a `index.html`, più il foglio `memory-transition.css`. Chiudendo il gioco si torna alla Polaroid originale.
+
+### V46
+Il titolo del segreto della luna è su una riga e l’indicazione di tocco ha un’animazione più fluida.

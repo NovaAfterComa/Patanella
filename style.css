@@ -1246,3 +1246,91 @@
   from {opacity:var(--retire-opacity, .65); transform:var(--retire-transform, translate(-50%,-50%) scale(1));}
   to {opacity:0; transform:var(--retire-transform, translate(-50%,-50%) scale(1));}
 }
+
+
+/* V44 - La Polaroid segreta resta la stessa e diventa il pulsante del Memory. */
+.moon-polaroid-trigger {
+  display:block; width:100%; padding:0; border:0; border-radius:0;
+  color:inherit; background:none; font:inherit; text-align:center;
+  cursor:pointer; -webkit-tap-highlight-color: transparent;
+  touch-action:manipulation;
+}
+.moon-polaroid-trigger img { display:block; width:100%; }
+.moon-polaroid .moon-polaroid-caption {
+  font-family:"Dancing Script","Segoe Script",cursive;
+  font-size:20px; line-height:1.15; color:#33434a;
+  min-height:50px; display:flex; align-items:center; justify-content:center;
+  gap:6px; padding:8px 2px;
+}
+.moon-polaroid .moon-polaroid-caption span {color:#ab7d37;}
+.moon-polaroid-trigger:focus-visible {outline:3px solid #f8d390;outline-offset:7px;}
+.moon-polaroid-trigger:hover img {filter:brightness(1.045);}
+.moon-memory-hint {
+  color:#f6d9a6; font:500 12px/1.4 var(--sans);
+  margin:-7px 0 14px; letter-spacing:.03em;
+  text-shadow:0 1px 8px #001924;
+}
+@media(max-height:700px) {
+  .moon-polaroid .moon-polaroid-caption {font-size:17px;min-height:37px;padding:5px 2px;}
+  .moon-memory-hint {font-size:11px;margin:-4px 0 8px;}
+}
+@media(prefers-reduced-motion:reduce){.moon-polaroid-trigger:hover img{filter:none;}}
+
+
+/* V47 — Titolo coerente e invito alla Polaroid visibilmente animato. */
+.moon-secret-inner {width:min(410px,100%);padding:6px 0 22px;}
+.moon-secret-kicker {
+  font:700 10.5px/1.45 var(--sans);color:#f6d6a3;
+  text-transform:uppercase;letter-spacing:.2em;margin:0 0 10px;
+}
+.moon-secret h2 {
+  font:italic 400 clamp(23px,6.8vw,34px)/1.2 var(--serif);
+  letter-spacing:-.035em;color:#ffebd1;text-shadow:0 2px 18px rgba(0,0,0,.6);
+  width:100%;max-width:none;margin:0 0 12px;white-space:nowrap;
+}
+.moon-title-gem {display:inline-block;font-size:.58em;vertical-align:.13em;letter-spacing:0;white-space:nowrap;}
+.moon-secret-subtitle {
+  max-width:325px;margin:0 0 19px;font:normal 15px/1.5 var(--sans);
+  color:#f4f4f0;text-shadow:0 2px 12px rgba(0,0,0,.8);
+}
+.moon-secret .moon-polaroid {width:min(300px,77vw);margin:0;}
+.moon-memory-hint {
+  color:#f5d8ae;font:600 12px/1.55 var(--sans);
+  letter-spacing:.025em;margin:32px auto 0;max-width:330px;min-height:23px;
+  text-shadow:0 2px 10px rgba(0,16,30,.9);
+  opacity:0;transform:translate3d(0,12px,0);
+}
+.moon-secret.open .moon-memory-hint {
+  animation:moon-tap-enter .92s cubic-bezier(.18,.82,.25,1) .55s both;
+}
+.moon-memory-hint .moon-hint-pulse {
+  display:inline-block;backface-visibility:hidden;
+  transform:translate3d(0,0,0);transform-origin:50% 55%;
+}
+.moon-secret.open .moon-memory-hint .moon-hint-pulse {
+  animation:moon-tap-pulse 3.0s ease-in-out 1.48s infinite;
+}
+@keyframes moon-tap-enter {
+  0% {opacity:0;transform:translate3d(0,12px,0) scale(.97)}
+  56% {opacity:1;transform:translate3d(0,-4px,0) scale(1.015)}
+  77% {transform:translate3d(0,2px,0) scale(.998)}
+  100% {opacity:1;transform:translate3d(0,0,0) scale(1)}
+}
+@keyframes moon-tap-pulse {
+  0%,100% {opacity:1;transform:translate3d(0,0,0) scale(1);filter:brightness(1)}
+  50% {opacity:.7;transform:translate3d(0,-3.5px,0) scale(1.03);filter:brightness(1.16)}
+}
+@media(max-width:360px), (max-height:700px){
+  .moon-secret-inner{padding:3px 0 18px;}
+  .moon-secret-kicker{font-size:9px;letter-spacing:.12em;margin-bottom:8px;}
+  .moon-secret h2{font-size:clamp(21px,6.7vw,26px);max-width:none;margin-bottom:8px;}
+  .moon-secret-subtitle{font-size:13px;line-height:1.4;margin-bottom:14px;max-width:300px;}
+  .moon-secret .moon-polaroid{width:min(255px,74vw);}
+  .moon-memory-hint{font-size:11.5px;margin-top:28px;max-width:280px;}
+}
+@media(prefers-reduced-motion:reduce){
+  .moon-secret.open .moon-memory-hint,
+  .moon-secret.open .moon-memory-hint .moon-hint-pulse {
+    animation:none;opacity:1;transform:none;filter:none;
+  }
+}

@@ -1,3 +1,30 @@
+# Versione 47 — Richiamo Polaroid e spaziatura Memory
+
+- Ripristinato un effetto di ingresso chiaramente visibile della scritta «Tocca la Polaroid»: dissolvenza e piccolo rimbalzo, seguiti da un movimento lento e continuo di respirazione senza salti.
+- Le due animazioni operano su due elementi diversi, evitando che una annulli l’altra.
+- Migliorati gli spazi verticali del Memory fra barra dei pulsanti, intestazione, descrizione, statistiche e griglia, su desktop e smartphone.
+- Sugli schermi molto bassi il gioco può scorrere verticalmente senza sovrapporre i controlli.
+- Foto della Polaroid, bollicine, schermata di immersione, pulsanti e dati dell’invito invariati.
+
+---
+## V45 — Tesoro degli abissi e correzioni mobile (5 novembre 2026)
+
+- Nella sorpresa della luna: intestazione "✦ Un piccolo segreto dal mare ✦", titolo "Il tesoro degli abissi 💎" e testo "Il mare nasconde una piccola sorpresa."
+- Conservata la fotografia originale della Polaroid e lo sfondo notturno sfocato.
+- Più spazio tra Polaroid e invito al tocco, con lieve dissolvenza e rimbalzo.
+- Rimossa la seconda animazione "Un viaggio sotto le onde…" dentro l'iframe; ora la scritta termina prima che il Memory diventi visibile.
+- Nella modalità integrata, nascosto il pulsante fisso "Chiudi" che si sovrapponeva a "Ricomincia" su smartphone. Si esce da "Torna all’invito".
+- Aggiornati i parametri di cache alla V45.
+
+# V44 — Easter egg con Memory immersivo
+
+- La Polaroid segreta originale (foto 9) rimane identica ed è ora cliccabile.
+- Il click avvia dissolvenza, bollicine e immersione negli abissi, direttamente dalla Polaroid del sito.
+- Il gioco Memory originale viene caricato in iframe isolato, saltando la sua Polaroid introduttiva duplicata.
+- Il pulsante per tornare al gioco originale è adattato per tornare alla Polaroid dell’invito.
+- Accessibilità: pulsante accessibile da tastiera, Escape chiude il Memory, rispetto dell’impostazione Riduci movimento.
+- Nessuna modifica alle animazioni e ai contenuti della V43.
+
 ## V43 — Stelline più presenti e scrittura stabile (1 novembre 2026)
 
 - Stelline dorate più grandi e frequenti: fino a 4 su smartphone e 7 su desktop, se c'è spazio libero.
@@ -102,3 +129,8 @@ La firma Patanella non compare subito: viene rivelata da sinistra verso destra s
 - Corretta la posizione dell'easter egg della luna rispetto al nuovo video.
 - Il video notturno viene mostrato soltanto nella schermata finale, non nelle scene precedenti.
 - Versione cache aggiornata.
+
+## V46 — Titolo e invito della Polaroid
+- Titolo «Il tesoro degli abissi 💎» su una sola riga, con carattere serif coerente col sito e dimensione responsiva.
+- Indicazione «Tocca la Polaroid» con dissolvenza e piccolo rimbalzo: ingresso e pulsazione separati per eliminare gli scatti, anche alle riaperture.
+- Nessun cambiamento a fotografie, musica, gioco Memory o easter egg.
